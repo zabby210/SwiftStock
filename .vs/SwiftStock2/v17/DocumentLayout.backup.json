@@ -1,0 +1,121 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\athen\\source\\repos\\zabby210\\SwiftStock\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{60A40E99-C514-4672-B030-42C9B150F35A}|SwiftStock2\\SwiftStock2.csproj|c:\\users\\athen\\source\\repos\\zabby210\\swiftstock\\swiftstock2\\wwwroot\\login.html||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{60A40E99-C514-4672-B030-42C9B150F35A}|SwiftStock2\\SwiftStock2.csproj|solutionrelative:swiftstock2\\wwwroot\\login.html||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{60A40E99-C514-4672-B030-42C9B150F35A}|SwiftStock2\\SwiftStock2.csproj|c:\\users\\athen\\source\\repos\\zabby210\\swiftstock\\swiftstock2\\wwwroot\\controller\\accountcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{60A40E99-C514-4672-B030-42C9B150F35A}|SwiftStock2\\SwiftStock2.csproj|solutionrelative:swiftstock2\\wwwroot\\controller\\accountcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{60A40E99-C514-4672-B030-42C9B150F35A}|SwiftStock2\\SwiftStock2.csproj|c:\\users\\athen\\source\\repos\\zabby210\\swiftstock\\swiftstock2\\wwwroot\\controller\\cashier.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{60A40E99-C514-4672-B030-42C9B150F35A}|SwiftStock2\\SwiftStock2.csproj|solutionrelative:swiftstock2\\wwwroot\\controller\\cashier.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{60A40E99-C514-4672-B030-42C9B150F35A}|SwiftStock2\\SwiftStock2.csproj|c:\\users\\athen\\source\\repos\\zabby210\\swiftstock\\swiftstock2\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{60A40E99-C514-4672-B030-42C9B150F35A}|SwiftStock2\\SwiftStock2.csproj|solutionrelative:swiftstock2\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{60A40E99-C514-4672-B030-42C9B150F35A}|SwiftStock2\\SwiftStock2.csproj|c:\\users\\athen\\source\\repos\\zabby210\\swiftstock\\swiftstock2\\wwwroot\\cashier.html||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{60A40E99-C514-4672-B030-42C9B150F35A}|SwiftStock2\\SwiftStock2.csproj|solutionrelative:swiftstock2\\wwwroot\\cashier.html||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{60A40E99-C514-4672-B030-42C9B150F35A}|SwiftStock2\\SwiftStock2.csproj|c:\\users\\athen\\source\\repos\\zabby210\\swiftstock\\swiftstock2\\wwwroot\\js\\site.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
+      "RelativeMoniker": "D:0:0:{60A40E99-C514-4672-B030-42C9B150F35A}|SwiftStock2\\SwiftStock2.csproj|solutionrelative:swiftstock2\\wwwroot\\js\\site.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 2,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{eefa5220-e298-11d0-8f78-00a0c9110057}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "Cashier.cs",
+              "DocumentMoniker": "C:\\Users\\athen\\source\\repos\\zabby210\\SwiftStock\\SwiftStock2\\wwwroot\\controller\\Cashier.cs",
+              "RelativeDocumentMoniker": "SwiftStock2\\wwwroot\\controller\\Cashier.cs",
+              "ToolTip": "C:\\Users\\athen\\source\\repos\\zabby210\\SwiftStock\\SwiftStock2\\wwwroot\\controller\\Cashier.cs",
+              "RelativeToolTip": "SwiftStock2\\wwwroot\\controller\\Cashier.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-31T00:19:11.343Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "login.html",
+              "DocumentMoniker": "C:\\Users\\athen\\source\\repos\\zabby210\\SwiftStock\\SwiftStock2\\wwwroot\\login.html",
+              "RelativeDocumentMoniker": "SwiftStock2\\wwwroot\\login.html",
+              "ToolTip": "C:\\Users\\athen\\source\\repos\\zabby210\\SwiftStock\\SwiftStock2\\wwwroot\\login.html",
+              "RelativeToolTip": "SwiftStock2\\wwwroot\\login.html",
+              "ViewState": "AgIAAG8AAAAAAAAAAAAAAIIAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001512|",
+              "WhenOpened": "2025-03-30T14:38:16.215Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "cashier.html",
+              "DocumentMoniker": "C:\\Users\\athen\\source\\repos\\zabby210\\SwiftStock\\SwiftStock2\\wwwroot\\cashier.html",
+              "RelativeDocumentMoniker": "SwiftStock2\\wwwroot\\cashier.html",
+              "ToolTip": "C:\\Users\\athen\\source\\repos\\zabby210\\SwiftStock\\SwiftStock2\\wwwroot\\cashier.html",
+              "RelativeToolTip": "SwiftStock2\\wwwroot\\cashier.html",
+              "ViewState": "AgIAAHgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001512|",
+              "WhenOpened": "2025-03-30T14:39:16.773Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "site.js",
+              "DocumentMoniker": "C:\\Users\\athen\\source\\repos\\zabby210\\SwiftStock\\SwiftStock2\\wwwroot\\js\\site.js",
+              "RelativeDocumentMoniker": "SwiftStock2\\wwwroot\\js\\site.js",
+              "ToolTip": "C:\\Users\\athen\\source\\repos\\zabby210\\SwiftStock\\SwiftStock2\\wwwroot\\js\\site.js",
+              "RelativeToolTip": "SwiftStock2\\wwwroot\\js\\site.js",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
+              "WhenOpened": "2025-03-30T14:39:14.951Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "AccountController.cs",
+              "DocumentMoniker": "C:\\Users\\athen\\source\\repos\\zabby210\\SwiftStock\\SwiftStock2\\wwwroot\\controller\\AccountController.cs",
+              "RelativeDocumentMoniker": "SwiftStock2\\wwwroot\\controller\\AccountController.cs",
+              "ToolTip": "C:\\Users\\athen\\source\\repos\\zabby210\\SwiftStock\\SwiftStock2\\wwwroot\\controller\\AccountController.cs",
+              "RelativeToolTip": "SwiftStock2\\wwwroot\\controller\\AccountController.cs",
+              "ViewState": "AgIAAAYAAAAAAAAAAAAAAD0AAAAmAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-30T14:38:41.41Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "Program.cs",
+              "DocumentMoniker": "C:\\Users\\athen\\source\\repos\\zabby210\\SwiftStock\\SwiftStock2\\Program.cs",
+              "RelativeDocumentMoniker": "SwiftStock2\\Program.cs",
+              "ToolTip": "C:\\Users\\athen\\source\\repos\\zabby210\\SwiftStock\\SwiftStock2\\Program.cs",
+              "RelativeToolTip": "SwiftStock2\\Program.cs",
+              "ViewState": "AgIAAAkAAAAAAAAAAAAAAC0AAAAoAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-28T08:09:29.275Z"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
