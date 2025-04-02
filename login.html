@@ -1,0 +1,159 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Cashier System</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(to right, #FFD700, #FF0000);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .login-container {
+            background: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+            width: 300px;
+            text-align: center;
+        }
+
+        h2 {
+            color: #FF0000;
+        }
+
+        .input-group {
+            margin-bottom: 15px;
+            text-align: left;
+        }
+
+        label {
+            font-weight: bold;
+            color: #333;
+        }
+
+        input {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+
+        button {
+            background: #FFD700;
+            color: black;
+            border: none;
+            padding: 10px;
+            width: 100%;
+            cursor: pointer;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+            button:hover {
+                background: #FF0000;
+                color: white;
+            }
+
+        .error-message {
+            color: red;
+            font-size: 14px;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <form id="loginForm">
+            <h2>🔐 SWIFTSTOCK Login</h2>
+            <div class="input-group">
+                <label for="username">👤 Username</label>
+                <input type="text" id="username" name="username" required>
+            </div>
+            <div class="input-group">
+                <label for="password">🔑 Password</label>
+                <input type="password" id="password" name="password" required>
+            </div>
+            <button type="submit">Login</button>
+            <p id="error-message" class="error-message"></p>
+        </form>
+    </div>
+
+    <script>
+        const apiBaseUrl = "http://localhost:5020/api/Account";
+
+        document.getElementById("loginForm").addEventListener("submit", async function (event) {
+            event.preventDefault(); // Prevent form from refreshing
+
+            const username = document.getElementById("username").value.trim();
+            const password = document.getElementById("password").value.trim();
+            const errorMessage = document.getElementById("error-message");
+
+            // Clear previous errors
+            errorMessage.textContent = "";
+
+            if (!username || !password) {
+                errorMessage.textContent = "Username and password are required.";
+                return;
+            }
+
+            try {
+                console.log("🔄 Sending login request...");
+
+                const response = await fetch(`${apiBaseUrl}/Login`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    credentials: "include", // Ensures cookies/sessions are stored
+                    body: JSON.stringify({ username, password })
+                });
+
+                console.log("🛠️ Response Status:", response.status);
+
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    throw new Error(errorData.message || "Login failed. Please check your credentials.");
+                }
+
+                const data = await response.json();
+                console.log("✅ Login successful:", data);
+
+                // Store role in localStorage & sessionStorage
+                localStorage.setItem("userRole", data.role);
+                sessionStorage.setItem("userRole", data.role);
+
+                // Redirect user to the dashboard
+                window.location.href = "dashboard.html";
+            } catch (error) {
+                console.error("❌ Login error:", error);
+                errorMessage.textContent = error.message || "An error occurred. Please try again.";
+            }
+        });
+
+        // Check if the backend server is running before login
+        async function checkServerStatus() {
+            try {
+                console.log("🔄 Checking backend server status...");
+
+                const response = await fetch(`${apiBaseUrl}/HealthCheck`);
+
+                if (!response.ok) throw new Error("Server is unreachable.");
+
+                console.log("✅ Backend server is running.");
+            } catch (error) {
+                console.error("🚨 Backend is not running:", error);
+                document.getElementById("error-message").textContent = "Backend server is down. Please restart it.";
+            }
+        }
+
+        checkServerStatus();
+    </script>
+</body>
+</html>
