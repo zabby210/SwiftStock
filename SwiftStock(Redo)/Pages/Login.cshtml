@@ -1,0 +1,153 @@
+﻿@page
+@model AlfaMart.Pages.LoginModel
+@{
+    ViewData["Title"] = "Login";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <style>
+        * {
+            box-sizing: border-box; /* Ensure padding and border are included in width/height */
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(to bottom right, rgba(255, 0, 0, 1), rgba(255, 204, 0, 1), rgba(255, 255, 255, 1)); /* Gradient background */
+            display: flex;
+            flex-direction: column; /* Stack content vertically */
+            height: 100vh; /* Full screen height */
+        }
+
+        header {
+            background-color: red; /* Solid red header */
+            color: white;
+            padding: 1.5rem; /* Increased padding */
+            width: 100%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 10; /* Keep header on top */
+            display: flex; /* Use flexbox for layout */
+            align-items: center; /* Center items vertically */
+            justify-content: space-between; /* Space elements between ends */
+        }
+
+        .logo {
+            font-size: 2.5rem; /* Increase logo font size */
+            font-weight: bold; /* Make logo bold */
+        }
+
+        nav {
+            margin-left: auto; /* Push navigation to the right */
+        }
+
+            nav a {
+                color: white;
+                margin: 0 20px;
+                text-decoration: none;
+                font-weight: bold;
+                font-size: 1.5rem; /* Increase font size for links */
+            }
+
+        main {
+            flex: 1; /* Take remaining space */
+            display: flex;
+            justify-content: center; /* Center horizontally */
+            align-items: center; /* Center vertically */
+            padding-top: 80px; /* To avoid overlap with header */
+        }
+
+        .login-container {
+            background: white;
+            padding: 60px; /* Increased padding for comfort */
+            border-radius: 10px; /* More rounded corners */
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.2); /* More prominent shadow */
+            width: 500px; /* Increased width for the container */
+            max-width: 90%; /* Responsive maximum width */
+            margin: 0 auto; /* Centers the panel horizontally */
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 30px; /* Spacing below the title */
+        }
+
+        input[type="text"], input[type="password"] {
+            width: 100%;
+            padding: 15px; /* Comfortable input padding */
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px; /* Larger font for inputs */
+        }
+
+        input[type="submit"] {
+            width: 100%;
+            padding: 15px; /* Increased padding */
+            background: #d3a300; /* Darker yellow shade */
+            color: white; /* White text for button */
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold; /* Make button text bold */
+            font-size: 16px; /* Larger font for button */
+        }
+
+            input[type="submit"]:hover {
+                background-color: #b89d00; /* Darker shade on hover */
+            }
+
+        .error {
+            color: red;
+            margin: 10px 0;
+            text-align: center; /* Center error message */
+        }
+    </style>
+    <script>
+        function validateForm(event) {
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            if (username === "" || password === "") {
+                event.preventDefault();
+                alert("All fields are required.");
+            }
+        }
+    </script>
+</head>
+<body>
+
+    <header>
+        <div class="logo">SwiftStock</div>
+        <nav>
+            <a href="/">Home</a>
+        </nav>
+    </header>
+
+    <main>
+        <div class="login-container">
+            <h2>Login</h2>
+            <form method="post" onsubmit="validateForm(event)">
+                <div>
+                    <label for="username">Username</label>
+                    <input type="text" id="username" name="username" required>
+                </div>
+                <div>
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" required>
+                </div>
+                <div class="error">@Model.ErrorMessage</div>
+                <div>
+                    <input type="submit" value="Login">
+                </div>
+            </form>
+        </div>
+    </main>
+
+</body>
+</html>

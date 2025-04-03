@@ -1,0 +1,144 @@
+﻿@page
+@model AlfaMart.Pages.CashierModel
+@{
+    ViewData["Title"] = "Cashier POS";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cashier POS</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            flex-direction: column; /* Arrange children in a column */
+        }
+
+        header {
+            background-color: red;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            font-size: 24px;
+        }
+
+        nav {
+            height: 100%;
+            width: 200px;
+            background-color: #f0f0f0; /* Light background for nav */
+            padding: 15px;
+            color: black;
+            position: fixed;
+            top: 60px; /* Below the header */
+            bottom: 0; /* Extend to the bottom */
+        }
+
+            nav a {
+                color: black;
+                padding: 14px 20px;
+                text-decoration: none;
+                display: block;
+                margin-bottom: 5px;
+            }
+
+                nav a:hover {
+                    background-color: yellow;
+                    color: black;
+                }
+
+        .container {
+            margin-left: 220px; /* Space for the sidebar */
+            padding: 20px;
+            flex-grow: 1; /* Allow this area to grow */
+            overflow-y: auto; /* Allow scroll if necessary */
+        }
+
+        h2 {
+            margin: 20px 0;
+        }
+
+        .card {
+            background-color: #ffffff;
+            border: 1px solid #ddd;
+            padding: 20px;
+            margin-top: 20px;
+        }
+
+        .logout-button {
+            background-color: yellow;
+            color: black;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+            margin-top: 20px;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        SwiftStock
+    </header>
+
+    <nav>
+        <h3>Cashier Panel</h3>
+        <a href="#pos" onclick="showSection('pos')">Cashier POS</a>
+        <a href="#inventory" onclick="showSection('inventory')">Inventory</a>
+        <a href="#history" onclick="showSection('history')">Transaction History</a>
+        <button class="logout-button" onclick="logout()">Logout</button>
+    </nav>
+
+    <div class="container">
+        <div id="pos" class="section">
+            <h2>Cashier POS</h2>
+            <div class="card">
+                <p>Payment processing and sales functionality will be implemented here.</p>
+            </div>
+        </div>
+
+        <div id="inventory" class="section" style="display:none;">
+            <h2>Inventory</h2>
+            <div class="card">
+                <p>View inventory here. Read-only.</p>
+            </div>
+        </div>
+
+        <div id="history" class="section" style="display:none;">
+            <h2>Transaction History</h2>
+            <div class="card">
+                <p>View transaction history here. Read-only.</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function showSection(section) {
+            // Hide all sections
+            const sections = document.querySelectorAll('.section');
+            sections.forEach(sec => {
+                sec.style.display = 'none';
+            });
+            // Show the selected section
+            document.getElementById(section).style.display = 'block';
+        }
+
+        function logout() {
+            // Logic to logout user (e.g., redirect to login page)
+            window.location.href = '/Login'; // Adjust according to your routing
+        }
+
+        // Load the POS section by default
+        document.addEventListener('DOMContentLoaded', (event) => {
+            showSection('pos');
+        });
+    </script>
+
+</body>
+</html>
