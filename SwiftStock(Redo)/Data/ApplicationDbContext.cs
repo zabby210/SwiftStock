@@ -1,7 +1,7 @@
-﻿using AlfaMart.Models; // Ensure this matches your Models namespace
+﻿using AlfaMart.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace AlfaMart.Data // Ensure this matches your project namespace
+namespace AlfaMart.Data
 {
     public class ApplicationDbContext : DbContext
     {
@@ -9,6 +9,14 @@ namespace AlfaMart.Data // Ensure this matches your project namespace
         {
         }
 
-        public DbSet<User> Users { get; set; } // Ensure User model is defined
+        public DbSet<User> Users { get; set; }
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            if (!optionsBuilder.IsConfigured)
+            {
+                optionsBuilder.UseMySQL("server=localhost;database=swiftstockdb;user=root;password=;");
+            }
+        }
     }
 }
