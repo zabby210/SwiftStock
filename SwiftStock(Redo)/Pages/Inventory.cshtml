@@ -1,0 +1,34 @@
+﻿@page
+@model AlfaMart.Pages.InventoryModel
+@{
+    ViewData["Title"] = "Inventory Management";
+}
+
+<h2>Inventory Management</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Product Name</th>
+            <th>Stock</th>
+            <th>Price</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.InventoryItems)
+        {
+            <tr>
+                <td>@item.Product_Name</td>
+                <td>@item.Stock</td>
+                <td>@item.Price</td>
+                <td>
+                    <a asp-page="/Inventory/Edit" asp-route-id="@item.Id">Edit</a> |
+                    <a asp-page="/Inventory/Delete" asp-route-id="@item.Id">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<a asp-page="/Inventory/Create" class="btn btn-primary">Add New Item</a>

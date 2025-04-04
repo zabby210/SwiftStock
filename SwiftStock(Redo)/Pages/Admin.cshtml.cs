@@ -1,12 +1,21 @@
+// File: Pages/Admin.cshtml.cs
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace AlfaMart.Pages
 {
-    public class AdminModel : PageModel // Class name must be "AdminModel"
+    public class AdminModel : PageModel
     {
         public void OnGet()
         {
-            // Logic for admin dashboard can go here.
+        }
+
+        public async Task<IActionResult> OnPostLogoutAsync()
+        {
+            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            return RedirectToPage("/Login");
         }
     }
 }

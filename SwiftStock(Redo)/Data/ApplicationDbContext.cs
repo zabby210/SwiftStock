@@ -10,6 +10,8 @@ namespace AlfaMart.Data
         }
 
         public DbSet<User> Users { get; set; }
+        public DbSet<InventoryItem> inventory { get; set; }
+
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

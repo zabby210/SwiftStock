@@ -89,6 +89,12 @@
             margin-top: 20px;
             width: 100%;
         }
+
+        iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
     </style>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
@@ -104,7 +110,9 @@
         <a href="#sales" onclick="showSection('sales')">Sales</a>
         <a href="#inventory" onclick="showSection('inventory')">Inventory</a>
         <a href="#history" onclick="showSection('history')">History</a>
-        <button class="logout-button" onclick="logout()">Logout</button>
+        <form method="post" asp-page-handler="Logout">
+            <button type="submit" class="logout-button">Logout</button>
+        </form>
     </nav>
 
     <div class="container">
@@ -120,10 +128,7 @@
 
         <div id="inventory" class="section" style="display:none;">
             <h2>Inventory Management</h2>
-            <div class="card">
-                <p>CRUD operations will be implemented here.</p>
-                <!-- Add your CRUD UI here -->
-            </div>
+            <iframe src="/Inventory"></iframe>
         </div>
 
         <div id="history" class="section" style="display:none;">
@@ -144,37 +149,6 @@
             });
             // Show the selected section
             document.getElementById(section).style.display = 'block';
-        }
-
-        function logout() {
-            // Logic to logout user (e.g., redirect to login page)
-            window.location.href = '/Login'; // Adjust according to your routing
-
-            // Generate sample charts on Sales section load
-            if (section === 'sales') {
-                const ctx = document.getElementById('salesChart').getContext('2d');
-                new Chart(ctx, {
-                    type: 'bar',
-                    data: {
-                        labels: ['January', 'February', 'March', 'April', 'May'],
-                        datasets: [{
-                            label: 'Sales Revenue',
-                            data: [1200, 1900, 3000, 5000, 2000],
-                            backgroundColor: 'rgba(255, 255, 0, 0.4)', // Yellow
-                            borderColor: 'rgba(255, 255, 0, 1)',
-                            borderWidth: 1
-                        }]
-                    },
-                    options: {
-                        scales: {
-                            y: {
-                                beginAtZero: true
-                            }
-                        }
-                    });
-            }
-        }
-
         }
 
         // Load the dashboard section by default
