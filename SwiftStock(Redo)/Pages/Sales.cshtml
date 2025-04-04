@@ -1,0 +1,46 @@
+﻿@page
+@model AlfaMart.Pages.SalesModel
+@{
+    ViewData["Title"] = "Sales";
+}
+
+<h2>Sales</h2>
+
+<canvas id="salesChart" width="400" height="200"></canvas>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        var salesData = @Html.Raw(Json.Serialize(Model.Sales.Select(s => new { s.InventoryItem.Product_Name, s.Quantity })));
+
+        // Log salesData to the console for debugging
+        console.log(salesData);
+
+        // If no sales data, provide default values
+        if (salesData.length === 0) {
+            salesData = [{ Product_Name: 'No Data', Quantity: 0 }];
+        }
+
+        var ctx = document.getElementById('salesChart').getContext('2d');
+        var chart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: salesData.map(s => s.Product_Name),
+                datasets: [{
+                    label: 'Sales Quantity',
+                    data: salesData.map(s => s.Quantity),
+                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    </script>
+}
