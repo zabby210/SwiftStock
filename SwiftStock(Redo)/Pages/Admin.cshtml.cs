@@ -1,44 +1,31 @@
-using AlfaMart.Data; // Ensure this namespace is correct
 using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace AlfaMart.Pages
 {
-    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Admin")] // Ensure only admins can access this page
     public class AdminModel : PageModel
     {
-        private readonly ApplicationDbContext _context;
-
-        public AdminModel(ApplicationDbContext context)
-        {
-            _context = context;
-        }
-
         public IActionResult OnGet()
         {
-            var username = HttpContext.Session.GetString("Username");
-            if (string.IsNullOrEmpty(username))
+            if (!User.Identity.IsAuthenticated || !User.IsInRole("Admin"))
             {
-                return new JsonResult(new { accessDenied = true, message = "You must be logged in to access this page." });
-            }
-
-            var user = _context.users.FirstOrDefault(u => u.Username == username);
-            if (user == null || user.Role != "Admin")
-            {
-                return new JsonResult(new { accessDenied = true, message = "You do not have permission to access this page." });
+                return new JsonResult(new
+                {
+                    accessDenied = true,
+                    message = "Access denied. Please log in with an admin account."
+                });
             }
 
             return Page();
         }
 
-        public async Task<IActionResult> OnPostLogoutAsync()
+        public async Task<IActionResult> OnPostLogout()
         {
-            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            await HttpContext.SignOutAsync();
             return RedirectToPage("/Login");
         }
     }
 }
-

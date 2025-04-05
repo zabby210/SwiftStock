@@ -1,9 +1,6 @@
 using AlfaMart.Data; // Ensure this namespace is correct
-using AlfaMart.Models; // Ensure this namespace is correct
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using System.Security.Cryptography;
-using System.Text;
 
 namespace AlfaMart.Pages
 {
@@ -50,10 +47,9 @@ namespace AlfaMart.Pages
                 return Page();
             }
 
-            // Hash the password
-            using (var sha256 = SHA256.Create())
+
             {
-                var hashedPassword = Convert.ToBase64String(sha256.ComputeHash(Encoding.UTF8.GetBytes(Password)));
+
 
                 // Create a new consumer
                 var consumer = new Consumer
@@ -61,14 +57,14 @@ namespace AlfaMart.Pages
                     Email = Email,
                     Name = Name,
                     Username = Username,
-                    Password = hashedPassword // Store the hashed password
+                    Password = Password // Store the hashed password
                 };
 
                 _context.consumer.Add(consumer);
                 _context.SaveChanges();
             }
 
-            TempData["Success"] = "true"; // Set success flag
+
             return RedirectToPage("/Login");
         }
     }
