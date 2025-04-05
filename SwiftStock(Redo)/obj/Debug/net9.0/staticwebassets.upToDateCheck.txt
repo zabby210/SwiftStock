@@ -1,5 +1,6 @@
 C:\Users\athen\source\repos\zabby210\SwiftStock\SwiftStock(Redo)\wwwroot\lib\bootstrap\dist\js\bootstrap.bundle.min.js
 C:\Users\athen\source\repos\zabby210\SwiftStock\SwiftStock(Redo)\wwwroot\favicon.ico
+C:\Users\athen\source\repos\zabby210\SwiftStock\SwiftStock(Redo)\wwwroot\css\style.css
 C:\Users\athen\source\repos\zabby210\SwiftStock\SwiftStock(Redo)\wwwroot\lib\bootstrap\dist\css\bootstrap-utilities.rtl.css.map
 C:\Users\athen\source\repos\zabby210\SwiftStock\SwiftStock(Redo)\wwwroot\lib\bootstrap\dist\css\bootstrap-grid.min.css
 C:\Users\athen\source\repos\zabby210\SwiftStock\SwiftStock(Redo)\wwwroot\lib\bootstrap\dist\js\bootstrap.bundle.js.map
@@ -50,16 +51,15 @@ C:\Users\athen\source\repos\zabby210\SwiftStock\SwiftStock(Redo)\wwwroot\lib\boo
 C:\Users\athen\source\repos\zabby210\SwiftStock\SwiftStock(Redo)\wwwroot\lib\bootstrap\dist\css\bootstrap.min.css.map
 C:\Users\athen\source\repos\zabby210\SwiftStock\SwiftStock(Redo)\wwwroot\lib\bootstrap\dist\css\bootstrap-grid.css.map
 C:\Users\athen\source\repos\zabby210\SwiftStock\SwiftStock(Redo)\wwwroot\lib\bootstrap\dist\css\bootstrap-reboot.rtl.min.css.map
-C:\Users\athen\source\repos\zabby210\SwiftStock\SwiftStock(Redo)\wwwroot\css\main.css
 C:\Users\athen\source\repos\zabby210\SwiftStock\SwiftStock(Redo)\wwwroot\lib\bootstrap\dist\css\bootstrap-reboot.rtl.css.map
-C:\Users\athen\source\repos\zabby210\SwiftStock\SwiftStock(Redo)\wwwroot\css\styles.css
+C:\Users\athen\source\repos\zabby210\SwiftStock\SwiftStock(Redo)\wwwroot\css\tailwind.css
 C:\Users\athen\source\repos\zabby210\SwiftStock\SwiftStock(Redo)\wwwroot\lib\bootstrap\dist\js\bootstrap.min.js
 C:\Users\athen\source\repos\zabby210\SwiftStock\SwiftStock(Redo)\wwwroot\lib\bootstrap\dist\js\bootstrap.esm.min.js.map
 C:\Users\athen\source\repos\zabby210\SwiftStock\SwiftStock(Redo)\wwwroot\lib\bootstrap\dist\js\bootstrap.esm.js
 C:\Users\athen\source\repos\zabby210\SwiftStock\SwiftStock(Redo)\wwwroot\lib\bootstrap\dist\css\bootstrap-utilities.rtl.min.css
 C:\Users\athen\source\repos\zabby210\SwiftStock\SwiftStock(Redo)\wwwroot\lib\bootstrap\dist\css\bootstrap-reboot.css.map
-wwwroot\css\main.css
-wwwroot\css\styles.css
+wwwroot\css\style.css
+wwwroot\css\tailwind.css
 wwwroot\favicon.ico
 wwwroot\js\site.js
 wwwroot\lib\bootstrap\dist\css\bootstrap.css
