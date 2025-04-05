@@ -72,9 +72,14 @@
                 <button class="w-full bg-white/10 hover:bg-white/20 text-white py-2 px-4 rounded-lg flex items-center justify-center transition">
                     <i class="fab fa-google mr-2"></i> Login with Google
                 </button>
-                <button class="w-full bg-white/10 hover:bg-white/20 text-white py-2 px-4 rounded-lg flex items-center justify-center transition">
-                    <i class="fab fa-github mr-2"></i> Login with GitHub
-                </button>
+                <a href="/Register" class="w-full bg-white/10 hover:bg-white/20 text-white py-2 px-4 rounded-lg flex items-center justify-center transition">
+                    <i class="fab fa-facebook mr-2"></i> Facebook
+                </a>
+            </div>
+
+            <!-- Sign Up Link -->
+            <div class="text-center mt-4">
+                <a href="/Register" class="hover:underline hover:text-yellow-300">Don't have an account? Sign up</a>
             </div>
         </form>
     </div>
@@ -82,8 +87,8 @@
 
 <script>
     function validateForm(event) {
-        const username = document.getElementById('username').value;
-        const password = document.getElementById('password').value;
+        const username = document.getElementById('Username').value;
+        const password = document.getElementById('Password').value;
         if (!username || !password) {
             event.preventDefault();
             alert("All fields are required.");
@@ -91,13 +96,12 @@
     }
 
     function togglePassword() {
-        const passwordInput = document.getElementById("password");
+        const passwordInput = document.getElementById("Password");
         const eyeIcon = document.getElementById("eyeIcon");
-        const isPassword = passwordInput.type === "password";
+        const isPassword = passwordInput.type === "Password";
 
-        passwordInput.type = isPassword ? "text" : "password";
+        passwordInput.type = isPassword ? "text" : "Password";
         eyeIcon.classList.toggle("fa-eye");
         eyeIcon.classList.toggle("fa-eye-slash");
     }
 </script>
-

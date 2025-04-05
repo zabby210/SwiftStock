@@ -24,10 +24,10 @@
     <div class="flex">
         <nav class="bg-gray-200 w-64 p-4">
             <h3 class="text-lg font-bold mb-4">Admin Panel</h3>
-            <a href="#dashboard" class="block py-2 px-4 mb-2 text-gray-900 hover:bg-yellow-300">Dashboard</a>
-            <a href="#sales" class="block py-2 px-4 mb-2 text-gray-900 hover:bg-yellow-300">Sales</a>
-            <a href="#inventory" class="block py-2 px-4 mb-2 text-gray-900 hover:bg-yellow-300">Inventory</a>
-            <a href="#history" class="block py-2 px-4 mb-2 text-gray-900 hover:bg-yellow-300">History</a>
+            <a href="javascript:void(0);" onclick="showSection('dashboard')" class="block py-2 px-4 mb-2 text-gray-900 hover:bg-yellow-300">Dashboard</a>
+            <a href="javascript:void(0);" onclick="showSection('sales')" class="block py-2 px-4 mb-2 text-gray-900 hover:bg-yellow-300">Sales</a>
+            <a href="javascript:void(0);" onclick="showSection('inventory')" class="block py-2 px-4 mb-2 text-gray-900 hover:bg-yellow-300">Inventory</a>
+            <a href="javascript:void(0);" onclick="showSection('history')" class="block py-2 px-4 mb-2 text-gray-900 hover:bg-yellow-300">History</a>
             <form method="post" asp-page-handler="Logout">
                 <button type="submit" class="w-full bg-yellow-500 text-black py-2 mt-4">Logout</button>
             </form>
@@ -75,7 +75,19 @@
         document.addEventListener('DOMContentLoaded', (event) => {
             showSection('dashboard');
         });
+
+        // Check for access denied response
+        fetch(window.location.href)
+            .then(response => response.json())
+            .then(data => {
+                if (data.accessDenied) {
+                    alert(data.message);
+                    window.location.href = "/Login";
+                }
+            })
+            .catch(error => console.error('Error:', error));
     </script>
 
 </body>
 </html>
+

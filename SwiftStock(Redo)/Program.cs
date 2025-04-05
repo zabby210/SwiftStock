@@ -19,6 +19,14 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
 
 builder.Services.AddAuthorization();
 
+// Add session services
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromMinutes(30);
+    options.Cookie.HttpOnly = true;
+    options.Cookie.IsEssential = true;
+});
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -36,6 +44,11 @@ app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
 
+// Use session middleware
+app.UseSession();
+
 app.MapRazorPages();
 
 app.Run();
+
+
