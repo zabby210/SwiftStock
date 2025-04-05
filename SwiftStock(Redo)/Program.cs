@@ -1,4 +1,3 @@
-// File: Program.cs
 using AlfaMart.Data;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
@@ -30,7 +29,7 @@ if (!app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-app.UseStaticFiles();
+app.UseStaticFiles(); // Ensure this line is present
 
 app.UseRouting();
 

@@ -1,0 +1,21 @@
+{
+  "name": "swiftstock(redo)",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "css:build": "npx tailwindcss -i ./wwwroot/css/main.css -o ./wwwroot/css/styles.css --minify"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "eslint": "^9.24.0",
+    "tailwindcss": "^4.1.3"
+  },
+  "dependencies": {
+    "@tailwindcss/cli": "^4.1.3",
+    "@tailwindcss/postcss": "^4.1.3",
+    "postcss": "^8.5.3"
+  }
+}

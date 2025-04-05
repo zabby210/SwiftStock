@@ -10,132 +10,52 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Dashboard</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            flex-direction: column; /* Arrange children in a column */
-            height: 100vh; /* Full viewport height */
-        }
-
-        header {
-            background-color: red;
-            color: white;
-            padding: 20px;
-            text-align: center;
-            font-size: 24px;
-            flex: 0 0 60px; /* Fixed height for header */
-        }
-
-        nav {
-            height: calc(100% - 60px); /* Fill remaining height below header */
-            width: 200px;
-            background-color: #f0f0f0; /* Light background for nav */
-            padding: 15px;
-            color: black;
-            position: fixed;
-            top: 60px; /* Below the header */
-            bottom: 0; /* Extend to the bottom */
-        }
-
-            nav a {
-                color: black;
-                padding: 14px 20px;
-                text-decoration: none;
-                display: block;
-                margin-bottom: 5px;
-            }
-
-                nav a:hover {
-                    background-color: yellow;
-                    color: black;
-                }
-
-        .container {
-            margin-left: 220px; /* Space for the sidebar */
-            padding: 20px;
-            flex-grow: 1; /* Allow this area to grow */
-            overflow-y: auto; /* Allow scroll if necessary */
-            transition: margin-left 0.3s; /* Smooth transition for responsiveness */
-        }
-
-        h2 {
-            margin: 20px 0;
-        }
-
-        .chart {
-            width: 100%;
-            height: 400px;
-            background-color: #f4f4f4; /* Placeholder for charts */
-            border: 1px solid #ccc;
-            margin-bottom: 20px;
-        }
-
-        .card {
-            background-color: #ffffff;
-            border: 1px solid #ddd;
-            padding: 20px;
-            margin-top: 20px;
-        }
-
-        .logout-button {
-            background-color: yellow;
-            color: black;
-            border: none;
-            padding: 10px;
-            cursor: pointer;
-            margin-top: 20px;
-            width: 100%;
-        }
-
-        iframe {
-            width: 100%;
-            height: 100%;
-            border: none;
-        }
-    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="~/css/main.css" rel="stylesheet" />
+    <link href="~/css/styles.css" rel="stylesheet" />
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
-<body>
+<body class="bg-gray-100 text-gray-900">
 
-    <header>
+    <header class="bg-red-600 text-white p-4 text-center text-2xl">
         SwiftStock
     </header>
 
-    <nav>
-        <h3>Admin Panel</h3>
-        <a href="#dashboard" onclick="showSection('dashboard')">Dashboard</a>
-        <a href="#sales" onclick="showSection('sales')">Sales</a>
-        <a href="#inventory" onclick="showSection('inventory')">Inventory</a>
-        <a href="#history" onclick="showSection('history')">History</a>
-        <form method="post" asp-page-handler="Logout">
-            <button type="submit" class="logout-button">Logout</button>
-        </form>
-    </nav>
+    <div class="flex">
+        <nav class="bg-gray-200 w-64 p-4">
+            <h3 class="text-lg font-bold mb-4">Admin Panel</h3>
+            <a href="#dashboard" class="block py-2 px-4 mb-2 text-gray-900 hover:bg-yellow-300">Dashboard</a>
+            <a href="#sales" class="block py-2 px-4 mb-2 text-gray-900 hover:bg-yellow-300">Sales</a>
+            <a href="#inventory" class="block py-2 px-4 mb-2 text-gray-900 hover:bg-yellow-300">Inventory</a>
+            <a href="#history" class="block py-2 px-4 mb-2 text-gray-900 hover:bg-yellow-300">History</a>
+            <form method="post" asp-page-handler="Logout">
+                <button type="submit" class="w-full bg-yellow-500 text-black py-2 mt-4">Logout</button>
+            </form>
+        </nav>
 
-    <div class="container">
-        <div id="dashboard" class="section">
-            <h2>Dashboard</h2>
-            <div class="chart" id="dashboardChart"></div>
-        </div>
+        <div class="flex-grow p-8">
+            <div id="dashboard" class="section">
+                <h2 class="text-2xl mb-4">Dashboard</h2>
+                <div class="bg-white p-4 rounded shadow-md">
+                    <div class="chart" id="dashboardChart"></div>
+                </div>
+            </div>
 
-        <div id="sales" class="section" style="display:none;">
-            <h2>Sales</h2>
-            <a asp-page="/Sales"></a>
-        </div>
+            <div id="sales" class="section hidden">
+                <h2 class="text-2xl mb-4">Sales</h2>
+                <a asp-page="/Sales" class="text-blue-500 hover:underline">View Sales</a>
+            </div>
 
-        <div id="inventory" class="section" style="display:none;">
-            <h2>Inventory Management</h2>
-            <iframe src="/Inventory"></iframe>
-        </div>
+            <div id="inventory" class="section hidden">
+                <h2 class="text-2xl mb-4">Inventory Management</h2>
+                <iframe src="/Inventory" class="w-full h-96 border rounded"></iframe>
+            </div>
 
-        <div id="history" class="section" style="display:none;">
-            <h2>Transaction History</h2>
-            <div class="card">
-                <p>Transaction data will be displayed here.</p>
-                <!-- Add your history logic here -->
+            <div id="history" class="section hidden">
+                <h2 class="text-2xl mb-4">Transaction History</h2>
+                <div class="bg-white p-4 rounded shadow-md">
+                    <p>Transaction data will be displayed here.</p>
+                </div>
             </div>
         </div>
     </div>
@@ -145,10 +65,10 @@
             // Hide all sections
             const sections = document.querySelectorAll('.section');
             sections.forEach(sec => {
-                sec.style.display = 'none';
+                sec.classList.add('hidden');
             });
             // Show the selected section
-            document.getElementById(section).style.display = 'block';
+            document.getElementById(section).classList.remove('hidden');
         }
 
         // Load the dashboard section by default

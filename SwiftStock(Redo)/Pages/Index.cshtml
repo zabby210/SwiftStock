@@ -6,120 +6,49 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Alfa Mart</title>
+    <title>SwiftStock</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="~/css/main.css" rel="stylesheet" />
+    <link href="~/css/styles.css" rel="stylesheet" />
     <style>
-        * {
-            box-sizing: border-box; /* Ensure padding and border are included in width/height */
-        }
-
-        body {
-            margin: 0;
-            padding: 0;
-            min-height: 100vh; /* Full screen height */
-            background: linear-gradient(to bottom right, rgba(255, 0, 0, 1), rgba(255, 204, 0, 1), rgba(255, 255, 255, 1)); /* Gradient background */
-            font-family: Arial, sans-serif;
-            color: #333;
-            display: flex;
-            flex-direction: column;
-            justify-content: center; /* Center content vertically */
-            align-items: center; /* Center content horizontally */
-            text-align: center; /* Center text */
-        }
-
-        header {
-            background-color: red; /* Solid red header */
-            color: white;
-            padding: 1.5rem; /* Increased padding */
-            width: 100%;
+        .splash-screen {
             position: fixed;
             top: 0;
             left: 0;
-            z-index: 10; /* Keep header on top */
-            display: flex; /* Use flexbox for layout */
-            align-items: center; /* Center items vertically */
-            justify-content: space-between; /* Space elements between ends */
-        }
-
-        .logo {
-            font-size: 2.5rem; /* Increase logo font size */
-            font-weight: bold; /* Make logo bold */
-        }
-
-        nav {
-            margin-left: auto; /* Push navigation to the right */
-        }
-
-            nav a {
-                color: white;
-                margin: 0 20px;
-                text-decoration: none;
-                font-weight: bold;
-                font-size: 1.5rem; /* Increase font size for links */
-                transition: color 0.3s;
-            }
-
-                nav a:hover {
-                    color: yellow; /* Change color on hover */
-                }
-
-        main {
-            flex: 1; /* Take remaining space */
-            display: flex;
-            flex-direction: column;
-            justify-content: center; /* Center content */
-            align-items: center; /* Center content */
-            padding: 2rem; /* Add padding */
-            margin-top: 80px; /* To avoid overlap with header */
-        }
-
-        .login-button {
-            background-color: red; /* Darker yellow shade */
-            color: white; /* Change text color to white */
-            padding: 15px 30px; /* Increased padding for button */
-            border: none;
-            border-radius: 5px;
-            font-weight: bold;
-            font-size: 1.5rem; /* Increase button font size */
-            cursor: pointer;
-            transition: background-color 0.3s;
-            text-decoration: none; /* Remove underline */
-            display: inline-block; /* Make it an inline-block element */
-        }
-
-            .login-button:hover {
-                background-color: #b89d00; /* Darker shade on hover */
-            }
-
-        footer {
-            margin-top: 2rem;
-            background-color: rgba(255, 0, 0, 0.8); /* Semi-transparent red */
-            color: white;
-            text-align: center;
-            padding: 1rem 0;
-            position: fixed; /* Position it at the bottom */
-            bottom: 0;
-            left: 0;
             width: 100%;
-            z-index: 10; /* Keep footer on top */
+            height: 100%;
+            background-color: #000;
+            color: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 2rem;
+            z-index: 9999;
         }
     </style>
 </head>
-<body>
+<body class="bg-gray-900 text-white">
 
-    <header>
-        <div class="logo">SwiftStock</div>
-        <nav>
-            <a href="/">Home</a>
-        </nav>
+    <div class="splash-screen" id="splashScreen">
+        Welcome to SWIFTSTOCK!
+    </div>
+
+    <header class="flex justify-between items-center p-4 bg-red-600">
+        <div class="logo text-2xl font-bold">SwiftStock</div>
     </header>
 
-    <main>
-        <h2 style="font-size: 3rem; color: white;">Welcome to Alfa Mart</h2> <!-- Set welcome text to white -->
-        <a class="login-button" href="/Login">Login</a>
+    <main class="flex flex-col items-center justify-center h-screen">
+        <a class="login-button bg-yellow-500 text-black py-2 px-4 rounded hover:bg-yellow-600" href="/Login">Login</a>
     </main>
 
-
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            setTimeout(function() {
+                document.getElementById('splashScreen').style.display = 'none';
+            }, 2000); // Splash screen duration in milliseconds
+        });
+    </script>
 
 </body>
 </html>
+

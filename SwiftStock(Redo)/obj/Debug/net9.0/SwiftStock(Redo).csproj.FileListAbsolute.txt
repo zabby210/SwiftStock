@@ -142,7 +142,6 @@ C:\Users\athen\source\repos\zabby210\SwiftStock\SwiftStock(Redo)\obj\Debug\net9.
 C:\Users\athen\source\repos\zabby210\SwiftStock\SwiftStock(Redo)\obj\Debug\net9.0\scopedcss\Pages\Shared\_Layout.cshtml.rz.scp.css
 C:\Users\athen\source\repos\zabby210\SwiftStock\SwiftStock(Redo)\obj\Debug\net9.0\scopedcss\bundle\SwiftStock(Redo).styles.css
 C:\Users\athen\source\repos\zabby210\SwiftStock\SwiftStock(Redo)\obj\Debug\net9.0\scopedcss\projectbundle\SwiftStock(Redo).bundle.scp.css
-C:\Users\athen\source\repos\zabby210\SwiftStock\SwiftStock(Redo)\obj\Debug\net9.0\compressed\rtd7mmmgj2-c2tiyv64ts.gz
 C:\Users\athen\source\repos\zabby210\SwiftStock\SwiftStock(Redo)\obj\Debug\net9.0\compressed\0yrqahfry9-61n19gt1b8.gz
 C:\Users\athen\source\repos\zabby210\SwiftStock\SwiftStock(Redo)\obj\Debug\net9.0\compressed\jgxv41ku8s-xtxxf3hu2r.gz
 C:\Users\athen\source\repos\zabby210\SwiftStock\SwiftStock(Redo)\obj\Debug\net9.0\compressed\n5jlk60agd-agp80tu62r.gz
@@ -233,3 +232,7 @@ C:\Users\athen\source\repos\zabby210\SwiftStock\SwiftStock(Redo)\bin\Debug\net9.
 C:\Users\athen\source\repos\zabby210\SwiftStock\SwiftStock(Redo)\bin\Debug\net9.0\runtimes\win-x64\native\krb5_64.dll
 C:\Users\athen\source\repos\zabby210\SwiftStock\SwiftStock(Redo)\bin\Debug\net9.0\runtimes\win-x64\native\krbcc64.dll
 C:\Users\athen\source\repos\zabby210\SwiftStock\SwiftStock(Redo)\bin\Debug\net9.0\runtimes\win\lib\net8.0\System.Windows.Extensions.dll
+C:\Users\athen\source\repos\zabby210\SwiftStock\SwiftStock(Redo)\bin\Debug\net9.0\package-lock.json
+C:\Users\athen\source\repos\zabby210\SwiftStock\SwiftStock(Redo)\bin\Debug\net9.0\package.json
+C:\Users\athen\source\repos\zabby210\SwiftStock\SwiftStock(Redo)\obj\Debug\net9.0\compressed\tiuerbk6ub-4bilouwztx.gz
+C:\Users\athen\source\repos\zabby210\SwiftStock\SwiftStock(Redo)\obj\Debug\net9.0\compressed\uvkfqa065j-g9fe4vbhtu.gz
