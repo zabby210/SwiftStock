@@ -56,18 +56,18 @@
     <div class="glass-card rounded-xl overflow-hidden">
         <div class="overflow-x-auto">
             <table class="w-full">
-                <thead>
+            <thead>
                     <tr class="text-left bg-[#0f1117]">
                         <th class="px-6 py-4 text-sm font-semibold text-slate-400">ID</th>
                         <th class="px-6 py-4 text-sm font-semibold text-slate-400">Product Name</th>
                         <th class="px-6 py-4 text-sm font-semibold text-slate-400">Price</th>
                         <th class="px-6 py-4 text-sm font-semibold text-slate-400">Stock</th>
                         <th class="px-6 py-4 text-sm font-semibold text-slate-400">Actions</th>
-                    </tr>
-                </thead>
+                </tr>
+            </thead>
                 <tbody class="divide-y divide-slate-800">
-                    @foreach (var item in Model.InventoryItems)
-                    {
+                @foreach (var item in Model.InventoryItems)
+                {
                         <tr class="hover:bg-[#0f1117]/50">
                             <td class="px-6 py-4 text-white">#@item.Id</td>
                             <td class="px-6 py-4 text-white">@item.Product_Name</td>
@@ -91,11 +91,11 @@
                                         <i class="material-icons">delete</i>
                                     </button>
                                 </div>
-                            </td>
-                        </tr>
-                    }
-                </tbody>
-            </table>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
         </div>
     </div>
 </div>
