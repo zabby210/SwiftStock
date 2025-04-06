@@ -165,7 +165,6 @@ function openAddModal() {
 }
 
 function openEditModal(product) {
-    console.log('Opening edit modal for product:', product); // For debugging
     if (!product) {
         console.error('No product data provided to openEditModal');
         return;
@@ -173,13 +172,6 @@ function openEditModal(product) {
     
     isEditing = true;
     document.getElementById('modal-title').textContent = 'Edit Product';
-    
-    // Add debugging for each field
-    console.log('Setting ID:', product.id);
-    console.log('Setting Name:', product.product_Name);
-    console.log('Setting Price:', product.price);
-    console.log('Setting Stock:', product.stock);
-    
     document.getElementById('product-id').value = product.id;
     document.getElementById('product-name').value = product.product_Name;
     document.getElementById('product-price').value = product.price;
@@ -192,68 +184,74 @@ function showModal() {
     const modal = document.getElementById('product-modal');
     modal.classList.remove('hidden');
     modal.classList.add('flex');
-    stopAutoRefresh();
+    stopAutoRefresh(); // Stop refresh when modal is open
 }
 
 function closeModal() {
     const modal = document.getElementById('product-modal');
     modal.classList.add('hidden');
     modal.classList.remove('flex');
-    startAutoRefresh();
+    document.getElementById('product-form').reset();
+    startAutoRefresh(); // Resume refresh when modal is closed
 }
 
-function setLoading(button, isLoading) {
-    if (isLoading) {
-        button.disabled = true;
-        button.classList.add('opacity-75', 'cursor-not-allowed');
-        const icon = button.querySelector('i');
-        if (icon) {
-            icon.textContent = 'hourglass_empty';
-        }
-    } else {
-        button.disabled = false;
-        button.classList.remove('opacity-75', 'cursor-not-allowed');
-        const icon = button.querySelector('i');
-        if (icon && icon.textContent === 'hourglass_empty') {
-            icon.textContent = button.dataset.originalIcon || 'check';
-        }
-    }
-}
-
+// Updated form submission handler
 document.getElementById('product-form').addEventListener('submit', async (e) => {
     e.preventDefault();
     
+    const submitButton = e.target.querySelector('button[type="submit"]');
+    submitButton.disabled = true;
+    
     const productData = {
         id: isEditing ? parseInt(document.getElementById('product-id').value) : 0,
-        product_Name: document.getElementById('product-name').value,
+        product_Name: document.getElementById('product-name').value.trim(),
         price: parseFloat(document.getElementById('product-price').value),
         stock: parseInt(document.getElementById('product-stock').value)
     };
+    
+    console.log('Submitting product data:', productData); // Add debugging
     
     try {
         const url = isEditing ? '/api/inventory/update' : '/api/inventory/add';
         const method = isEditing ? 'PUT' : 'POST';
         
+        const token = document.querySelector('input[name="__RequestVerificationToken"]').value;
+        console.log('Using token:', token); // Add debugging
+        
         const response = await fetch(url, {
             method: method,
             headers: {
                 'Content-Type': 'application/json',
-                'RequestVerificationToken': document.querySelector('input[name="__RequestVerificationToken"]').value
+                'RequestVerificationToken': token
             },
             body: JSON.stringify(productData)
         });
         
+        console.log('Response status:', response.status); // Add debugging
+        
         if (!response.ok) {
-            const error = await response.text();
-            throw new Error(error || 'Failed to save product');
+            const errorText = await response.text();
+            console.error('Server error:', errorText); // Add debugging
+            throw new Error(errorText || 'Failed to save product');
         }
         
+        const result = await response.json(); // Try to get response data
+        console.log('Success response:', result); // Add debugging
+        
         showNotification(isEditing ? 'Product updated successfully' : 'Product added successfully', 'success');
+        document.getElementById('product-form').reset(); // Reset form
         closeModal();
-        await refreshTable();
+        
+        // Wait a moment before refreshing to ensure server-side processing is complete
+        setTimeout(async () => {
+            await refreshTable();
+            submitButton.disabled = false;
+        }, 500);
         
     } catch (error) {
+        console.error('Error details:', error); // Add debugging
         showNotification(error.message, 'error');
+        submitButton.disabled = false;
     }
 });
 
@@ -286,16 +284,21 @@ async function refreshTable() {
         const searchTerm = document.getElementById('search-input').value;
         const sortBy = document.getElementById('sort-by').value;
         
+        console.log('Refreshing table...'); // Add debugging
+        
         const response = await fetch(`/api/inventory?search=${encodeURIComponent(searchTerm)}&sort=${encodeURIComponent(sortBy)}`);
         if (!response.ok) {
+            console.error('Refresh failed:', response.status); // Add debugging
             throw new Error('Failed to fetch inventory data');
         }
         
         const products = await response.json();
+        console.log('Fetched products:', products); // Add debugging
         
         const tbody = document.querySelector('tbody');
         if (!tbody) {
-            throw new Error('Table body not found');
+            console.error('Table body not found'); // Add debugging
+            return;
         }
         
         tbody.innerHTML = products.map(item => `
@@ -315,11 +318,10 @@ async function refreshTable() {
                     <div class="flex space-x-3">
                         <button type="button"
                                 onclick='openEditModal({"id": ${item.id}, "product_Name": "${escapeHtml(item.product_Name)}", "price": ${item.price}, "stock": ${item.stock}})'
-                                class="text-blue-500 hover:text-blue-400 p-2 rounded-lg transition-colors duration-300">
+                                class="text-blue-500 hover:text-blue-400">
                             <i class="material-icons">edit</i>
                         </button>
-                        <button onclick="deleteProduct(${item.id})" 
-                                class="text-red-500 hover:text-red-400 p-2 rounded-lg transition-colors duration-300">
+                        <button onclick="deleteProduct(${item.id})" class="text-red-500 hover:text-red-400">
                             <i class="material-icons">delete</i>
                         </button>
                     </div>
@@ -327,15 +329,35 @@ async function refreshTable() {
             </tr>
         `).join('');
         
+        console.log('Table refreshed successfully'); // Add debugging
+        
     } catch (error) {
+        console.error('Refresh error:', error); // Add debugging
         showNotification('Error refreshing table: ' + error.message, 'error');
     }
 }
 
-// Search input handler
-document.getElementById('search-input').addEventListener('input', debounce(refreshTable, 300));
-document.getElementById('sort-by').addEventListener('change', refreshTable);
+// Auto-refresh functions
+function startAutoRefresh() {
+    if (!refreshInterval) {
+        refreshInterval = setInterval(refreshTable, 5000); // Refresh every 5 seconds
+    }
+}
 
+function stopAutoRefresh() {
+    if (refreshInterval) {
+        clearInterval(refreshInterval);
+        refreshInterval = null;
+    }
+}
+
+// Initialize auto-refresh when the page loads
+document.addEventListener('DOMContentLoaded', () => {
+    refreshTable();
+    startAutoRefresh();
+});
+
+// Keep your existing utility functions
 function showNotification(message, type) {
     const notificationDiv = document.createElement('div');
     notificationDiv.className = `fixed top-4 right-4 p-4 rounded-lg shadow-lg ${
@@ -362,15 +384,6 @@ function debounce(func, wait) {
     };
 }
 
-function exportInventory() {
-    try {
-        window.location.href = '/api/inventory/export';
-    } catch (error) {
-        showNotification('Error exporting inventory: ' + error.message, 'error');
-    }
-}
-
-// Add HTML escaping function for security
 function escapeHtml(unsafe) {
     return unsafe
         .replace(/&/g, "&amp;")
@@ -380,18 +393,16 @@ function escapeHtml(unsafe) {
         .replace(/'/g, "&#039;");
 }
 
-function startAutoRefresh() {
-    refreshInterval = setInterval(refreshTable, 5000);
-}
+// Search and sort handlers
+document.getElementById('search-input').addEventListener('input', debounce(refreshTable, 300));
+document.getElementById('sort-by').addEventListener('change', refreshTable);
 
-function stopAutoRefresh() {
-    if (refreshInterval) {
-        clearInterval(refreshInterval);
+function exportInventory() {
+    try {
+        window.location.href = '/api/inventory/export';
+    } catch (error) {
+        showNotification('Error exporting inventory: ' + error.message, 'error');
     }
 }
-
-document.addEventListener('DOMContentLoaded', () => {
-    startAutoRefresh();
-});
 </script>
 }
