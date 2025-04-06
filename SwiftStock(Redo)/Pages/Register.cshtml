@@ -1,93 +1,222 @@
 ﻿@page
 @model AlfaMart.Pages.RegisterModel
 @{
-    ViewData["Title"] = "Register";
+    ViewData["Title"] = "Register - SwiftStock";
 }
 
-<div class="min-h-screen flex items-center justify-center bg-gradient-to-br from-red-600 via-yellow-400 to-blue-600 text-white px-4">
-    <div class="w-full max-w-2xl bg-transparent backdrop-blur-lg rounded-3xl p-10 text-white flex flex-col items-center">
-        <!-- Logo -->
-        <div class="mb-6">
-            <i class="fas fa-user-plus fa-3x text-yellow-300 drop-shadow-lg"></i>
+<div class="min-h-screen flex items-center justify-center px-4 py-12 bg-[#0f1117]">
+    <div class="w-full max-w-md">
+        <!-- Branding -->
+        <div class="text-center mb-8">
+            <img src="/images/alfamart-logo.png" alt="Alfamart" class="h-12 mx-auto mb-4">
+            <h1 class="text-2xl font-bold text-white">Create an Account</h1>
+            <p class="text-slate-400 mt-2">Join SwiftStock to manage your Alfamart store</p>
         </div>
 
-        <!-- Title & Subtitle -->
-        <h2 class="text-4xl font-extrabold text-center mb-2 drop-shadow-lg">Create an Account</h2>
-        <p class="text-white/80 text-center text-sm mb-8">Please fill in the details to create an account</p>
-
-        <form method="post" onsubmit="validateForm(event)" class="w-full space-y-6">
-            <!-- Email -->
+        <form method="post" id="register-form" class="space-y-6" novalidate>
+            <!-- Email Field -->
             <div>
-                <label for="email" class="block text-sm font-medium">Email</label>
-                <input type="email" id="email" name="email"
-                       class="mt-1 w-full px-4 py-3 rounded-lg bg-white/20 text-white placeholder-white/60 border border-white/30 focus:outline-none focus:ring-2 focus:ring-yellow-300 focus:border-transparent transition"
-                       placeholder="Enter your email" required>
+                <label for="email" class="block text-sm font-medium text-slate-300 mb-2">
+                    Email
+                    <span class="text-[#E31837]">*</span>
+                </label>
+                <div class="relative">
+                    <i class="fas fa-envelope absolute left-4 top-3.5 text-slate-400"></i>
+                    <input type="email" 
+                           id="email" 
+                           name="email"
+                           required
+                           class="w-full px-11 py-3 rounded-lg bg-[#0f1117] text-white placeholder-slate-500 border border-slate-800 focus:outline-none focus:border-[#E31837] focus:ring-1 focus:ring-[#E31837] transition-all duration-300"
+                           placeholder="Enter your email">
+                    <div class="hidden text-[#E31837] text-sm mt-1" id="email-error" role="alert"></div>
+                </div>
             </div>
 
-            <!-- Name -->
+            <!-- Name Field -->
             <div>
-                <label for="name" class="block text-sm font-medium">Name</label>
-                <input type="text" id="name" name="name"
-                       class="mt-1 w-full px-4 py-3 rounded-lg bg-white/20 text-white placeholder-white/60 border border-white/30 focus:outline-none focus:ring-2 focus:ring-yellow-300 focus:border-transparent transition"
-                       placeholder="Enter your name" required>
+                <label for="name" class="block text-sm font-medium text-slate-300 mb-2">
+                    Name
+                    <span class="text-[#E31837]">*</span>
+                </label>
+                <div class="relative">
+                    <i class="fas fa-user absolute left-4 top-3.5 text-slate-400"></i>
+                    <input type="text" 
+                           id="name" 
+                           name="name"
+                           required
+                           class="w-full px-11 py-3 rounded-lg bg-[#0f1117] text-white placeholder-slate-500 border border-slate-800 focus:outline-none focus:border-[#E31837] focus:ring-1 focus:ring-[#E31837] transition-all duration-300"
+                           placeholder="Enter your name">
+                    <div class="hidden text-[#E31837] text-sm mt-1" id="name-error" role="alert"></div>
+                </div>
             </div>
 
-            <!-- Username -->
+            <!-- Username Field -->
             <div>
-                <label for="username" class="block text-sm font-medium">Username</label>
-                <input type="text" id="username" name="username"
-                       class="mt-1 w-full px-4 py-3 rounded-lg bg-white/20 text-white placeholder-white/60 border border-white/30 focus:outline-none focus:ring-2 focus:ring-yellow-300 focus:border-transparent transition"
-                       placeholder="Enter your username" required>
+                <label for="username" class="block text-sm font-medium text-slate-300 mb-2">
+                    Username
+                    <span class="text-[#E31837]">*</span>
+                </label>
+                <div class="relative">
+                    <i class="fas fa-user-tag absolute left-4 top-3.5 text-slate-400"></i>
+                    <input type="text" 
+                           id="username" 
+                           name="username"
+                           required
+                           class="w-full px-11 py-3 rounded-lg bg-[#0f1117] text-white placeholder-slate-500 border border-slate-800 focus:outline-none focus:border-[#E31837] focus:ring-1 focus:ring-[#E31837] transition-all duration-300"
+                           placeholder="Enter your username">
+                    <div class="hidden text-[#E31837] text-sm mt-1" id="username-error" role="alert"></div>
+                </div>
             </div>
 
-            <!-- Password -->
+            <!-- Password Field -->
             <div>
-                <label for="password" class="block text-sm font-medium">Password</label>
-                <input type="password" id="password" name="password"
-                       class="mt-1 w-full px-4 py-3 rounded-lg bg-white/20 text-white placeholder-white/60 border border-white/30 focus:outline-none focus:ring-2 focus:ring-yellow-300 focus:border-transparent transition"
-                       placeholder="Enter your password" required>
+                <label for="password" class="block text-sm font-medium text-slate-300 mb-2">
+                    Password
+                    <span class="text-[#E31837]">*</span>
+                </label>
+                <div class="relative">
+                    <i class="fas fa-lock absolute left-4 top-3.5 text-slate-400"></i>
+                    <input type="password" 
+                           id="password" 
+                           name="password"
+                           required
+                           pattern="^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$"
+                           class="w-full px-11 py-3 rounded-lg bg-[#0f1117] text-white placeholder-slate-500 border border-slate-800 focus:outline-none focus:border-[#E31837] focus:ring-1 focus:ring-[#E31837] transition-all duration-300 pr-24"
+                           placeholder="Enter your password">
+                    <button type="button" 
+                            onclick="togglePassword()"
+                            class="absolute right-4 top-3.5 text-slate-400 hover:text-white transition-colors duration-300">
+                        <i id="password-toggle-icon" class="fas fa-eye"></i>
+                    </button>
+                    <div class="hidden text-[#E31837] text-sm mt-1" id="password-error" role="alert"></div>
+                    
+                    <!-- Password Requirements -->
+                    <div class="mt-2 text-sm text-slate-400 space-y-1">
+                        <p class="flex items-center gap-1">
+                            <i id="length-check" class="fas fa-circle text-xs"></i>
+                            Minimum 8 characters
+                        </p>
+                        <p class="flex items-center gap-1">
+                            <i id="letter-check" class="fas fa-circle text-xs"></i>
+                            Must contain letters
+                        </p>
+                        <p class="flex items-center gap-1">
+                            <i id="number-check" class="fas fa-circle text-xs"></i>
+                            Must contain numbers
+                        </p>
+                    </div>
+                </div>
             </div>
 
             <!-- Error Message -->
             @if (!string.IsNullOrEmpty(Model.ErrorMessage))
             {
-                <div class="text-red-300 text-sm text-center">@Model.ErrorMessage</div>
+                <div class="p-4 rounded-lg bg-[#E31837]/10 border border-[#E31837]/20" role="alert">
+                    <div class="flex items-center text-[#E31837]">
+                        <i class="fas fa-exclamation-circle mr-2"></i>
+                        <span>@Model.ErrorMessage</span>
+                    </div>
+                </div>
             }
 
-            <!-- Success Message -->
-            @if (TempData["Success"] != null)
-            {
-                <input type="hidden" id="successFlag" value="true" />
-            }
-
-            <!-- Submit -->
-            <div>
-                <button type="submit"
-                        class="w-full bg-white/20 text-white py-3 px-4 rounded-full font-semibold hover:bg-white/30 hover:shadow-xl transition duration-300">
-                    <i class="fas fa-user-plus mr-2"></i> Register
-                </button>
-            </div>
+            <!-- Submit Button -->
+            <button type="submit"
+                    class="w-full bg-[#E31837] text-white py-3 px-4 rounded-lg font-medium 
+                           hover:bg-[#E31837]/90 transition-all duration-300
+                           disabled:opacity-50 disabled:cursor-not-allowed"
+                    id="submit-button">
+                <span class="flex items-center justify-center gap-2">
+                    <i class="fas fa-user-plus"></i>
+                    <span>Create Account</span>
+                    <!-- Loading Spinner -->
+                    <svg class="hidden animate-spin h-5 w-5" id="loading-spinner" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                </span>
+            </button>
         </form>
+
+        <!-- Sign In Link -->
+        <div class="mt-6 text-center">
+            <p class="text-slate-400">
+                Already have an account? 
+                <a href="/Login" class="text-[#E31837] hover:text-[#E31837]/80 transition-colors duration-300 font-medium">
+                    Sign in
+                </a>
+            </p>
+        </div>
+
+        <!-- Help & Support -->
+        <div class="mt-8 text-center space-y-4">
+            <p class="text-slate-400">
+                Need help? <a href="/support" class="text-[#E31837] hover:text-[#E31837]/80 transition-colors duration-300">Contact Support</a>
+            </p>
+            <p class="text-slate-400 text-sm">
+                By creating an account, you agree to our 
+                <a href="/terms" class="text-[#E31837] hover:text-[#E31837]/80 transition-colors duration-300">Terms</a> and 
+                <a href="/privacy" class="text-[#E31837] hover:text-[#E31837]/80 transition-colors duration-300">Privacy Policy</a>
+            </p>
+        </div>
     </div>
 </div>
 
+@section Scripts {
 <script>
-    function validateForm(event) {
-        const email = document.getElementById('email').value;
-        const name = document.getElementById('name').value;
-        const username = document.getElementById('username').value;
-        const password = document.getElementById('password').value;
-        if (!email || !name || !username || !password) {
-            event.preventDefault();
-            alert("All fields are required.");
-        }
-    }
+    document.addEventListener('DOMContentLoaded', function() {
+        const form = document.getElementById('register-form');
+        const submitButton = document.getElementById('submit-button');
+        const loadingSpinner = document.getElementById('loading-spinner');
+        const inputs = ['email', 'name', 'username', 'password'];
 
-    // Display success message if registration was successful
-    window.onload = function() {
-        const successFlag = document.getElementById('successFlag');
-        if (successFlag && successFlag.value === "true") {
-            alert("Account successfully created!");
+        // Form Validation
+        form.addEventListener('submit', function(e) {
+            let isValid = true;
+            
+            inputs.forEach(inputId => {
+                const input = document.getElementById(inputId);
+                const error = document.getElementById(`${inputId}-error`);
+                
+                if (!input.value) {
+                    e.preventDefault();
+                    isValid = false;
+                    error.textContent = `${inputId.charAt(0).toUpperCase() + inputId.slice(1)} is required`;
+                    error.classList.remove('hidden');
+                } else {
+                    error.classList.add('hidden');
+                }
+            });
+
+            if (isValid) {
+                // Show loading state
+                submitButton.disabled = true;
+                loadingSpinner.classList.remove('hidden');
+            }
+        });
+
+        // Clear error messages on input
+        inputs.forEach(inputId => {
+            const input = document.getElementById(inputId);
+            const error = document.getElementById(`${inputId}-error`);
+            
+            input.addEventListener('input', function() {
+                error.classList.add('hidden');
+            });
+        });
+    });
+
+    // Password Visibility Toggle
+    function togglePassword() {
+        const passwordInput = document.getElementById('password');
+        const icon = document.getElementById('password-toggle-icon');
+        
+        if (passwordInput.type === 'password') {
+            passwordInput.type = 'text';
+            icon.classList.replace('fa-eye', 'fa-eye-slash');
+        } else {
+            passwordInput.type = 'password';
+            icon.classList.replace('fa-eye-slash', 'fa-eye');
         }
     }
 </script>
+}

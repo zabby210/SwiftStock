@@ -142,6 +142,9 @@
         const submitButton = document.getElementById('submit-button');
         const loadingSpinner = document.getElementById('loading-spinner');
         const capsWarning = document.getElementById('caps-warning');
+        const privacyModal = document.getElementById('privacy-modal');
+        const privacyCheckbox = document.getElementById('privacy-checkbox');
+        let hasAcceptedPrivacy = false;
 
         // Caps Lock Detection
         document.addEventListener('keydown', function(event) {
@@ -154,37 +157,113 @@
 
         // Form Validation
         form.addEventListener('submit', function(e) {
-            if (!usernameInput.value || !passwordInput.value) {
-                e.preventDefault();
-                if (!usernameInput.value) {
-                    document.getElementById('username-error').textContent = 'Username is required';
-                    document.getElementById('username-error').classList.remove('hidden');
+            e.preventDefault(); // Always prevent default submission first
+            let isValid = true;
+            
+            // Check all required fields
+            const inputs = ['Username', 'Password'];
+            inputs.forEach(inputId => {
+                const input = document.getElementById(inputId);
+                const error = document.getElementById(`${inputId}-error`);
+                
+                if (!input.value) {
+                    isValid = false;
+                    error.textContent = `${inputId.charAt(0).toUpperCase() + inputId.slice(1)} is required`;
+                    error.classList.remove('hidden');
+                } else {
+                    error.classList.add('hidden');
                 }
-                if (!passwordInput.value) {
-                    document.getElementById('password-error').textContent = 'Password is required';
-                    document.getElementById('password-error').classList.remove('hidden');
-                }
-                return;
+            });
+
+            // Check privacy policy acceptance
+            if (!hasAcceptedPrivacy || !privacyCheckbox.checked) {
+                isValid = false;
+                showPrivacyModal();
+                return false; // Stop here if privacy not accepted
             }
 
-            // Show loading state
-            submitButton.disabled = true;
-            loadingSpinner.classList.remove('hidden');
+            // If everything is valid, proceed with form submission
+            if (isValid) {
+                submitButton.disabled = true;
+                loadingSpinner.classList.remove('hidden');
+                form.submit(); // Actually submit the form
+            }
         });
-    });
 
-    // Password Visibility Toggle
-    function togglePassword() {
-        const passwordInput = document.getElementById('Password');
-        const icon = document.getElementById('password-toggle-icon');
-        
-        if (passwordInput.type === 'password') {
-            passwordInput.type = 'text';
-            icon.classList.replace('fa-eye', 'fa-eye-slash');
-        } else {
-            passwordInput.type = 'password';
-            icon.classList.replace('fa-eye-slash', 'fa-eye');
+        // Clear error messages on input
+        const inputs = ['Username', 'Password'];
+        inputs.forEach(inputId => {
+            const input = document.getElementById(inputId);
+            const error = document.getElementById(`${inputId}-error`);
+            
+            input.addEventListener('input', function() {
+                error.classList.add('hidden');
+            });
+        });
+
+        // Privacy Modal Functions
+        function showPrivacyModal() {
+            privacyModal.classList.remove('hidden');
+            privacyModal.classList.add('flex');
+            document.body.style.overflow = 'hidden';
         }
-    }
+
+        function closePrivacyModal() {
+            privacyModal.classList.add('hidden');
+            privacyModal.classList.remove('flex');
+            document.body.style.overflow = '';
+            if (!hasAcceptedPrivacy) {
+                privacyCheckbox.checked = false;
+            }
+        }
+
+        function acceptPrivacyPolicy() {
+            hasAcceptedPrivacy = true;
+            privacyCheckbox.checked = true;
+            closePrivacyModal();
+        }
+
+        // Privacy checkbox event listener
+        privacyCheckbox.addEventListener('change', function(e) {
+            if (this.checked && !hasAcceptedPrivacy) {
+                e.preventDefault();
+                this.checked = false;
+                showPrivacyModal();
+            }
+        });
+
+        // Make functions available globally
+        window.showPrivacyModal = showPrivacyModal;
+        window.closePrivacyModal = closePrivacyModal;
+        window.acceptPrivacyPolicy = acceptPrivacyPolicy;
+
+        // Close modal when clicking outside
+        privacyModal.addEventListener('click', function(e) {
+            if (e.target === privacyModal) {
+                closePrivacyModal();
+            }
+        });
+
+        // Close modal on escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && !privacyModal.classList.contains('hidden')) {
+                closePrivacyModal();
+            }
+        });
+
+        // Password Visibility Toggle
+        function togglePassword() {
+            const passwordInput = document.getElementById('Password');
+            const icon = document.getElementById('password-toggle-icon');
+            
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                icon.classList.replace('fa-eye', 'fa-eye-slash');
+            } else {
+                passwordInput.type = 'password';
+                icon.classList.replace('fa-eye-slash', 'fa-eye');
+            }
+        }
+    });
 </script>
 }
