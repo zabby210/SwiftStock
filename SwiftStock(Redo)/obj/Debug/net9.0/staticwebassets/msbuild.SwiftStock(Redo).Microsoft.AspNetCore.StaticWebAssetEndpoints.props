@@ -1,16 +1,16 @@
 ﻿<Project>
   <ItemGroup>
+    <StaticWebAssetEndpoint Include="_content/SwiftStock(Redo)/css/style.7gygwx305l.css">
+      <AssetFile>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\css\style.css'))</AssetFile>
+      <Selectors><![CDATA[[]]]></Selectors>
+      <EndpointProperties><![CDATA[[{"Name":"fingerprint","Value":"7gygwx305l"},{"Name":"integrity","Value":"sha256-Z4Y1/O82m5JilLd77NxRyOEDSq4//hRXOOctn8usxu8="},{"Name":"label","Value":"_content/SwiftStock(Redo)/css/style.css"}]]]></EndpointProperties>
+      <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"max-age=31536000, immutable"},{"Name":"Content-Length","Value":"52900"},{"Name":"Content-Type","Value":"text/css"},{"Name":"ETag","Value":"\u0022Z4Y1/O82m5JilLd77NxRyOEDSq4//hRXOOctn8usxu8=\u0022"},{"Name":"Last-Modified","Value":"Sun, 06 Apr 2025 10:03:10 GMT"}]]]></ResponseHeaders>
+    </StaticWebAssetEndpoint>
     <StaticWebAssetEndpoint Include="_content/SwiftStock(Redo)/css/style.css">
       <AssetFile>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\css\style.css'))</AssetFile>
       <Selectors><![CDATA[[]]]></Selectors>
-      <EndpointProperties><![CDATA[[{"Name":"integrity","Value":"sha256-G/wEQpsu4BTz7\u002BWx0UC6RLFFnK3bAhoo07clfw8b8Qk="}]]]></EndpointProperties>
-      <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"no-cache"},{"Name":"Content-Length","Value":"43556"},{"Name":"Content-Type","Value":"text/css"},{"Name":"ETag","Value":"\u0022G/wEQpsu4BTz7\u002BWx0UC6RLFFnK3bAhoo07clfw8b8Qk=\u0022"},{"Name":"Last-Modified","Value":"Sat, 05 Apr 2025 18:25:20 GMT"}]]]></ResponseHeaders>
-    </StaticWebAssetEndpoint>
-    <StaticWebAssetEndpoint Include="_content/SwiftStock(Redo)/css/style.t6r9e5h0wm.css">
-      <AssetFile>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\css\style.css'))</AssetFile>
-      <Selectors><![CDATA[[]]]></Selectors>
-      <EndpointProperties><![CDATA[[{"Name":"fingerprint","Value":"t6r9e5h0wm"},{"Name":"integrity","Value":"sha256-G/wEQpsu4BTz7\u002BWx0UC6RLFFnK3bAhoo07clfw8b8Qk="},{"Name":"label","Value":"_content/SwiftStock(Redo)/css/style.css"}]]]></EndpointProperties>
-      <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"max-age=31536000, immutable"},{"Name":"Content-Length","Value":"43556"},{"Name":"Content-Type","Value":"text/css"},{"Name":"ETag","Value":"\u0022G/wEQpsu4BTz7\u002BWx0UC6RLFFnK3bAhoo07clfw8b8Qk=\u0022"},{"Name":"Last-Modified","Value":"Sat, 05 Apr 2025 18:25:20 GMT"}]]]></ResponseHeaders>
+      <EndpointProperties><![CDATA[[{"Name":"integrity","Value":"sha256-Z4Y1/O82m5JilLd77NxRyOEDSq4//hRXOOctn8usxu8="}]]]></EndpointProperties>
+      <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"no-cache"},{"Name":"Content-Length","Value":"52900"},{"Name":"Content-Type","Value":"text/css"},{"Name":"ETag","Value":"\u0022Z4Y1/O82m5JilLd77NxRyOEDSq4//hRXOOctn8usxu8=\u0022"},{"Name":"Last-Modified","Value":"Sun, 06 Apr 2025 10:03:10 GMT"}]]]></ResponseHeaders>
     </StaticWebAssetEndpoint>
     <StaticWebAssetEndpoint Include="_content/SwiftStock(Redo)/css/tailwind.css">
       <AssetFile>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\css\tailwind.css'))</AssetFile>
@@ -736,13 +736,13 @@
       <AssetFile>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\SwiftStock(Redo).8jrrvuvbew.bundle.scp.css'))</AssetFile>
       <Selectors><![CDATA[[]]]></Selectors>
       <EndpointProperties><![CDATA[[{"Name":"fingerprint","Value":"8jrrvuvbew"},{"Name":"integrity","Value":"sha256-JCtLhPbgg8AwX1GiLDHGkg8mM2JwvnhQegpoigR0/aQ="},{"Name":"label","Value":"_content/SwiftStock(Redo)/SwiftStock(Redo).bundle.scp.css"}]]]></EndpointProperties>
-      <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"max-age=31536000, immutable"},{"Name":"Content-Length","Value":"1134"},{"Name":"Content-Type","Value":"text/css"},{"Name":"ETag","Value":"\u0022JCtLhPbgg8AwX1GiLDHGkg8mM2JwvnhQegpoigR0/aQ=\u0022"},{"Name":"Last-Modified","Value":"Sat, 05 Apr 2025 18:28:09 GMT"}]]]></ResponseHeaders>
+      <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"max-age=31536000, immutable"},{"Name":"Content-Length","Value":"1134"},{"Name":"Content-Type","Value":"text/css"},{"Name":"ETag","Value":"\u0022JCtLhPbgg8AwX1GiLDHGkg8mM2JwvnhQegpoigR0/aQ=\u0022"},{"Name":"Last-Modified","Value":"Sun, 06 Apr 2025 09:15:14 GMT"}]]]></ResponseHeaders>
     </StaticWebAssetEndpoint>
     <StaticWebAssetEndpoint Include="_content/SwiftStock(Redo)/SwiftStock(Redo).bundle.scp.css">
       <AssetFile>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\SwiftStock(Redo).8jrrvuvbew.bundle.scp.css'))</AssetFile>
       <Selectors><![CDATA[[]]]></Selectors>
       <EndpointProperties><![CDATA[[{"Name":"integrity","Value":"sha256-JCtLhPbgg8AwX1GiLDHGkg8mM2JwvnhQegpoigR0/aQ="}]]]></EndpointProperties>
-      <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"no-cache"},{"Name":"Content-Length","Value":"1134"},{"Name":"Content-Type","Value":"text/css"},{"Name":"ETag","Value":"\u0022JCtLhPbgg8AwX1GiLDHGkg8mM2JwvnhQegpoigR0/aQ=\u0022"},{"Name":"Last-Modified","Value":"Sat, 05 Apr 2025 18:28:09 GMT"}]]]></ResponseHeaders>
+      <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"no-cache"},{"Name":"Content-Length","Value":"1134"},{"Name":"Content-Type","Value":"text/css"},{"Name":"ETag","Value":"\u0022JCtLhPbgg8AwX1GiLDHGkg8mM2JwvnhQegpoigR0/aQ=\u0022"},{"Name":"Last-Modified","Value":"Sun, 06 Apr 2025 09:15:14 GMT"}]]]></ResponseHeaders>
     </StaticWebAssetEndpoint>
   </ItemGroup>
 </Project>

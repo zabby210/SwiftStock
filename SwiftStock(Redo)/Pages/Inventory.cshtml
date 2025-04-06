@@ -1,56 +1,397 @@
 ﻿@page
-@model AlfaMart.Pages.InventoryModel
+@model SwiftStock.Pages.InventoryModel
 @{
     ViewData["Title"] = "Inventory Management";
+    Layout = "_AdminLayout";
 }
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Inventory Management</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link href="~/css/main.css" rel="stylesheet" />
-    <link href="~/css/styles.css" rel="stylesheet" />
-</head>
-<body class="bg-gray-900 text-white">
+<div class="space-y-6">
+    <!-- Header -->
+    <div class="flex items-center justify-between">
+        <div>
+            <h1 class="text-3xl font-bold text-white">Inventory Management</h1>
+            <p class="text-slate-400 mt-1">Manage your products and stock levels</p>
+        </div>
+        <div class="flex space-x-4">
+            <button onclick="openAddModal()" 
+                    class="px-4 py-2 bg-[#E31837] text-white rounded-lg hover:bg-[#E31837]/90 transition-colors duration-300 flex items-center">
+                <i class="material-icons mr-2">add</i>
+                Add Product
+            </button>
+            <button onclick="exportInventory()" 
+                    class="px-4 py-2 bg-[#003C7E] text-white rounded-lg hover:bg-[#003C7E]/90 transition-colors duration-300 flex items-center">
+                <i class="material-icons mr-2">download</i>
+                Export
+            </button>
+        </div>
+    </div>
 
-    <header class="flex justify-between items-center p-4 bg-red-600">
-        <div class="logo text-2xl font-bold">SwiftStock</div>
-        <nav>
-            <a href="/" class="text-white hover:text-yellow-300">Home</a>
-        </nav>
-    </header>
+    <!-- Search and Filter -->
+    <div class="glass-card p-4 rounded-xl">
+        <div class="flex flex-wrap gap-4">
+            <div class="flex-1">
+                <div class="relative">
+                    <i class="material-icons absolute left-4 top-3 text-slate-400">search</i>
+                    <input type="text" 
+                           id="search-input"
+                           placeholder="Search products..."
+                           class="w-full pl-12 pr-4 py-3 bg-[#0f1117] border border-slate-800 rounded-lg focus:border-[#E31837] focus:ring-1 focus:ring-[#E31837] text-white">
+                </div>
+            </div>
+            <div class="flex gap-4">
+                <select id="sort-by" class="px-4 py-3 bg-[#0f1117] border border-slate-800 rounded-lg text-white focus:border-[#E31837] focus:ring-1 focus:ring-[#E31837]">
+                    <option value="name">Sort by Name</option>
+                    <option value="stock">Sort by Stock</option>
+                    <option value="price">Sort by Price</option>
+                </select>
+                <button onclick="refreshTable()" 
+                        class="px-4 py-2 bg-slate-800 text-white rounded-lg hover:bg-slate-700 transition-colors duration-300 flex items-center">
+                    <i class="material-icons">refresh</i>
+                </button>
+            </div>
+        </div>
+    </div>
 
-    <main class="flex flex-col items-center justify-center h-screen">
-        <h2 class="text-3xl mb-4">Inventory Management</h2>
-        <table class="table-auto w-full bg-white text-gray-900 rounded shadow-md">
-            <thead>
-                <tr>
-                    <th class="px-4 py-2">Product Name</th>
-                    <th class="px-4 py-2">Stock</th>
-                    <th class="px-4 py-2">Price</th>
-                    <th class="px-4 py-2">Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var item in Model.InventoryItems)
-                {
-                    <tr>
-                        <td class="border px-4 py-2">@item.Product_Name</td>
-                        <td class="border px-4 py-2">@item.Stock</td>
-                        <td class="border px-4 py-2">@item.Price</td>
-                        <td class="border px-4 py-2">
-                            <a asp-page="/Inventory/Edit" asp-route-id="@item.Id" class="text-blue-500 hover:underline">Edit</a> |
-                            <a asp-page="/Inventory/Delete" asp-route-id="@item.Id" class="text-red-500 hover:underline">Delete</a>
-                        </td>
+    <!-- Inventory Table -->
+    <div class="glass-card rounded-xl overflow-hidden">
+        <div class="overflow-x-auto">
+            <table class="w-full">
+                <thead>
+                    <tr class="text-left bg-[#0f1117]">
+                        <th class="px-6 py-4 text-sm font-semibold text-slate-400">ID</th>
+                        <th class="px-6 py-4 text-sm font-semibold text-slate-400">Product Name</th>
+                        <th class="px-6 py-4 text-sm font-semibold text-slate-400">Price</th>
+                        <th class="px-6 py-4 text-sm font-semibold text-slate-400">Stock</th>
+                        <th class="px-6 py-4 text-sm font-semibold text-slate-400">Actions</th>
                     </tr>
-                }
-            </tbody>
-        </table>
-        <a asp-page="/Inventory/Create" class="mt-4 bg-yellow-500 text-black py-2 px-4 rounded hover:bg-yellow-600">Add New Item</a>
-    </main>
+                </thead>
+                <tbody class="divide-y divide-slate-800">
+                    @foreach (var item in Model.InventoryItems)
+                    {
+                        <tr class="hover:bg-[#0f1117]/50">
+                            <td class="px-6 py-4 text-white">#@item.Id</td>
+                            <td class="px-6 py-4 text-white">@item.Product_Name</td>
+                            <td class="px-6 py-4 text-white">₱@item.Price.ToString("N2")</td>
+                            <td class="px-6 py-4">
+                                <span class="px-3 py-1 rounded-full text-xs font-medium 
+                                    @(item.Stock > 10 ? "bg-green-500/10 text-green-500" : 
+                                      item.Stock > 0 ? "bg-yellow-500/10 text-yellow-500" : 
+                                      "bg-red-500/10 text-red-500")">
+                                    @item.Stock items
+                                </span>
+                            </td>
+                            <td class="px-6 py-4">
+                                <div class="flex space-x-3">
+                                    <button type="button"
+                                            onclick='openEditModal({"id": @item.Id, "product_Name": "@item.Product_Name", "price": @item.Price, "stock": @item.Stock})'
+                                            class="text-blue-500 hover:text-blue-400">
+                                        <i class="material-icons">edit</i>
+                                    </button>
+                                    <button onclick="deleteProduct(@item.Id)" class="text-red-500 hover:text-red-400">
+                                        <i class="material-icons">delete</i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
 
-</body>
-</html>
+<!-- Add/Edit Product Modal -->
+<div id="product-modal" class="fixed inset-0 bg-black/50 hidden items-center justify-center">
+    <div class="glass-card rounded-xl p-6 max-w-md w-full mx-4">
+        <h3 class="text-xl font-semibold text-white mb-6" id="modal-title">Add Product</h3>
+        
+        <form id="product-form" class="space-y-4">
+            @Html.AntiForgeryToken()
+            <input type="hidden" id="product-id">
+            
+            <div>
+                <label for="product-name" class="block text-sm font-medium text-slate-400 mb-2">Product Name</label>
+                <input type="text" 
+                       id="product-name" 
+                       required
+                       class="w-full px-4 py-3 bg-[#0f1117] border border-slate-800 rounded-lg text-white focus:border-[#E31837] focus:ring-1 focus:ring-[#E31837]">
+            </div>
+            
+            <div>
+                <label for="product-price" class="block text-sm font-medium text-slate-400 mb-2">Price</label>
+                <input type="number" 
+                       id="product-price" 
+                       required
+                       min="0"
+                       step="0.01"
+                       class="w-full px-4 py-3 bg-[#0f1117] border border-slate-800 rounded-lg text-white focus:border-[#E31837] focus:ring-1 focus:ring-[#E31837]">
+            </div>
+            
+            <div>
+                <label for="product-stock" class="block text-sm font-medium text-slate-400 mb-2">Stock</label>
+                <input type="number" 
+                       id="product-stock" 
+                       required
+                       min="0"
+                       class="w-full px-4 py-3 bg-[#0f1117] border border-slate-800 rounded-lg text-white focus:border-[#E31837] focus:ring-1 focus:ring-[#E31837]">
+            </div>
+
+            <div class="flex space-x-4 mt-6">
+                <button type="button" 
+                        onclick="closeModal()" 
+                        class="flex-1 px-4 py-2 rounded-lg border border-slate-800 text-slate-400 hover:bg-slate-800 transition-colors duration-300">
+                    Cancel
+                </button>
+                <button type="submit" 
+                        class="flex-1 px-4 py-2 rounded-lg bg-[#E31837] text-white hover:bg-[#E31837]/90 transition-colors duration-300">
+                    Save
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+<script>
+let isEditing = false;
+let refreshInterval;
+
+function openAddModal() {
+    isEditing = false;
+    document.getElementById('modal-title').textContent = 'Add Product';
+    document.getElementById('product-form').reset();
+    document.getElementById('product-id').value = '';
+    showModal();
+}
+
+function openEditModal(product) {
+    console.log('Opening edit modal for product:', product); // For debugging
+    if (!product) {
+        console.error('No product data provided to openEditModal');
+        return;
+    }
+    
+    isEditing = true;
+    document.getElementById('modal-title').textContent = 'Edit Product';
+    
+    // Add debugging for each field
+    console.log('Setting ID:', product.id);
+    console.log('Setting Name:', product.product_Name);
+    console.log('Setting Price:', product.price);
+    console.log('Setting Stock:', product.stock);
+    
+    document.getElementById('product-id').value = product.id;
+    document.getElementById('product-name').value = product.product_Name;
+    document.getElementById('product-price').value = product.price;
+    document.getElementById('product-stock').value = product.stock;
+    
+    showModal();
+}
+
+function showModal() {
+    const modal = document.getElementById('product-modal');
+    modal.classList.remove('hidden');
+    modal.classList.add('flex');
+    stopAutoRefresh();
+}
+
+function closeModal() {
+    const modal = document.getElementById('product-modal');
+    modal.classList.add('hidden');
+    modal.classList.remove('flex');
+    startAutoRefresh();
+}
+
+function setLoading(button, isLoading) {
+    if (isLoading) {
+        button.disabled = true;
+        button.classList.add('opacity-75', 'cursor-not-allowed');
+        const icon = button.querySelector('i');
+        if (icon) {
+            icon.textContent = 'hourglass_empty';
+        }
+    } else {
+        button.disabled = false;
+        button.classList.remove('opacity-75', 'cursor-not-allowed');
+        const icon = button.querySelector('i');
+        if (icon && icon.textContent === 'hourglass_empty') {
+            icon.textContent = button.dataset.originalIcon || 'check';
+        }
+    }
+}
+
+document.getElementById('product-form').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    
+    const productData = {
+        id: isEditing ? parseInt(document.getElementById('product-id').value) : 0,
+        product_Name: document.getElementById('product-name').value,
+        price: parseFloat(document.getElementById('product-price').value),
+        stock: parseInt(document.getElementById('product-stock').value)
+    };
+    
+    try {
+        const url = isEditing ? '/api/inventory/update' : '/api/inventory/add';
+        const method = isEditing ? 'PUT' : 'POST';
+        
+        const response = await fetch(url, {
+            method: method,
+            headers: {
+                'Content-Type': 'application/json',
+                'RequestVerificationToken': document.querySelector('input[name="__RequestVerificationToken"]').value
+            },
+            body: JSON.stringify(productData)
+        });
+        
+        if (!response.ok) {
+            const error = await response.text();
+            throw new Error(error || 'Failed to save product');
+        }
+        
+        showNotification(isEditing ? 'Product updated successfully' : 'Product added successfully', 'success');
+        closeModal();
+        await refreshTable();
+        
+    } catch (error) {
+        showNotification(error.message, 'error');
+    }
+});
+
+async function deleteProduct(id) {
+    if (!confirm('Are you sure you want to delete this product?')) return;
+    
+    try {
+        const response = await fetch(`/api/inventory/${id}`, {
+            method: 'DELETE',
+            headers: {
+                'RequestVerificationToken': document.querySelector('input[name="__RequestVerificationToken"]').value
+            }
+        });
+        
+        if (!response.ok) {
+            const error = await response.text();
+            throw new Error(error || 'Failed to delete product');
+        }
+        
+        showNotification('Product deleted successfully', 'success');
+        await refreshTable();
+        
+    } catch (error) {
+        showNotification(error.message, 'error');
+    }
+}
+
+async function refreshTable() {
+    try {
+        const searchTerm = document.getElementById('search-input').value;
+        const sortBy = document.getElementById('sort-by').value;
+        
+        const response = await fetch(`/api/inventory?search=${encodeURIComponent(searchTerm)}&sort=${encodeURIComponent(sortBy)}`);
+        if (!response.ok) {
+            throw new Error('Failed to fetch inventory data');
+        }
+        
+        const products = await response.json();
+        
+        const tbody = document.querySelector('tbody');
+        if (!tbody) {
+            throw new Error('Table body not found');
+        }
+        
+        tbody.innerHTML = products.map(item => `
+            <tr class="hover:bg-[#0f1117]/50">
+                <td class="px-6 py-4 text-white">#${item.id}</td>
+                <td class="px-6 py-4 text-white">${escapeHtml(item.product_Name)}</td>
+                <td class="px-6 py-4 text-white">₱${parseFloat(item.price).toFixed(2)}</td>
+                <td class="px-6 py-4">
+                    <span class="px-3 py-1 rounded-full text-xs font-medium 
+                        ${item.stock > 10 ? "bg-green-500/10 text-green-500" : 
+                          item.stock > 0 ? "bg-yellow-500/10 text-yellow-500" : 
+                          "bg-red-500/10 text-red-500"}">
+                        ${item.stock} items
+                    </span>
+                </td>
+                <td class="px-6 py-4">
+                    <div class="flex space-x-3">
+                        <button type="button"
+                                onclick='openEditModal({"id": ${item.id}, "product_Name": "${escapeHtml(item.product_Name)}", "price": ${item.price}, "stock": ${item.stock}})'
+                                class="text-blue-500 hover:text-blue-400 p-2 rounded-lg transition-colors duration-300">
+                            <i class="material-icons">edit</i>
+                        </button>
+                        <button onclick="deleteProduct(${item.id})" 
+                                class="text-red-500 hover:text-red-400 p-2 rounded-lg transition-colors duration-300">
+                            <i class="material-icons">delete</i>
+                        </button>
+                    </div>
+                </td>
+            </tr>
+        `).join('');
+        
+    } catch (error) {
+        showNotification('Error refreshing table: ' + error.message, 'error');
+    }
+}
+
+// Search input handler
+document.getElementById('search-input').addEventListener('input', debounce(refreshTable, 300));
+document.getElementById('sort-by').addEventListener('change', refreshTable);
+
+function showNotification(message, type) {
+    const notificationDiv = document.createElement('div');
+    notificationDiv.className = `fixed top-4 right-4 p-4 rounded-lg shadow-lg ${
+        type === 'success' ? 'bg-green-500' : 'bg-red-500'
+    } text-white z-50`;
+    notificationDiv.textContent = message;
+    
+    document.body.appendChild(notificationDiv);
+    
+    setTimeout(() => {
+        notificationDiv.remove();
+    }, 3000);
+}
+
+function debounce(func, wait) {
+    let timeout;
+    return function executedFunction(...args) {
+        const later = () => {
+            clearTimeout(timeout);
+            func(...args);
+        };
+        clearTimeout(timeout);
+        timeout = setTimeout(later, wait);
+    };
+}
+
+function exportInventory() {
+    try {
+        window.location.href = '/api/inventory/export';
+    } catch (error) {
+        showNotification('Error exporting inventory: ' + error.message, 'error');
+    }
+}
+
+// Add HTML escaping function for security
+function escapeHtml(unsafe) {
+    return unsafe
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+}
+
+function startAutoRefresh() {
+    refreshInterval = setInterval(refreshTable, 5000);
+}
+
+function stopAutoRefresh() {
+    if (refreshInterval) {
+        clearInterval(refreshInterval);
+    }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    startAutoRefresh();
+});
+</script>
+}

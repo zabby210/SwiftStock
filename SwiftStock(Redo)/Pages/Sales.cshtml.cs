@@ -1,7 +1,7 @@
-using AlfaMart.Data;
-using AlfaMart.Models;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
+using SwiftStock.Data;
+using SwiftStock.Models;
 
 namespace AlfaMart.Pages
 {

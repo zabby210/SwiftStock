@@ -1,6 +1,7 @@
-using AlfaMart.Data; // Ensure this namespace is correct
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using SwiftStock.Data;
+using SwiftStock.Models;
 
 namespace AlfaMart.Pages
 {

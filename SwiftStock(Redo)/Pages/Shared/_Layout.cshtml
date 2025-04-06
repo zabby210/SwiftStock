@@ -1,64 +1,197 @@
 ﻿<!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="h-full scroll-smooth">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="SwiftStock - Alfamart's advanced inventory management system for stores, staff, and customers">
     <title>@ViewData["Title"] - SwiftStock</title>
 
+    <!-- Google Fonts - Modern & Accessible -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+
+    <!-- AOS Animation Library -->
+    <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
 
     <!-- Tailwind CSS -->
     <link rel="stylesheet" href="~/css/style.css" />
     
+    <style>
+        :root {
+            --primary-red: #E31837;
+            --primary-blue: #003C7E;
+            --primary-yellow: #FFD700;
+            --bg-dark: #0f1117;
+            --bg-darker: #090a0f;
+            --bg-light: #161922;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        .glass-card {
+            background: rgba(22, 25, 34, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+        }
+
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .text-shadow {
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .hover-up {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .hover-up:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5);
+        }
+
+      
+
+       
+    </style>
 </head>
-<body class="bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 text-white font-sans flex flex-col min-h-screen">
+<body class="h-full bg-[#0f1117] text-slate-200 antialiased">
+    <!-- Skip to main content -->
+    <a href="#main-content" class="skip-link">
+        Skip to main content
+    </a>
 
-    <!-- Header -->
-    <header class="backdrop-blur-lg bg-[#ed1b24]/90 text-white shadow-lg">
-        <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
-            <h1 class="text-3xl font-bold tracking-wide animate-fade-in">SwiftStock</h1>
-            <nav class="hidden md:flex space-x-6 text-lg">
-                <a href="/" class="hover:text-yellow-300 transition duration-300 ease-in-out transform hover:scale-110 hover-underline">Home</a>
-            </nav>
-            <button class="md:hidden text-2xl focus:outline-none" id="menuButton">
-                <i class="fas fa-bars"></i>
-            </button>
+    <!-- Navigation -->
+    <nav class="fixed top-0 left-0 right-0 z-50 glass-effect">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex items-center">
+                    <a href="/" class="flex items-center space-x-3">
+                        <img src="/images/alfamart-logo.png" alt="Alfamart" class="h-8 w-auto">
+                        <span class="text-xl font-bold text-white">SwiftStock</span>
+                    </a>
+                </div>
+                
+                <!-- Desktop Navigation -->
+                <div class="hidden md:block">
+                    <div class="flex items-center space-x-4">
+                        <a href="/features" class="px-3 py-2 rounded-md text-sm font-medium text-slate-300 hover:text-white hover:bg-white/5 focus-ring">
+                            Features
+                        </a>
+                        <a href="/about" class="px-3 py-2 rounded-md text-sm font-medium text-slate-300 hover:text-white hover:bg-white/5 focus-ring">
+                            About
+                        </a>
+                        <a href="/contact" class="px-3 py-2 rounded-md text-sm font-medium text-slate-300 hover:text-white hover:bg-white/5 focus-ring">
+                            Contact
+                        </a>
+                        <a href="/login" class="ml-4 px-4 py-2 rounded-md text-sm font-medium bg-[#E31837] text-white hover:bg-[#E31837]/90 focus-ring">
+                            Sign In
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Mobile menu button -->
+                <div class="md:hidden">
+                    <button type="button" 
+                            class="inline-flex items-center justify-center p-2 rounded-md text-slate-400 hover:text-white hover:bg-white/5 focus-ring"
+                            aria-controls="mobile-menu"
+                            aria-expanded="false"
+                            id="mobile-menu-button">
+                        <span class="sr-only">Open main menu</span>
+                        <i class="fas fa-bars text-xl"></i>
+                    </button>
+                </div>
+            </div>
         </div>
-    </header>
 
-    <!-- Mobile Menu -->
-    <div class="md:hidden bg-[#ed1b24]/90 text-white shadow-lg rounded-b-3xl" id="mobileMenu" style="display: none;">
-        <nav class="flex flex-col space-y-4 p-4">
-            <a href="/" class="hover:text-yellow-300 transition duration-300 ease-in-out transform hover:scale-110 hover-underline">Home</a>
-            <a href="/Inventory" class="hover:text-yellow-300 transition duration-300 ease-in-out transform hover:scale-110 hover-underline">Inventory</a>
-            <a href="/Sales" class="hover:text-yellow-300 transition duration-300 ease-in-out transform hover:scale-110 hover-underline">Sales</a>
-            <a href="/Admin" class="hover:text-yellow-300 transition duration-300 ease-in-out transform hover:scale-110 hover-underline">Admin</a>
-        </nav>
-    </div>
+        <!-- Mobile menu -->
+        <div class="md:hidden hidden" id="mobile-menu">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3 glass-effect">
+                <a href="/features" class="block px-3 py-2 rounded-md text-base font-medium text-slate-300 hover:text-white hover:bg-white/5">
+                    Features
+                </a>
+                <a href="/about" class="block px-3 py-2 rounded-md text-base font-medium text-slate-300 hover:text-white hover:bg-white/5">
+                    About
+                </a>
+                <a href="/contact" class="block px-3 py-2 rounded-md text-base font-medium text-slate-300 hover:text-white hover:bg-white/5">
+                    Contact
+                </a>
+                <a href="/login" class="block px-3 py-2 rounded-md text-base font-medium bg-[#E31837] text-white hover:bg-[#E31837]/90">
+                    Sign In
+                </a>
+            </div>
+        </div>
+    </nav>
 
     <!-- Main Content -->
-    <main class="container mx-auto px-6 py-8 flex-grow">
+    <main id="main-content" class="pt-16">
         @RenderBody()
     </main>
 
     <!-- Footer -->
-    <footer class="bg-[#005bac] text-yellow-300 text-center py-6 shadow-inner">
-        &copy; 2025 SwiftStock &middot;
-        <a href="/Privacy" class="hover:underline text-yellow-200">Privacy</a>
+    <footer class="bg-[#161922] mt-20">
+        <div class="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div class="col-span-1 md:col-span-2">
+                    <img src="/images/alfamart-logo.png" alt="Alfamart" class="h-8 mb-4">
+                    <p class="text-slate-400 text-sm">
+                        SwiftStock is Alfamart's advanced inventory management system, 
+                        designed to streamline operations and enhance customer experience.
+                    </p>
+                </div>
+                <div>
+                    <h3 class="text-sm font-semibold text-white tracking-wider uppercase mb-4">Quick Links</h3>
+                    <ul class="space-y-2">
+                        <li><a href="/features" class="text-slate-400 hover:text-white text-sm">Features</a></li>
+                        <li><a href="/about" class="text-slate-400 hover:text-white text-sm">About</a></li>
+                        <li><a href="/contact" class="text-slate-400 hover:text-white text-sm">Contact</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-sm font-semibold text-white tracking-wider uppercase mb-4">Legal</h3>
+                    <ul class="space-y-2">
+                        <li><a href="/privacy" class="text-slate-400 hover:text-white text-sm">Privacy Policy</a></li>
+                        <li><a href="/terms" class="text-slate-400 hover:text-white text-sm">Terms of Service</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="mt-8 pt-8 border-t border-slate-800">
+                <p class="text-center text-slate-400 text-sm">
+                    © 2024 SwiftStock. All rights reserved.
+                </p>
+            </div>
+        </div>
     </footer>
 
     <!-- Scripts -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <script src="~/js/site.js"></script>
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
     <script>
-        document.getElementById('menuButton').addEventListener('click', function () {
-            const mobileMenu = document.getElementById('mobileMenu');
-            mobileMenu.style.display = mobileMenu.style.display === 'none' ? 'block' : 'none';
+        // Initialize AOS
+        AOS.init({
+            duration: 800,
+            once: true,
+            disable: window.matchMedia('(prefers-reduced-motion: reduce)').matches
+        });
+
+        // Mobile menu toggle
+        document.getElementById('mobile-menu-button').addEventListener('click', function() {
+            const mobileMenu = document.getElementById('mobile-menu');
+            mobileMenu.classList.toggle('hidden');
         });
     </script>
-
     @await RenderSectionAsync("Scripts", required: false)
 </body>
-
 </html>

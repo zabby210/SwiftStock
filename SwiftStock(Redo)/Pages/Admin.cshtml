@@ -2,92 +2,378 @@
 @model AlfaMart.Pages.AdminModel
 @{
     ViewData["Title"] = "Admin Dashboard";
+    Layout = "_AdminLayout";
 }
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Dashboard</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link href="~/css/main.css" rel="stylesheet" />
-    <link href="~/css/styles.css" rel="stylesheet" />
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-</head>
-<body class="bg-gray-100 text-gray-900">
+<div class="space-y-6">
+    <!-- Welcome Section -->
+    <div class="flex items-center justify-between">
+        <div>
+            <h1 class="text-3xl font-bold text-white">Welcome back, Admin</h1>
+            <p class="text-slate-400 mt-1">Here's what's happening with your store today.</p>
+        </div>
+        <div class="flex space-x-4">
+            <a href="/admin/products/new" class="px-4 py-2 bg-[#E31837] text-white rounded-lg hover:bg-[#E31837]/90 transition-colors duration-300">
+                <i class="material-icons mr-2">add</i>
+                New Product
+            </a>
+            <button onclick="exportReport()" class="px-4 py-2 bg-[#003C7E] text-white rounded-lg hover:bg-[#003C7E]/90 transition-colors duration-300">
+                <i class="material-icons mr-2">download</i>
+                Export Report
+            </button>
+        </div>
+    </div>
 
-    <header class="bg-red-600 text-white p-4 text-center text-2xl">
-        SwiftStock
-    </header>
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="bg-red-500/10 border border-red-500/20 text-red-500 p-4 rounded-lg">
+            <i class="fas fa-exclamation-circle mr-2"></i>
+            @TempData["ErrorMessage"]
+        </div>
+    }
 
-    <div class="flex">
-        <nav class="bg-gray-200 w-64 p-4">
-            <h3 class="text-lg font-bold mb-4">Admin Panel</h3>
-            <a href="javascript:void(0);" onclick="showSection('dashboard')" class="block py-2 px-4 mb-2 text-gray-900 hover:bg-yellow-300">Dashboard</a>
-            <a href="javascript:void(0);" onclick="showSection('sales')" class="block py-2 px-4 mb-2 text-gray-900 hover:bg-yellow-300">Sales</a>
-            <a href="javascript:void(0);" onclick="showSection('inventory')" class="block py-2 px-4 mb-2 text-gray-900 hover:bg-yellow-300">Inventory</a>
-            <a href="javascript:void(0);" onclick="showSection('history')" class="block py-2 px-4 mb-2 text-gray-900 hover:bg-yellow-300">History</a>
-            <form method="post" asp-page-handler="Logout">
-                <button type="submit" class="w-full bg-yellow-500 text-black py-2 mt-4">Logout</button>
-            </form>
-        </nav>
-
-        <div class="flex-grow p-8">
-            <div id="dashboard" class="section">
-                <h2 class="text-2xl mb-4">Dashboard</h2>
-                <div class="bg-white p-4 rounded shadow-md">
-                    <div class="chart" id="dashboardChart"></div>
+    <!-- Stats Cards -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <!-- Total Sales -->
+        <div class="dashboard-card glass-card p-6 rounded-xl">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-slate-400 text-sm">Total Sales</p>
+                    <h3 class="text-2xl font-bold text-white mt-1">$@Model.TotalSales.ToString("N2")</h3>
+                    <p class="text-green-500 text-sm mt-2">
+                        <i class="fas fa-arrow-up mr-1"></i>
+                        Today's sales
+                    </p>
+                </div>
+                <div class="w-12 h-12 rounded-full bg-[#E31837]/10 flex items-center justify-center">
+                    <i class="material-icons text-[#E31837]">payments</i>
                 </div>
             </div>
+        </div>
 
-            <div id="sales" class="section hidden">
-                <h2 class="text-2xl mb-4">Sales</h2>
-                <a asp-page="/Sales" class="text-blue-500 hover:underline">View Sales</a>
-            </div>
-
-            <div id="inventory" class="section hidden">
-                <h2 class="text-2xl mb-4">Inventory Management</h2>
-                <iframe src="/Inventory" class="w-full h-96 border rounded"></iframe>
-            </div>
-
-            <div id="history" class="section hidden">
-                <h2 class="text-2xl mb-4">Transaction History</h2>
-                <div class="bg-white p-4 rounded shadow-md">
-                    <p>Transaction data will be displayed here.</p>
+        <!-- Total Orders -->
+        <div class="dashboard-card glass-card p-6 rounded-xl">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-slate-400 text-sm">Total Orders</p>
+                    <h3 class="text-2xl font-bold text-white mt-1">1,463</h3>
+                    <p class="text-green-500 text-sm mt-2">
+                        <i class="fas fa-arrow-up mr-1"></i>
+                        8% vs last month
+                    </p>
                 </div>
+                <div class="w-12 h-12 rounded-full bg-[#003C7E]/10 flex items-center justify-center">
+                    <i class="material-icons text-[#003C7E]">shopping_cart</i>
+                </div>
+            </div>
+        </div>
+
+        <!-- Active Customers -->
+        <div class="dashboard-card glass-card p-6 rounded-xl">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-slate-400 text-sm">Active Customers</p>
+                    <h3 class="text-2xl font-bold text-white mt-1">892</h3>
+                    <p class="text-green-500 text-sm mt-2">
+                        <i class="fas fa-arrow-up mr-1"></i>
+                        15% vs last month
+                    </p>
+                </div>
+                <div class="w-12 h-12 rounded-full bg-[#FFD700]/10 flex items-center justify-center">
+                    <i class="material-icons text-[#FFD700]">people</i>
+                </div>
+            </div>
+        </div>
+
+        <!-- Low Stock Items -->
+        <div class="dashboard-card glass-card p-6 rounded-xl">
+            <a href="/Inventory" class="block">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-slate-400 text-sm">Low Stock Items</p>
+                        <h3 class="text-2xl font-bold text-white mt-1">@Model.LowStockItems</h3>
+                        <p class="text-red-500 text-sm mt-2">
+                            <i class="fas fa-arrow-up mr-1"></i>
+                            @(Model.LowStockItems > 0 ? $"{Model.LowStockItems} items critical" : "No critical items")
+                        </p>
+                    </div>
+                    <div class="w-12 h-12 rounded-full bg-red-500/10 flex items-center justify-center">
+                        <i class="material-icons text-red-500">inventory</i>
+                    </div>
+                </div>
+            </a>
+        </div>
+    </div>
+
+    <!-- Charts Section -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <!-- Sales Chart -->
+        <div class="glass-card p-6 rounded-xl">
+            <div class="flex items-center justify-between mb-6">
+                <h3 class="text-lg font-semibold text-white">Sales Overview</h3>
+                <select class="bg-[#0f1117] border border-slate-800 rounded-lg px-3 py-2 text-sm">
+                    <option>Last 7 days</option>
+                    <option>Last 30 days</option>
+                    <option>Last 90 days</option>
+                </select>
+            </div>
+            <canvas id="salesChart" height="300"></canvas>
+        </div>
+
+        <!-- Top Products -->
+        <div class="glass-card p-6 rounded-xl">
+            <div class="flex items-center justify-between mb-6">
+                <h3 class="text-lg font-semibold text-white">Top Products</h3>
+                <button class="text-slate-400 hover:text-white">
+                    <i class="material-icons">more_vert</i>
+                </button>
+            </div>
+            <div class="space-y-4">
+                <!-- Product Items -->
+                <div class="flex items-center justify-between p-4 rounded-lg bg-[#0f1117]">
+                    <div class="flex items-center space-x-4">
+                        <img src="/images/product-placeholder.jpg" alt="Product" class="w-12 h-12 rounded-lg object-cover">
+                        <div>
+                            <h4 class="font-medium text-white">Product Name</h4>
+                            <p class="text-sm text-slate-400">Category</p>
+                        </div>
+                    </div>
+                    <div class="text-right">
+                        <p class="font-medium text-white">$1,234</p>
+                        <p class="text-sm text-green-500">432 sold</p>
+                    </div>
+                </div>
+                <!-- Add more product items here -->
             </div>
         </div>
     </div>
 
-    <script>
-        function showSection(section) {
-            // Hide all sections
-            const sections = document.querySelectorAll('.section');
-            sections.forEach(sec => {
-                sec.classList.add('hidden');
-            });
-            // Show the selected section
-            document.getElementById(section).classList.remove('hidden');
-        }
+    <!-- Recent Orders Table -->
+    <div class="glass-card rounded-xl overflow-hidden">
+        <div class="p-6 border-b border-slate-800">
+            <div class="flex items-center justify-between">
+                <h3 class="text-lg font-semibold text-white">Recent Orders</h3>
+                <a href="/admin/orders" class="text-[#E31837] hover:text-[#E31837]/80 text-sm">View All</a>
+            </div>
+        </div>
+        <div class="overflow-x-auto">
+            <table class="w-full">
+                <thead>
+                    <tr class="text-left bg-[#0f1117]">
+                        <th class="px-6 py-4 text-sm font-semibold text-slate-400">Order ID</th>
+                        <th class="px-6 py-4 text-sm font-semibold text-slate-400">Customer</th>
+                        <th class="px-6 py-4 text-sm font-semibold text-slate-400">Products</th>
+                        <th class="px-6 py-4 text-sm font-semibold text-slate-400">Total</th>
+                        <th class="px-6 py-4 text-sm font-semibold text-slate-400">Status</th>
+                        <th class="px-6 py-4 text-sm font-semibold text-slate-400">Date</th>
+                        <th class="px-6 py-4 text-sm font-semibold text-slate-400">Actions</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-800">
+                    <!-- Order Rows -->
+                    <tr class="hover:bg-[#0f1117]/50">
+                        <td class="px-6 py-4">#ORD-123</td>
+                        <td class="px-6 py-4">
+                            <div class="flex items-center space-x-3">
+                                <img src="/images/avatar-placeholder.jpg" alt="Customer" class="w-8 h-8 rounded-full">
+                                <span>John Doe</span>
+                            </div>
+                        </td>
+                        <td class="px-6 py-4">3 items</td>
+                        <td class="px-6 py-4">$123.45</td>
+                        <td class="px-6 py-4">
+                            <span class="px-3 py-1 rounded-full text-xs font-medium bg-green-500/10 text-green-500">
+                                Completed
+                            </span>
+                        </td>
+                        <td class="px-6 py-4 text-slate-400">2024-03-15</td>
+                        <td class="px-6 py-4">
+                            <button class="text-slate-400 hover:text-white">
+                                <i class="material-icons">more_vert</i>
+                            </button>
+                        </td>
+                    </tr>
+                  
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
 
-        // Load the dashboard section by default
-        document.addEventListener('DOMContentLoaded', (event) => {
-            showSection('dashboard');
-        });
-
-        // Check for access denied response
-        fetch(window.location.href)
-            .then(response => response.json())
-            .then(data => {
-                if (data.accessDenied) {
-                    alert(data.message);
-                    window.location.href = "/Login";
+@section Scripts {
+<script>
+    // Sales Chart
+    const ctx = document.getElementById('salesChart').getContext('2d');
+    new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+            datasets: [{
+                label: 'Sales',
+                data: [12, 19, 3, 5, 2, 3, 7],
+                borderColor: '#E31837',
+                tension: 0.4,
+                fill: true,
+                backgroundColor: 'rgba(227, 24, 55, 0.1)'
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    display: false
                 }
-            })
-            .catch(error => console.error('Error:', error));
-    </script>
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    grid: {
+                        color: 'rgba(255, 255, 255, 0.1)'
+                    },
+                    ticks: {
+                        color: '#94a3b8'
+                    }
+                },
+                x: {
+                    grid: {
+                        color: 'rgba(255, 255, 255, 0.1)'
+                    },
+                    ticks: {
+                        color: '#94a3b8'
+                    }
+                }
+            }
+        }
+    });
 
-</body>
-</html>
+     // Get the sales data from the server
+    const salesData = @Json.Serialize(Model.SalesData);
+    
+    const ctx = document.getElementById('salesChart').getContext('2d');
+    window.salesChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: salesData.labels,
+            datasets: [{
+                label: 'Sales',
+                data: salesData.values,
+                borderColor: '#E31837',
+                tension: 0.4,
+                fill: true,
+                backgroundColor: 'rgba(227, 24, 55, 0.1)'
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    display: false
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    grid: {
+                        color: 'rgba(255, 255, 255, 0.1)'
+                    },
+                    ticks: {
+                        color: '#94a3b8',
+                        callback: function(value) {
+                            return '$' + value.toLocaleString();
+                        }
+                    }
+                },
+                x: {
+                    grid: {
+                        color: 'rgba(255, 255, 255, 0.1)'
+                    },
+                    ticks: {
+                        color: '#94a3b8'
+                    }
+                }
+            }
+        }
+    });
 
+    function exportReport() {
+        // Implement report export functionality
+        alert('Report export functionality will be implemented here');
+    }
+    private void LoadDashboardData()
+{
+    try
+    {
+        // Wrap the data loading in a try-catch block
+        TotalSales = _context.sales.Sum(s => s.Amount);
+        TotalOrders = _context.sales.Count();
+        ActiveCustomers = _context.consumer.Count();
+        LowStockItems = _context.inventory.Count(i => i.Stock < 10);
+
+        RecentOrders = _context.sales
+            .OrderByDescending(s => s.Date)
+            .Take(5)
+            .ToList();
+
+        TopProducts = _context.inventory
+            .OrderByDescending(i => i.Stock)
+            .Take(5)
+            .ToList();
+    }
+    catch (Exception ex)
+    {
+        // Log the error
+        _logger.LogError(ex, "Error loading dashboard data");
+        
+        // Set default values
+        TotalSales = 0;
+        TotalOrders = 0;
+        ActiveCustomers = 0;
+        LowStockItems = 0;
+        RecentOrders = new List<Sale>();
+        TopProducts = new List<InventoryItem>();
+        
+        // Add a model error to display to the user
+        ModelState.AddModelError("", "Unable to load dashboard data. Please try again later.");
+    }
+}
+
+private async Task LoadDashboardData()
+{
+    var cacheKey = $"AdminDashboard_{User.Identity.Name}";
+    var dashboardData = await _cache.GetAsync<DashboardData>(cacheKey);
+
+    if (dashboardData == null)
+    {
+        dashboardData = new DashboardData
+        {
+            TotalSales = await _context.sales.SumAsync(s => s.Amount),
+            TotalOrders = await _context.sales.CountAsync(),
+            ActiveCustomers = await _context.consumer.CountAsync(),
+            LowStockItems = await _context.inventory.CountAsync(i => i.Stock < 10),
+            RecentOrders = await _context.sales
+                .OrderByDescending(s => s.Date)
+                .Take(5)
+                .ToListAsync(),
+            TopProducts = await _context.inventory
+                .OrderByDescending(i => i.Stock)
+                .Take(5)
+                .ToListAsync()
+        };
+
+        // Cache for 5 minutes
+        await _cache.SetAsync(cacheKey, dashboardData, TimeSpan.FromMinutes(5));
+    }
+
+    // Assign the data to the page properties
+    TotalSales = dashboardData.TotalSales;
+    TotalOrders = dashboardData.TotalOrders;
+    ActiveCustomers = dashboardData.ActiveCustomers;
+    LowStockItems = dashboardData.LowStockItems;
+    RecentOrders = dashboardData.RecentOrders;
+    TopProducts = dashboardData.TopProducts;
+}
+
+</script>
+}

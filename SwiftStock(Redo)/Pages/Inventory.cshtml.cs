@@ -1,27 +1,43 @@
 // File: Pages/Inventory.cshtml.cs
-using AlfaMart.Data;
-using AlfaMart.Models;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
+using SwiftStock.Data;
+using SwiftStock.Models;
 
-namespace AlfaMart.Pages
+namespace SwiftStock.Pages
 {
+    [Authorize(Roles = "Admin")]
     public class InventoryModel : PageModel
     {
         private readonly ApplicationDbContext _context;
+        private readonly ILogger<InventoryModel> _logger;
 
-        public InventoryModel(ApplicationDbContext context)
+        public InventoryModel(ApplicationDbContext context, ILogger<InventoryModel> logger)
         {
             _context = context;
+            _logger = logger;
         }
 
-        public IList<InventoryItem> InventoryItems { get; set; }
+        public List<InventoryItem> InventoryItems { get; set; } = new();
 
-
-        public async Task OnGetAsync()
+        public async Task<IActionResult> OnGetAsync()
         {
-            InventoryItems = await _context.inventory.ToListAsync(); // Updated to match the DbSet property name
+            try
+            {
+                InventoryItems = await _context.inventory
+                    .OrderBy(i => i.Product_Name)
+                    .ToListAsync();
+
+                return Page();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error loading inventory");
+                TempData["ErrorMessage"] = "Error loading inventory. Please try again later.";
+                return Page();
+            }
         }
     }
-
 }

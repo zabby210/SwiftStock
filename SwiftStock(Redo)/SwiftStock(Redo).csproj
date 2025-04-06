@@ -13,17 +13,17 @@
 	</ItemGroup>
 
 	<Target Name="Tailwind" BeforeTargets="Build">
-		<Exec Command="npm run build:css"/>
+		<Exec Command="npm run build:css" />
 	</Target>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="9.0.3" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="9.0.3">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="9.0.3" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.3">
+        <PrivateAssets>all</PrivateAssets>
+        <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="MySql.Data" Version="9.2.0" />
     <PackageReference Include="MySql.EntityFrameworkCore" Version="9.0.0" />
   </ItemGroup>
-
 
 </Project>

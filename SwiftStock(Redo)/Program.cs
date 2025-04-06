@@ -1,15 +1,17 @@
-using AlfaMart.Data;
-using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using MySql.EntityFrameworkCore.Extensions;
+using SwiftStock.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
-builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseMySQL(connectionString));
-
 builder.Services.AddRazorPages();
+
+builder.Services.AddDbContext<ApplicationDbContext>(options =>
+    options.UseMySQL(
+        builder.Configuration.GetConnectionString("DefaultConnection")
+    ));
+
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(options =>
     {
@@ -19,7 +21,6 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
 
 builder.Services.AddAuthorization();
 
-// Add session services
 builder.Services.AddSession(options =>
 {
     options.IdleTimeout = TimeSpan.FromMinutes(30);
@@ -29,7 +30,6 @@ builder.Services.AddSession(options =>
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Error");
@@ -37,15 +37,16 @@ if (!app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-app.UseStaticFiles(); // Ensure this line is present
+app.UseStaticFiles(); 
 
 app.UseRouting();
 
 app.UseAuthentication();
 app.UseAuthorization();
 
-// Use session middleware
 app.UseSession();
+
+app.MapControllers();
 
 app.MapRazorPages();
 
