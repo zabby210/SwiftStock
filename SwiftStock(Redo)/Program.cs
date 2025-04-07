@@ -5,18 +5,18 @@ using SwiftStock.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Add services to the container.
 builder.Services.AddRazorPages();
-
+builder.Services.AddControllers();
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseMySQL(
-        builder.Configuration.GetConnectionString("DefaultConnection")
-    ));
+    options.UseMySQL(builder.Configuration.GetConnectionString("DefaultConnection")));
 
+// Add authentication
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(options =>
     {
         options.LoginPath = "/Login";
-        options.LogoutPath = "/Logout";
+        options.AccessDeniedPath = "/Account/AccessDenied";
     });
 
 builder.Services.AddAuthorization();
@@ -30,6 +30,7 @@ builder.Services.AddSession(options =>
 
 var app = builder.Build();
 
+// Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Error");
@@ -37,8 +38,7 @@ if (!app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-app.UseStaticFiles(); 
-
+app.UseStaticFiles();
 app.UseRouting();
 
 app.UseAuthentication();
@@ -46,9 +46,8 @@ app.UseAuthorization();
 
 app.UseSession();
 
-app.MapControllers();
-
 app.MapRazorPages();
+app.MapControllers();
 
 app.Run();
 

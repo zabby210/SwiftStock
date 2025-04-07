@@ -23,6 +23,8 @@ namespace SwiftStock.Data
             {
                 entity.ToTable("inventory");
                 entity.HasKey(e => e.Id);
+                entity.Property(e => e.Product_Name).IsRequired();
+                entity.Property(e => e.Price).HasColumnType("decimal(18,2)");
             });
 
             modelBuilder.Entity<User>(entity =>

@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SwiftStock.Data;
 using SwiftStock.Models;
+using System.Text.Json;
 
 namespace AlfaMart.Controllers
 {
@@ -21,24 +22,23 @@ namespace AlfaMart.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<InventoryItem>>> GetInventory(string search = "", string sort = "name")
+        public async Task<ActionResult<IEnumerable<InventoryItem>>> GetInventory(string? search = null, string? sort = null)
         {
             try
             {
-                var query = _context.inventory.AsQueryable();
+                var query = _context.inventory.AsNoTracking();
 
-                // Apply search filter
                 if (!string.IsNullOrWhiteSpace(search))
                 {
                     query = query.Where(i => i.Product_Name.Contains(search));
                 }
 
-                // Apply sorting
-                query = sort.ToLower() switch
+                query = sort?.ToLower() switch
                 {
+                    "name" => query.OrderBy(i => i.Product_Name),
                     "stock" => query.OrderBy(i => i.Stock),
                     "price" => query.OrderBy(i => i.Price),
-                    _ => query.OrderBy(i => i.Product_Name)
+                    _ => query.OrderBy(i => i.Id)
                 };
 
                 var items = await query.ToListAsync();
@@ -52,34 +52,57 @@ namespace AlfaMart.Controllers
         }
 
         [HttpPost("add")]
-        public async Task<ActionResult<InventoryItem>> AddProduct(InventoryItem item)
+        public async Task<ActionResult<InventoryItem>> AddProduct([FromBody] InventoryItem item)
         {
             try
             {
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest(ModelState);
+                }
+
+                item.Id = 0; // Ensure new item
                 _context.inventory.Add(item);
                 await _context.SaveChangesAsync();
-                return CreatedAtAction(nameof(GetInventory), new { id = item.Id }, item);
+
+                _logger.LogInformation($"Added new product: {JsonSerializer.Serialize(item)}");
+                return Ok(item);
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error adding inventory item");
-                return StatusCode(500, "Error adding inventory item");
+                _logger.LogError(ex, "Error adding product: {ProductName}", item.Product_Name);
+                return StatusCode(500, "Error adding product to inventory");
             }
         }
 
         [HttpPut("update")]
-        public async Task<IActionResult> UpdateProduct(InventoryItem item)
+        public async Task<IActionResult> UpdateProduct([FromBody] InventoryItem item)
         {
             try
             {
-                _context.Entry(item).State = EntityState.Modified;
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest(ModelState);
+                }
+
+                var existingItem = await _context.inventory.FindAsync(item.Id);
+                if (existingItem == null)
+                {
+                    return NotFound($"Product with ID {item.Id} not found");
+                }
+
+                existingItem.Product_Name = item.Product_Name;
+                existingItem.Price = item.Price;
+                existingItem.Stock = item.Stock;
+
                 await _context.SaveChangesAsync();
-                return NoContent();
+                _logger.LogInformation($"Updated product: {item.Product_Name}");
+                return Ok(existingItem);
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error updating inventory item");
-                return StatusCode(500, "Error updating inventory item");
+                _logger.LogError(ex, "Error updating product");
+                return StatusCode(500, "Error updating product");
             }
         }
 
@@ -91,17 +114,19 @@ namespace AlfaMart.Controllers
                 var item = await _context.inventory.FindAsync(id);
                 if (item == null)
                 {
-                    return NotFound();
+                    return NotFound($"Product with ID {id} not found");
                 }
 
                 _context.inventory.Remove(item);
                 await _context.SaveChangesAsync();
-                return NoContent();
+
+                _logger.LogInformation($"Deleted product with ID: {id}");
+                return Ok();
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error deleting inventory item");
-                return StatusCode(500, "Error deleting inventory item");
+                _logger.LogError(ex, "Error deleting product");
+                return StatusCode(500, "Error deleting product");
             }
         }
 
