@@ -28,7 +28,7 @@
         /* Admin-specific styles */
         .admin-sidebar {
             width: 280px;
-            transition: all 0.3s ease;
+            transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             z-index: 50;
         }
 
@@ -38,7 +38,7 @@
 
         .admin-content {
             margin-left: 280px;
-            transition: all 0.3s ease;
+            transition: margin 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .admin-content.expanded {
@@ -46,7 +46,7 @@
         }
 
         header {
-            transition: all 0.3s ease;
+            transition: left 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             z-index: 40;
         }
 
@@ -57,7 +57,9 @@
         }
 
         .nav-item {
-            transition: all 0.3s ease;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
         }
 
         .nav-item:hover {
@@ -81,7 +83,17 @@
 
         /* Add smooth transitions for sidebar text */
         .sidebar-text {
-            transition: opacity 0.3s ease;
+            transition: opacity 0.25s cubic-bezier(0.4, 0, 0.2, 1),
+                        transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            opacity: 1;
+            transform: translateX(0);
+            display: block;
+        }
+
+        .admin-sidebar.collapsed .sidebar-text {
+            opacity: 0;
+            transform: translateX(-10px);
+            pointer-events: none;
         }
 
         /* Add these to your existing styles */
@@ -100,6 +112,62 @@
 
         .admin-sidebar.collapsed #toggle-sidebar {
             position: static;
+        }
+
+        /* Add these to your existing styles section */
+        .admin-sidebar.collapsed .nav-item {
+            justify-content: center;
+            padding: 0.75rem;
+        }
+
+        .admin-sidebar.collapsed .material-icons {
+            margin-right: 0;
+        }
+
+        .admin-sidebar.collapsed .py-2 {
+            display: none;
+        }
+
+        /* Replace the existing material-icons related styles with these */
+        .material-icons {
+            font-size: 24px;
+            min-width: 24px;
+            min-height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: margin 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .admin-sidebar .nav-item {
+            width: 100%;
+            min-height: 48px;
+            display: flex;
+            align-items: center;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .admin-sidebar.collapsed .nav-item {
+            justify-content: center;
+            padding: 12px;
+            min-width: 48px;
+            margin: 0 auto;
+        }
+
+        /* Remove any margin/padding from the icon when collapsed */
+        .admin-sidebar.collapsed .material-icons {
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Ensure consistent spacing when expanded */
+        .admin-sidebar:not(.collapsed) .material-icons {
+            margin-right: 12px;
+        }
+
+        /* Remove the !important declarations and width/height constraints */
+        .admin-sidebar .nav-item i.material-icons {
+            flex: none;
         }
     </style>
 </head>
@@ -182,6 +250,19 @@
                     <i class="material-icons">settings</i>
                     <span class="sidebar-text">General</span>
                 </a>
+
+                <!-- Add this right after the last nav-item (General settings) -->
+                <div class="py-2">
+                    <p class="px-3 text-xs font-semibold text-slate-400 uppercase sidebar-text">Account</p>
+                </div>
+
+                <form method="post" action="/Admin?handler=Logout">
+                    @Html.AntiForgeryToken()
+                    <button type="submit" class="nav-item flex items-center space-x-3 p-3 rounded-lg w-full">
+                        <i class="material-icons">logout</i>
+                        <span class="sidebar-text">Logout</span>
+                    </button>
+                </form>
             </div>
         </nav>
     </aside>
@@ -230,19 +311,35 @@
         document.getElementById('toggle-sidebar').addEventListener('click', function() {
             const sidebar = document.getElementById('admin-sidebar');
             const content = document.querySelector('.admin-content');
-            const sidebarTexts = document.querySelectorAll('.sidebar-text:not(.logo-text)'); // Exclude logo text
             const header = document.querySelector('header');
+            const sidebarTexts = document.querySelectorAll('.sidebar-text');
+            const spaceElements = document.querySelectorAll('.space-x-3');
             
             sidebar.classList.toggle('collapsed');
             content.classList.toggle('expanded');
             
-            // Update header position based on sidebar state
+            // Update header position
             header.style.left = sidebar.classList.contains('collapsed') ? '80px' : '280px';
             
-            // Toggle visibility of text elements (excluding logo text)
-            sidebarTexts.forEach(text => {
-                text.style.display = sidebar.classList.contains('collapsed') ? 'none' : 'block';
-            });
+            if (sidebar.classList.contains('collapsed')) {
+                // When collapsing
+                spaceElements.forEach(el => el.classList.remove('space-x-3'));
+                // Don't hide the text elements, just let CSS handle their opacity
+                sidebarTexts.forEach(text => {
+                    text.style.position = 'absolute';
+                    text.style.visibility = 'hidden';
+                });
+            } else {
+                // When expanding
+                sidebarTexts.forEach(text => {
+                    text.style.position = 'static';
+                    text.style.visibility = 'visible';
+                });
+                // Slight delay for spacing to match the expansion
+                setTimeout(() => {
+                    spaceElements.forEach(el => el.classList.add('space-x-3'));
+                }, 50);
+            }
 
             // Save state to localStorage
             localStorage.setItem('sidebarCollapsed', sidebar.classList.contains('collapsed'));
@@ -270,15 +367,18 @@
             const sidebar = document.getElementById('admin-sidebar');
             const content = document.querySelector('.admin-content');
             const header = document.querySelector('header');
-            const sidebarTexts = document.querySelectorAll('.sidebar-text:not(.logo-text)');
+            const sidebarTexts = document.querySelectorAll('.sidebar-text');
+            const spaceElements = document.querySelectorAll('.space-x-3');
             const sidebarState = localStorage.getItem('sidebarCollapsed');
 
             if (sidebarState === 'true') {
                 sidebar.classList.add('collapsed');
                 content.classList.add('expanded');
                 header.style.left = '80px';
+                spaceElements.forEach(el => el.classList.remove('space-x-3'));
                 sidebarTexts.forEach(text => {
-                    text.style.display = 'none';
+                    text.style.position = 'absolute';
+                    text.style.visibility = 'hidden';
                 });
             }
         });
