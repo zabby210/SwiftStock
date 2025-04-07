@@ -1,9 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using SwiftStock.Data;
 using SwiftStock.Models;
-using Microsoft.AspNetCore.Authorization;
 
 namespace SwiftStock.Pages
 {
@@ -27,6 +27,7 @@ namespace SwiftStock.Pages
             try
             {
                 InventoryItems = await _context.inventory
+                    .Where(i => i.Stock > 0) // Only show items with stock
                     .OrderBy(i => i.Product_Name)
                     .ToListAsync();
 
