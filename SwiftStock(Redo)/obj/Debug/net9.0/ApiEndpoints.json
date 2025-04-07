@@ -68,7 +68,7 @@
   },
   {
     "ContainingType": "AlfaMart.Controllers.InventoryController",
-    "Method": "AddProduct",
+    "Method": "AddItem",
     "RelativePath": "api/Inventory/add",
     "HttpMethod": "POST",
     "IsController": true,
@@ -80,17 +80,7 @@
         "IsRequired": true
       }
     ],
-    "ReturnTypes": [
-      {
-        "Type": "SwiftStock.Models.InventoryItem",
-        "MediaTypes": [
-          "text/plain",
-          "application/json",
-          "text/json"
-        ],
-        "StatusCode": 200
-      }
-    ]
+    "ReturnTypes": []
   },
   {
     "ContainingType": "AlfaMart.Controllers.InventoryController",

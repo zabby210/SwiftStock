@@ -9,24 +9,24 @@ using SwiftStock.Models;
 namespace SwiftStock.Pages
 {
     [Authorize(Roles = "Admin")]
-    public class InventoryModel : PageModel
+    public class InventoryItemModel : PageModel
     {
         private readonly ApplicationDbContext _context;
-        private readonly ILogger<InventoryModel> _logger;
+        private readonly ILogger<InventoryItemModel> _logger;
 
-        public InventoryModel(ApplicationDbContext context, ILogger<InventoryModel> logger)
+        public InventoryItemModel(ApplicationDbContext context, ILogger<InventoryItemModel> logger)
         {
             _context = context;
             _logger = logger;
         }
 
-        public List<InventoryItem> InventoryItems { get; set; } = new();
+        public List<InventoryItem> InventoryItem { get; set; } = new();
 
         public async Task<IActionResult> OnGetAsync()
         {
             try
             {
-                InventoryItems = await _context.inventory
+                InventoryItem = await _context.inventory
                     .OrderBy(i => i.Product_Name)
                     .ToListAsync();
 

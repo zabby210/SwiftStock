@@ -1,5 +1,5 @@
 ﻿@page
-@model SwiftStock.Pages.InventoryModel
+@model SwiftStock.Pages.InventoryItemModel
 @{
     ViewData["Title"] = "Inventory Management";
     Layout = "_AdminLayout";
@@ -66,7 +66,7 @@
                 </tr>
             </thead>
                 <tbody class="divide-y divide-slate-800">
-                @foreach (var item in Model.InventoryItems)
+                @foreach (var item in Model.InventoryItem)
                 {
                         <tr class="hover:bg-[#0f1117]/50">
                             <td class="px-6 py-4 text-white">#@item.Id</td>

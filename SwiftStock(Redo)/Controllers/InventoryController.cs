@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SwiftStock.Data;
 using SwiftStock.Models;
-using System.Text.Json;
 
 namespace AlfaMart.Controllers
 {
@@ -52,20 +51,15 @@ namespace AlfaMart.Controllers
         }
 
         [HttpPost("add")]
-        public async Task<ActionResult<InventoryItem>> AddProduct([FromBody] InventoryItem item)
+        public async Task<ActionResult> AddItem([FromBody] InventoryItem item)
         {
+            if (item == null)
+                return BadRequest("Invalid item");
+
             try
             {
-                if (!ModelState.IsValid)
-                {
-                    return BadRequest(ModelState);
-                }
-
-                item.Id = 0; // Ensure new item
                 _context.inventory.Add(item);
                 await _context.SaveChangesAsync();
-
-                _logger.LogInformation($"Added new product: {JsonSerializer.Serialize(item)}");
                 return Ok(item);
             }
             catch (Exception ex)
@@ -136,7 +130,7 @@ namespace AlfaMart.Controllers
             try
             {
                 var items = await _context.inventory.OrderBy(i => i.Product_Name).ToListAsync();
-                
+
                 // Create CSV content
                 var csv = "ID,Product Name,Price,Stock\n";
                 foreach (var item in items)

@@ -1,6 +1,5 @@
-using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authentication.Cookies;
-using MySql.EntityFrameworkCore.Extensions;
+using Microsoft.EntityFrameworkCore;
 using SwiftStock.Data;
 
 var builder = WebApplication.CreateBuilder(args);
