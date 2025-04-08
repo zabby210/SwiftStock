@@ -58,6 +58,8 @@ C:\Users\athen\source\repos\zabby210\SwiftStock\SwiftStock(Redo)\wwwroot\lib\boo
 C:\Users\athen\source\repos\zabby210\SwiftStock\SwiftStock(Redo)\wwwroot\lib\bootstrap\dist\js\bootstrap.esm.js
 C:\Users\athen\source\repos\zabby210\SwiftStock\SwiftStock(Redo)\wwwroot\lib\bootstrap\dist\css\bootstrap-utilities.rtl.min.css
 C:\Users\athen\source\repos\zabby210\SwiftStock\SwiftStock(Redo)\wwwroot\lib\bootstrap\dist\css\bootstrap-reboot.css.map
+wwwroot\css\Images\SwiftLogo.png
+wwwroot\css\Images\SwiftStock.png
 wwwroot\css\style.css
 wwwroot\css\tailwind.css
 wwwroot\favicon.ico
