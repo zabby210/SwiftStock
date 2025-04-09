@@ -50,7 +50,7 @@ namespace AlfaMart.Pages
                     .Sum(s => s.Quantity * s.InventoryItem.Price);
 
                 TotalOrders = _context.sales.Count();
-                ActiveCustomers = _context.consumer.Count();
+                ActiveCustomers = _context.users.Count();
                 LowStockItems = _context.inventory.Count(i => i.Stock < 10);
 
                 // Get recent orders with related data

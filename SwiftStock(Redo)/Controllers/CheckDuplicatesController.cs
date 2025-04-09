@@ -18,8 +18,8 @@ namespace AlfaMart.Controllers
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] CheckDuplicatesRequest request)
         {
-            var emailExists = await _context.consumer.AnyAsync(u => u.Email == request.Email);
-            var usernameExists = await _context.consumer.AnyAsync(u => u.Username == request.Username);
+            var emailExists = await _context.users.AnyAsync(u => u.Email == request.Email);
+            var usernameExists = await _context.users.AnyAsync(u => u.Username == request.Username);
 
             return Ok(new { usernameExists, emailExists });
         }

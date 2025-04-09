@@ -35,18 +35,17 @@ namespace AlfaMart.Pages
 
             try
             {
-                // Log the username being checked
                 Console.WriteLine($"Attempting to log in with username: {Username}");
 
-                // Check in the users table for admin and personnel
+                // Check in the users table for both users and personnel
                 var user = await _context.users.FirstOrDefaultAsync(u => u.Username == Username);
                 if (user != null && BCrypt.Net.BCrypt.Verify(Password, user.Password))
                 {
-                    // Successful login for users
+                    // Successful login for users and personnel
                     var claims = new List<Claim>
                     {
                         new Claim(ClaimTypes.Name, user.Username),
-                        new Claim(ClaimTypes.Role, user.Role) // Retain role for users
+                        new Claim(ClaimTypes.Role, user.Role) // Retain role for users and personnel
                     };
 
                     var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
@@ -59,25 +58,9 @@ namespace AlfaMart.Pages
                     {
                         "Admin" => RedirectToPage("/Admin"),
                         "Personnel" => RedirectToPage("/Cashier"),
+                        "Customer" => RedirectToPage("/Home"),
                         _ => RedirectToPage("/Home")
                     };
-                }
-
-                // Check in the consumer table for regular consumers
-                var consumer = await _context.consumer.FirstOrDefaultAsync(u => u.Username == Username);
-                if (consumer != null && BCrypt.Net.BCrypt.Verify(Password, consumer.Password))
-                {
-                    // Successful login for consumers
-                    var claims = new List<Claim>
-                    {
-                        new Claim(ClaimTypes.Name, consumer.Username)
-                    };
-
-                    var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
-                    var principal = new ClaimsPrincipal(identity);
-
-                    await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
-                    return RedirectToPage("/Home"); // Redirect to home page for consumers
                 }
             }
             catch (Exception ex)
@@ -93,5 +76,8 @@ namespace AlfaMart.Pages
         }
     }
 }
+
+
+
 
 

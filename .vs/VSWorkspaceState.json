@@ -2,11 +2,12 @@
   "ExpandedNodes": [
     "",
     "\\SwiftStock(Redo)",
+    "\\SwiftStock(Redo)\\Controllers",
     "\\SwiftStock(Redo)\\Data",
     "\\SwiftStock(Redo)\\Pages",
     "\\SwiftStock(Redo)\\Properties",
     "\\SwiftStock(Redo)\\Properties\\Models"
   ],
-  "SelectedNode": "\\SwiftStock(Redo)\\Pages\\Register.cshtml",
+  "SelectedNode": "\\SwiftStock(Redo)\\Controllers\\CheckDuplicatesController.cs",
   "PreviewInSolutionExplorer": false
 }

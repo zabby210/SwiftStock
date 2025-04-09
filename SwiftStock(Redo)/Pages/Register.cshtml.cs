@@ -45,16 +45,16 @@ namespace AlfaMart.Pages
                 return Page();
             }
 
-            // Check if the email already exists in the consumer table
-            var existingEmail = await _context.consumer.FirstOrDefaultAsync(u => u.Email == Email);
+            // Check if the email already exists in the users table
+            var existingEmail = await _context.users.FirstOrDefaultAsync(u => u.Email == Email);
             if (existingEmail != null)
             {
                 ErrorMessage = "Email is already registered.";
                 return Page();
             }
 
-            // Check if the username already exists in the consumer table
-            var existingUser = await _context.consumer.FirstOrDefaultAsync(u => u.Username == Username);
+            // Check if the username already exists in the users table
+            var existingUser = await _context.users.FirstOrDefaultAsync(u => u.Username == Username);
             if (existingUser != null)
             {
                 ErrorMessage = "Username is already taken.";
@@ -71,19 +71,33 @@ namespace AlfaMart.Pages
             // Hash the password using BCrypt
             var hashedPassword = HashPassword(Password);
 
-            // Create a new consumer
-            var newConsumer = new Consumer
+            // Create a new user
+            var newUser = new User
             {
                 Email = Email,
                 Name = Name,
                 Username = Username,
                 Password = hashedPassword,
+                Role = "Customer" // Set default role to Customer
             };
 
-            _context.consumer.Add(newConsumer); // Add to consumer table
-            await _context.SaveChangesAsync();
+            _context.users.Add(newUser); // Add to users table
+            Console.WriteLine("Attempting to save user to database.");
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error saving user: {ex.Message}");
+                ErrorMessage = "An error occurred while creating the account.";
+                return Page();
+            }
+            Console.WriteLine("User saved successfully.");
 
-            return RedirectToPage("/Login");
+            Console.WriteLine($"Email: {Email}, Name: {Name}, Username: {Username}, Password: {Password}");
+
+          return RedirectToPage("/Login");
         }
 
         // Helper methods for validation

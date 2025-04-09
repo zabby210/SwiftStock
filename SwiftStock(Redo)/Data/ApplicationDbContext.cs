@@ -12,7 +12,6 @@ namespace SwiftStock.Data
 
         public DbSet<InventoryItem> inventory { get; set; }
         public DbSet<User> users { get; set; }
-        public DbSet<Consumer> consumer { get; set; }
         public DbSet<Sale> sales { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -33,11 +32,6 @@ namespace SwiftStock.Data
                 entity.HasKey(e => e.Id);
             });
 
-            modelBuilder.Entity<Consumer>(entity =>
-            {
-                entity.ToTable("consumer");
-                entity.HasKey(e => e.Id);
-            });
 
             modelBuilder.Entity<Sale>(entity =>
             {
