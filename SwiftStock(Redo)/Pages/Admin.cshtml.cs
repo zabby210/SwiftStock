@@ -22,7 +22,7 @@ namespace AlfaMart.Pages
 
         public IActionResult OnGet()
         {
-            if (!User.Identity.IsAuthenticated || !User.IsInRole("Admin"))
+            if (User.Identity == null || !User.Identity.IsAuthenticated || !User.IsInRole("Admin"))
             {
                 return RedirectToPage("/Login", new { returnUrl = "/Admin" });
             }

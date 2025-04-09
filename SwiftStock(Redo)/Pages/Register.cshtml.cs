@@ -1,16 +1,14 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.EntityFrameworkCore;
 using SwiftStock.Data;
 using SwiftStock.Models;
-using System.Security.Cryptography;
-using System.Text;
 
 namespace AlfaMart.Pages
 {
     public class RegisterModel : PageModel
     {
         private readonly ApplicationDbContext _context;
-        private static readonly string Key = "b14ca5898a4e4133bbce2ea2315a1916"; // 32 chars = 256 bits
 
         public RegisterModel(ApplicationDbContext context)
         {
@@ -18,91 +16,103 @@ namespace AlfaMart.Pages
         }
 
         [BindProperty]
-        public string Email { get; set; }
-
+        public string? Email { get; set; }
         [BindProperty]
-        public string Name { get; set; }
-
+        public string? Name { get; set; }
         [BindProperty]
-        public string Username { get; set; }
-
+        public string? Username { get; set; }
         [BindProperty]
-        public string Password { get; set; }
-
-        [BindProperty]
-        public string ErrorMessage { get; set; }
+        public string? Password { get; set; }
+        public string ErrorMessage { get; set; } = string.Empty;
 
         public void OnGet()
         {
         }
 
-        // Helper method to encrypt password using AES
-        private string EncryptPassword(string password)
+        public async Task<IActionResult> OnPostAsync()
         {
-            byte[] iv = new byte[16];
-            byte[] array;
-
-            using (Aes aes = Aes.Create())
-            {
-                aes.Key = Encoding.UTF8.GetBytes(Key);
-                aes.IV = iv;
-
-                ICryptoTransform encryptor = aes.CreateEncryptor(aes.Key, aes.IV);
-
-                using (MemoryStream memoryStream = new MemoryStream())
-                {
-                    using (CryptoStream cryptoStream = new CryptoStream(memoryStream, encryptor, CryptoStreamMode.Write))
-                    {
-                        using (StreamWriter streamWriter = new StreamWriter(cryptoStream))
-                        {
-                            streamWriter.Write(password);
-                        }
-
-                        array = memoryStream.ToArray();
-                    }
-                }
-            }
-
-            return Convert.ToBase64String(array);
-        }
-
-        public IActionResult OnPost()
-        {
-            if (string.IsNullOrEmpty(Email) || string.IsNullOrEmpty(Name) || 
-                string.IsNullOrEmpty(Username) || string.IsNullOrEmpty(Password))
+            // Check for required fields
+            if (string.IsNullOrEmpty(Email) || string.IsNullOrEmpty(Name) || string.IsNullOrEmpty(Username) || string.IsNullOrEmpty(Password))
             {
                 ErrorMessage = "All fields are required.";
                 return Page();
             }
 
-            // Check if the username or email already exists
-            if (_context.consumer.Any(c => c.Username == Username || c.Email == Email))
+            // Validate email format
+            if (!IsValidEmail(Email))
             {
-                ErrorMessage = "Username or Email already exists.";
+                ErrorMessage = "Invalid email format.";
                 return Page();
             }
 
+            // Check if the email already exists in the consumer table
+            var existingEmail = await _context.consumer.FirstOrDefaultAsync(u => u.Email == Email);
+            if (existingEmail != null)
+            {
+                ErrorMessage = "Email is already registered.";
+                return Page();
+            }
+
+            // Check if the username already exists in the consumer table
+            var existingUser = await _context.consumer.FirstOrDefaultAsync(u => u.Username == Username);
+            if (existingUser != null)
+            {
+                ErrorMessage = "Username is already taken.";
+                return Page();
+            }
+
+            // Validate username and name
+            if (!IsValidUsername(Username) || !IsValidName(Name))
+            {
+                ErrorMessage = "Username and Name must not contain special characters.";
+                return Page();
+            }
+
+            // Hash the password using BCrypt
+            var hashedPassword = HashPassword(Password);
+
+            // Create a new consumer
+            var newConsumer = new Consumer
+            {
+                Email = Email,
+                Name = Name,
+                Username = Username,
+                Password = hashedPassword,
+            };
+
+            _context.consumer.Add(newConsumer); // Add to consumer table
+            await _context.SaveChangesAsync();
+
+            return RedirectToPage("/Login");
+        }
+
+        // Helper methods for validation
+        private bool IsValidEmail(string email)
+        {
             try
             {
-                // Create a new consumer with encrypted password
-                var consumer = new Consumer
-                {
-                    Email = Email,
-                    Name = Name,
-                    Username = Username,
-                    Password = EncryptPassword(Password) // Encrypt password before storing
-                };
-
-                _context.consumer.Add(consumer);
-                _context.SaveChanges();
-
-                return RedirectToPage("/Login");
+                var addr = new System.Net.Mail.MailAddress(email);
+                return addr.Address == email;
             }
-            catch (Exception ex)
+            catch
             {
-                ErrorMessage = "An error occurred during registration. Please try again.";
-                return Page();
+                return false;
             }
+        }
+
+        private string HashPassword(string password)
+        {
+            return BCrypt.Net.BCrypt.HashPassword(password);
+        }
+
+        private bool IsValidName(string name)
+        {
+            return !string.IsNullOrWhiteSpace(name) && name.All(c => char.IsLetter(c) || char.IsWhiteSpace(c) || c == '-' || c == '\'');
+        }
+
+        private bool IsValidUsername(string username)
+        {
+            return !string.IsNullOrWhiteSpace(username) && username.All(c => char.IsLetterOrDigit(c) || c == '_');
         }
     }
 }
