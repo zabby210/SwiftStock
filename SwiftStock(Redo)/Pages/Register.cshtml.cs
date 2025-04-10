@@ -3,12 +3,14 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using SwiftStock.Data;
 using SwiftStock.Models;
+using System.ComponentModel.DataAnnotations;
 
 namespace AlfaMart.Pages
 {
+
     public class RegisterModel : PageModel
     {
-        private readonly ApplicationDbContext _context;
+        private readonly ApplicationDbContext _context; // Use swiftstockdb as your DbContext
 
         public RegisterModel(ApplicationDbContext context)
         {
@@ -16,14 +18,25 @@ namespace AlfaMart.Pages
         }
 
         [BindProperty]
-        public string? Email { get; set; }
+        [EmailAddress(ErrorMessage = "Invalid Email Address")]
+        public string Email { get; set; }
+
         [BindProperty]
-        public string? Name { get; set; }
+        public string Name { get; set; }
+
         [BindProperty]
-        public string? Username { get; set; }
+        public string Username { get; set; }
+
         [BindProperty]
-        public string? Password { get; set; }
-        public string ErrorMessage { get; set; } = string.Empty;
+        [DataType(DataType.Password)]
+        public string Password { get; set; }
+
+        [BindProperty]
+        [DataType(DataType.Password)]
+        [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
+        public string ConfirmPassword { get; set; }
+
+        public string ErrorMessage { get; set; } // Define ErrorMessage property
 
         public void OnGet()
         {
@@ -31,8 +44,9 @@ namespace AlfaMart.Pages
 
         public async Task<IActionResult> OnPostAsync()
         {
-            // Check for required fields
-            if (string.IsNullOrEmpty(Email) || string.IsNullOrEmpty(Name) || string.IsNullOrEmpty(Username) || string.IsNullOrEmpty(Password))
+            Console.WriteLine($"Username: {Username}, Password: {Password}, Email: {Email}");
+
+            if (string.IsNullOrEmpty(Username) || string.IsNullOrEmpty(Password) || string.IsNullOrEmpty(Email))
             {
                 ErrorMessage = "All fields are required.";
                 return Page();
@@ -46,7 +60,7 @@ namespace AlfaMart.Pages
             }
 
             // Check if the email already exists in the users table
-            var existingEmail = await _context.users.FirstOrDefaultAsync(u => u.Email == Email);
+            var existingEmail = await _context.users.FirstOrDefaultAsync(u => u.Email == Email); // Ensure 'Users' matches your DbSet name
             if (existingEmail != null)
             {
                 ErrorMessage = "Email is already registered.";
@@ -54,53 +68,40 @@ namespace AlfaMart.Pages
             }
 
             // Check if the username already exists in the users table
-            var existingUser = await _context.users.FirstOrDefaultAsync(u => u.Username == Username);
+            var existingUser = await _context.users.FirstOrDefaultAsync(u => u.Username == Username); // Ensure 'Users' matches your DbSet name
             if (existingUser != null)
             {
                 ErrorMessage = "Username is already taken.";
                 return Page();
             }
 
-            // Validate username and name
             if (!IsValidUsername(Username) || !IsValidName(Name))
             {
                 ErrorMessage = "Username and Name must not contain special characters.";
                 return Page();
             }
 
-            // Hash the password using BCrypt
-            var hashedPassword = HashPassword(Password);
+            // Hash the password
+            var hashedPassword = BCrypt.Net.BCrypt.HashPassword(Password);
 
-            // Create a new user
-            var newUser = new User
+            // Create new user
+            var user = new User
             {
                 Email = Email,
                 Name = Name,
                 Username = Username,
                 Password = hashedPassword,
-                Role = "Customer" // Set default role to Customer
+                Role = "Customer"
             };
 
-            _context.users.Add(newUser); // Add to users table
-            Console.WriteLine("Attempting to save user to database.");
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Error saving user: {ex.Message}");
-                ErrorMessage = "An error occurred while creating the account.";
-                return Page();
-            }
-            Console.WriteLine("User saved successfully.");
+            _context.users.Add(user); // Ensure 'Users' matches your DbSet name
+            await _context.SaveChangesAsync();
 
-            Console.WriteLine($"Email: {Email}, Name: {Name}, Username: {Username}, Password: {Password}");
-
-          return RedirectToPage("/Login");
+            // Redirect to the Login page
+            return RedirectToPage("/Login"); // Redirect to the Login page
         }
 
-        // Helper methods for validation
+        // Implement the validation methods
         private bool IsValidEmail(string email)
         {
             try
@@ -114,19 +115,14 @@ namespace AlfaMart.Pages
             }
         }
 
-        private string HashPassword(string password)
+        private bool IsValidUsername(string username)
         {
-            return BCrypt.Net.BCrypt.HashPassword(password);
+            return !string.IsNullOrWhiteSpace(username) && username.All(c => char.IsLetterOrDigit(c) || c == '_');
         }
 
         private bool IsValidName(string name)
         {
             return !string.IsNullOrWhiteSpace(name) && name.All(c => char.IsLetter(c) || char.IsWhiteSpace(c) || c == '-' || c == '\'');
-        }
-
-        private bool IsValidUsername(string username)
-        {
-            return !string.IsNullOrWhiteSpace(username) && username.All(c => char.IsLetterOrDigit(c) || c == '_');
         }
     }
 }

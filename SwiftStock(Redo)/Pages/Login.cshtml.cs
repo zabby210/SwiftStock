@@ -1,10 +1,7 @@
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using SwiftStock.Data;
-using System.Security.Claims;
 
 namespace AlfaMart.Pages
 {
@@ -18,66 +15,56 @@ namespace AlfaMart.Pages
         }
 
         [BindProperty]
-        public string? Username { get; set; }
-        [BindProperty]
-        public string? Password { get; set; }
-        public string ErrorMessage { get; set; } = string.Empty;
+        public string Username { get; set; }
 
-        public void OnGet() { }
+        [BindProperty]
+        public string Password { get; set; }
+
+        public string ErrorMessage { get; set; }
+
+        public void OnGet()
+        {
+        }
 
         public async Task<IActionResult> OnPostAsync()
         {
             if (string.IsNullOrEmpty(Username) || string.IsNullOrEmpty(Password))
             {
-                ErrorMessage = "Username and Password are required.";
+                ErrorMessage = "All fields are required.";
                 return Page();
             }
 
-            try
+            // Check if the user exists using only the username
+            var user = await _context.users.FirstOrDefaultAsync(u => u.Username == Username);
+            if (user == null)
             {
-                Console.WriteLine($"Attempting to log in with username: {Username}");
-
-                // Check in the users table for both users and personnel
-                var user = await _context.users.FirstOrDefaultAsync(u => u.Username == Username);
-                if (user != null && BCrypt.Net.BCrypt.Verify(Password, user.Password))
-                {
-                    // Successful login for users and personnel
-                    var claims = new List<Claim>
-                    {
-                        new Claim(ClaimTypes.Name, user.Username),
-                        new Claim(ClaimTypes.Role, user.Role) // Retain role for users and personnel
-                    };
-
-                    var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
-                    var principal = new ClaimsPrincipal(identity);
-
-                    await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
-
-                    // Redirect based on user role
-                    return user.Role switch
-                    {
-                        "Admin" => RedirectToPage("/Admin"),
-                        "Personnel" => RedirectToPage("/Cashier"),
-                        "Customer" => RedirectToPage("/Home"),
-                        _ => RedirectToPage("/Home")
-                    };
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Error during login: {ex.Message}");
-                ErrorMessage = "An error occurred while logging in.";
+                ErrorMessage = "Invalid username or password.";
                 return Page();
             }
 
-            // If we reach here, login failed
-            ErrorMessage = "Invalid username or password.";
-            return Page();
+            // Log the retrieved password hash for debugging
+            Console.WriteLine($"Retrieved password hash: {user.Password}");
+
+            // Verify the password
+            if (!BCrypt.Net.BCrypt.Verify(Password, user.Password))
+            {
+                ErrorMessage = "Invalid username or password.";
+                return Page();
+            }
+
+            // Redirect based on user role
+            switch (user.Role)
+            {
+                case "Admin":
+                    return RedirectToPage("/Admin"); // Redirect to admin page
+                case "Personnel":
+                    return RedirectToPage("/Cashier"); // Redirect to cashier page
+                case "Customer":
+                    return RedirectToPage("/Home"); // Redirect to home page
+                default:
+                    ErrorMessage = "User is not recognized.";
+                    return Page(); // Handle unexpected roles
+            }
         }
     }
 }
-
-
-
-
-

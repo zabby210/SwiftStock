@@ -8,136 +8,107 @@
     <div class="w-full max-w-md">
         <!-- Branding -->
         <div class="text-center mb-8">
-           <img src="~/css/Images/SwiftLogo.png" alt="Logo" class="h-12 mx-auto mb-4">
-            <h1 class="text-2xl font-bold text-white">Welcome to SwiftStock</h1>
-            <p class="text-slate-400 mt-2">Sign in to open Alfamart store</p>
+            <img src="~/css/Images/SwiftLogo.png" alt="Logo" class="h-12 mx-auto mb-4">
+            <h1 class="text-2xl font-bold text-white">Login to Your Account</h1>
+            <p class="text-slate-400 mt-2">Welcome!</p>
         </div>
 
-            <!-- Login Form -->
-            <form method="post" id="login-form" class="space-y-6" novalidate>
-                <!-- Username Field -->
-                <div>
-                    <label for="Username" class="block text-sm font-medium text-slate-300 mb-2">
-                        Username
-                        <span class="text-[#E31837]">*</span>
-                    </label>
-                    <div class="relative">
-                        <i class="fas fa-user absolute left-4 top-3.5 text-slate-400"></i>
-                        <input type="text" 
-                               id="Username" 
-                               name="Username"
-                               required
-                               aria-required="true"
-                               class="w-full px-11 py-3 rounded-lg bg-[#0f1117] text-white placeholder-slate-500 border border-slate-800 focus:outline-none focus:border-[#E31837] focus:ring-1 focus:ring-[#E31837] transition-all duration-300"
-                               placeholder="Enter your username">
-                        <div class="hidden text-[#E31837] text-sm mt-1" id="username-error" role="alert"></div>
-                    </div>
-                </div>
-
-                <!-- Password Field -->
-                <div>
-                    <label for="Password" class="block text-sm font-medium text-slate-300 mb-2">
-                        Password
-                        <span class="text-[#E31837]">*</span>
-                    </label>
-                    <div class="relative group">
-                        <i class="fas fa-lock absolute left-4 top-3.5 text-slate-400"></i>
-                        <input type="password" 
-                               id="Password" 
-                               name="Password"
-                               required
-                               aria-required="true"
-                               class="w-full px-11 py-3 rounded-lg bg-[#0f1117] text-white placeholder-slate-500 border border-slate-800 focus:outline-none focus:border-[#E31837] focus:ring-1 focus:ring-[#E31837] transition-all duration-300 pr-24"
-                               placeholder="Enter your password">
-                        <button type="button" 
-                                onclick="togglePassword()"
-                                aria-label="Show password"
-                                class="absolute right-4 top-3.5 text-slate-400 hover:text-white transition-colors duration-300 focus-ring">
-                            <i id="password-toggle-icon" class="fas fa-eye"></i>
-                        </button>
-                        <!-- Caps Lock Warning -->
-                        <div id="caps-warning" class="hidden absolute -bottom-6 left-0 text-[#FFD700] text-sm">
-                            <i class="fas fa-exclamation-triangle mr-1"></i>
-                            Caps Lock is on
-                        </div>
-                        <div class="hidden text-[#E31837] text-sm mt-1" id="password-error" role="alert"></div>
-                    </div>
-                </div>
-
-                <!-- Remember Me + Forgot Password -->
-                <div class="flex items-center justify-between text-sm">
-                    <label class="flex items-center space-x-2 cursor-pointer group">
-                        <input type="checkbox" 
-                               id="remember"
-                               name="remember"
-                               class="rounded border-slate-800 text-[#E31837] focus:ring-[#E31837] bg-[#0f1117]">
-                        <span class="text-slate-300 group-hover:text-white transition-colors duration-300">Remember me</span>
-                    </label>
-                    <a href="/forgot-password" 
-                       class="text-[#E31837] hover:text-[#E31837]/80 transition-colors duration-300 focus-ring">
-                        Forgot Password?
-                    </a>
-                </div>
-
-                <!-- Error Messages Container -->
-                @if (!string.IsNullOrEmpty(Model.ErrorMessage))
-                {
-                    <div class="p-4 rounded-lg bg-[#E31837]/10 border border-[#E31837]/20" role="alert">
-                        <div class="flex items-center text-[#E31837]">
-                            <i class="fas fa-exclamation-circle mr-2"></i>
-                            <span>@Model.ErrorMessage</span>
-                        </div>
-                    </div>
-                }
-
-                <!-- Submit Button -->
-                <button type="submit"
-                        class="w-full bg-[#E31837] text-white py-3 px-4 rounded-lg font-medium 
-                               hover:bg-[#E31837]/90 transition-all duration-300 focus-ring
-                               disabled:opacity-50 disabled:cursor-not-allowed"
-                        id="submit-button">
-                    <span class="flex items-center justify-center gap-2">
-                        <i class="fas fa-sign-in-alt"></i>
-                        <span>Log in</span>
-                        <!-- Loading Spinner -->
-                        <svg class="hidden animate-spin h-5 w-5" id="loading-spinner" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                        </svg>
-                    </span>
-                </button>
-            </form>
-
-            <!-- Add this right before the Help & Support section -->
-            <div class="mt-6 text-center">
-                <p class="text-slate-400">
-                    Don't have an account? 
-                    <a href="/Register" class="text-[#E31837] hover:text-[#E31837]/80 transition-colors duration-300 focus-ring font-medium">
-                        Create an account
-                    </a>
-                </p>
+        <!-- Login Form -->
+        <form method="post" id="login-form" class="space-y-6" novalidate>
+            <!-- Username Field -->
+            <div>
+                <label for="Username" class="block text-sm font-medium text-slate-300 mb-2">
+                    Username
+                    <span class="text-[#E31837]">*</span>
+                </label>
+                <input type="text" 
+                       id="Username" 
+                       name="Username"
+                       required
+                       aria-required="true"
+                       class="w-full px-4 py-3 rounded-lg bg-[#0f1117] text-white placeholder-slate-500 border border-slate-800 focus:outline-none focus:border-[#E31837] focus:ring-1 focus:ring-[#E31837] transition-all duration-300"
+                       placeholder="Enter your username">
+                <div id="username-error" class="text-red-500 hidden"></div>
             </div>
 
-            <!-- Help & Support -->
-            <div class="mt-8 text-center space-y-4">
-                <p class="text-slate-400">
-                    Need help? <a href="/support" class="text-[#E31837] hover:text-[#E31837]/80 transition-colors duration-300 focus-ring">Contact Support</a>
-                </p>
-                <p class="text-slate-400 text-sm">
-                    By signing in, you agree to our 
-                    <a href="/terms" class="text-[#E31837] hover:text-[#E31837]/80 transition-colors duration-300 focus-ring">Terms</a> and 
-                    <a href="/privacy" class="text-[#E31837] hover:text-[#E31837]/80 transition-colors duration-300 focus-ring">Privacy Policy</a>
-                </p>
+            <!-- Password Field -->
+            <div>
+                <label for="Password" class="block text-sm font-medium text-slate-300 mb-2">
+                    Password
+                    <span class="text-[#E31837]">*</span>
+                </label>
+                <div class="relative">
+                    <input type="password" 
+                           id="Password" 
+                           name="Password"
+                           required
+                           aria-required="true"
+                           class="w-full px-4 py-3 rounded-lg bg-[#0f1117] text-white placeholder-slate-500 border border-slate-800 focus:outline-none focus:border-[#E31837] focus:ring-1 focus:ring-[#E31837] transition-all duration-300"
+                           placeholder="Enter your password">
+                    <button type="button" 
+                            onclick="togglePasswordVisibility('Password', 'password-toggle-icon')"
+                            class="absolute right-4 top-3.5 text-slate-400 hover:text-white transition-colors duration-300">
+                        <i id="password-toggle-icon" class="fas fa-eye"></i>
+                    </button>
+                </div>
+                <div id="password-error" class="text-red-500 hidden"></div>
             </div>
+
+            <!-- Remember Me + Forgot Password -->
+            <div class="flex items-center justify-between text-sm">
+                <label class="flex items-center space-x-2 cursor-pointer group">
+                    <input type="checkbox" 
+                           id="remember"
+                           name="remember"
+                           class="rounded border-slate-800 text-[#E31837] focus:ring-[#E31837] bg-[#0f1117]">
+                    <span class="text-slate-300 group-hover:text-white transition-colors duration-300">Remember me</span>
+                </label>
+                <a href="/forgot-password" 
+                   class="text-[#E31837] hover:text-[#E31837]/80 transition-colors duration-300 focus-ring">
+                    Forgot Password?
+                </a>
+            </div>
+
+            <!-- Error Messages Container -->
+            @if (!string.IsNullOrEmpty(Model.ErrorMessage))
+            {
+                <div class="p-4 rounded-lg bg-[#E31837]/10 border border-[#E31837]/20" role="alert">
+                    <div class="flex items-center text-[#E31837]">
+                        <i class="fas fa-exclamation-circle mr-2"></i>
+                        <span>@Model.ErrorMessage</span>
+                    </div>
+                </div>
+            }
+
+            <!-- Submit Button -->
+            <button type="submit"
+                    id="submit-button"
+                    class="w-full bg-[#E31837] text-white py-3 px-4 rounded-lg font-medium 
+                           hover:bg-[#E31837]/90 transition-all duration-300 focus-ring">
+                <span class="flex items-center justify-center gap-2">
+                    <i class="fas fa-sign-in-alt"></i>
+                    <span>Login</span>
+                </span>
+            </button>
+        </form>
+
+        <!-- Help & Support -->
+        <div class="mt-6 text-center">
+            <p class="text-slate-400">
+                Don't have an account? 
+                <a href="/Register" class="text-[#E31837] hover:text-[#E31837]/80 transition-colors duration-300 focus-ring font-medium">
+                    Create new account
+                </a>
+            </p>
         </div>
- </div>
-  
+    </div>
+</div>
+
 @section Scripts {
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         const form = document.getElementById('login-form');
         const submitButton = document.getElementById('submit-button');
-        const loadingSpinner = document.getElementById('loading-spinner');
         const usernameInput = document.getElementById('Username');
         const passwordInput = document.getElementById('Password');
 
@@ -170,7 +141,7 @@
 
             // Show loading state
             submitButton.disabled = true;
-            loadingSpinner.classList.remove('hidden');
+            // Optionally, you can show a loading spinner here
         });
 
         // Clear error messages on input
@@ -184,15 +155,15 @@
     });
 
     // Password Visibility Toggle
-    function togglePassword() {
-        const passwordInput = document.getElementById('Password');
-        const icon = document.getElementById('password-toggle-icon');
-        
-        if (passwordInput.type === 'password') {
-            passwordInput.type = 'text';
+    function togglePasswordVisibility(inputId, iconId) {
+        const input = document.getElementById(inputId);
+        const icon = document.getElementById(iconId);
+
+        if (input.type === 'password') {
+            input.type = 'text';
             icon.classList.replace('fa-eye', 'fa-eye-slash');
         } else {
-            passwordInput.type = 'password';
+            input.type = 'password';
             icon.classList.replace('fa-eye-slash', 'fa-eye');
         }
     }

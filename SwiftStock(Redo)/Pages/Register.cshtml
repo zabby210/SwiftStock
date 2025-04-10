@@ -5,135 +5,120 @@
 }
 
 <div class="min-h-screen flex items-center justify-center px-4 py-12 bg-[#0f1117]">
-    <div class="w-full max-w-md bg-[#1a1d22] rounded-lg shadow-lg p-8">
+    <div class="w-full max-w-md">
         <!-- Branding -->
         <div class="text-center mb-8">
-           <img src="~/css/Images/SwiftLogo.png" alt="Logo" class="h-12 mx-auto mb-4">
+            <img src="~/css/Images/SwiftLogo.png" alt="Logo" class="h-12 mx-auto mb-4">
             <h1 class="text-2xl font-bold text-white">Create an Account</h1>
-            <p class="text-slate-400 mt-2">Join SwiftStock to check out Alfamart store</p>
+            <p class="text-slate-400 mt-2">Join us to start your journey</p>
         </div>
 
+        <!-- Registration Form -->
         <form method="post" id="register-form" class="space-y-6" novalidate>
             <!-- Email Field -->
             <div>
-                <label for="email" class="block text-sm font-medium text-slate-300 mb-2">
-                    Email <span class="text-[#E31837]">*</span>
+                <label for="Email" class="block text-sm font-medium text-slate-300 mb-2">
+                    Email
+                    <span class="text-[#E31837]">*</span>
                 </label>
-                <div class="relative">
-                    <i class="fas fa-envelope absolute left-4 top-3.5 text-slate-400"></i>
-                    <input type="email" 
-                           id="email" 
-                           name="Email"
-                           required
-                           class="w-full px-11 py-3 rounded-lg bg-[#0f1117] text-white placeholder-slate-500 border border-slate-800 focus:outline-none focus:border-[#E31837] focus:ring-1 focus:ring-[#E31837] transition-all duration-300"
-                           placeholder="Enter your email"
-                           value="@Model.Email">
-                    <div class="hidden text-[#E31837] text-sm mt-1" id="email-error" role="alert"></div>
-                </div>
+                <input type="email" 
+                       id="Email" 
+                       name="Email"
+                       required
+                       aria-required="true"
+                       class="w-full px-4 py-3 rounded-lg bg-[#0f1117] text-white placeholder-slate-500 border border-slate-800 focus:outline-none focus:border-[#E31837] focus:ring-1 focus:ring-[#E31837] transition-all duration-300"
+                       placeholder="Enter your email">
             </div>
 
             <!-- Name Field -->
             <div>
-                <label for="name" class="block text-sm font-medium text-slate-300 mb-2">
-                    Name <span class="text-[#E31837]">*</span>
+                <label for="Name" class="block text-sm font-medium text-slate-300 mb-2">
+                    Name
+                    <span class="text-[#E31837]">*</span>
                 </label>
-                <div class="relative">
-                    <i class="fas fa-user absolute left-4 top-3.5 text-slate-400"></i>
-                    <input type="text" 
-                           id="name" 
-                           name="Name"
-                           required
-                           class="w-full px-11 py-3 rounded-lg bg-[#0f1117] text-white placeholder-slate-500 border border-slate-800 focus:outline-none focus:border-[#E31837] focus:ring-1 focus:ring-[#E31837] transition-all duration-300"
-                           placeholder="Enter your name"
-                           value="@Model.Name">
-                    <div class="hidden text-[#E31837] text-sm mt-1" id="name-error" role="alert"></div>
-                </div>
+                <input type="text" 
+                       id="Name" 
+                       name="Name"
+                       required
+                       aria-required="true"
+                       class="w-full px-4 py-3 rounded-lg bg-[#0f1117] text-white placeholder-slate-500 border border-slate-800 focus:outline-none focus:border-[#E31837] focus:ring-1 focus:ring-[#E31837] transition-all duration-300"
+                       placeholder="Enter your name">
             </div>
 
             <!-- Username Field -->
             <div>
-                <label for="username" class="block text-sm font-medium text-slate-300 mb-2">
-                    Username <span class="text-[#E31837]">*</span>
+                <label for="Username" class="block text-sm font-medium text-slate-300 mb-2">
+                    Username
+                    <span class="text-[#E31837]">*</span>
                 </label>
-                <div class="relative">
-                    <i class="fas fa-user-tag absolute left-4 top-3.5 text-slate-400"></i>
-                    <input type="text" 
-                           id="username" 
-                           name="Username"
-                           required
-                           minlength="3"
-                           class="w-full px-11 py-3 rounded-lg bg-[#0f1117] text-white placeholder-slate-500 border border-slate-800 focus:outline-none focus:border-[#E31837] focus:ring-1 focus:ring-[#E31837] transition-all duration-300"
-                           placeholder="Enter your username"
-                           value="@Model.Username">
-                    <div class="hidden text-[#E31837] text-sm mt-1" id="username-error" role="alert"></div>
-                    <div class="hidden text-green-500 text-sm mt-1" id="username-available">Username is available!</div>
-                    <div class="hidden text-red-500 text-sm mt-1" id="username-taken">Username is already taken!</div>
-                </div>
+                <input type="text" 
+                       id="Username" 
+                       name="Username"
+                       required
+                       aria-required="true"
+                       class="w-full px-4 py-3 rounded-lg bg-[#0f1117] text-white placeholder-slate-500 border border-slate-800 focus:outline-none focus:border-[#E31837] focus:ring-1 focus:ring-[#E31837] transition-all duration-300"
+                       placeholder="Enter your username">
             </div>
 
             <!-- Password Field -->
             <div>
-                <label for="password" class="block text-sm font-medium text-slate-300 mb-2">
-                    Password <span class="text-[#E31837]">*</span>
+                <label for="Password" class="block text-sm font-medium text-slate-300 mb-2">
+                    Password
+                    <span class="text-[#E31837]">*</span>
                 </label>
                 <div class="relative">
-                    <i class="fas fa-lock absolute left-4 top-3.5 text-slate-400"></i>
                     <input type="password" 
-                           id="password" 
+                           id="Password" 
                            name="Password"
                            required
-                           class="w-full px-11 py-3 rounded-lg bg-[#0f1117] text-white placeholder-slate-500 border border-slate-800 focus:outline-none focus:border-[#E31837] focus:ring-1 focus:ring-[#E31837] transition-all duration-300 pr-24"
+                           aria-required="true"
+                           class="w-full px-4 py-3 rounded-lg bg-[#0f1117] text-white placeholder-slate-500 border border-slate-800 focus:outline-none focus:border-[#E31837] focus:ring-1 focus:ring-[#E31837] transition-all duration-300"
                            placeholder="Enter your password">
                     <button type="button" 
-                            onclick="togglePassword()"
+                            onclick="togglePasswordVisibility('Password', 'password-toggle-icon')"
                             class="absolute right-4 top-3.5 text-slate-400 hover:text-white transition-colors duration-300">
                         <i id="password-toggle-icon" class="fas fa-eye"></i>
                     </button>
-                    <div class="hidden text-[#E31837] text-sm mt-1" id="password-error" role="alert"></div>
-                    
-                    <!-- Password Strength Indicator -->
-                    <div id="password-strength" class="mt-2 text-sm text-slate-400 space-y-1">
-                        <p id="strength-text" class="hidden"></p>
-                        <div id="strength-bar" class="h-1 rounded bg-red-500"></div>
-                        <ul id="password-hints" class="text-sm text-slate-400 mt-1">
-                            <li id="length-hint" class="hidden">• At least 8 characters <span class="hidden text-green-500" id="length-check">&#10003;</span></li>
-                            <li id="uppercase-hint" class="hidden">• At least one uppercase letter <span class="hidden text-green-500" id="uppercase-check">&#10003;</span></li>
-                            <li id="lowercase-hint" class="hidden">• At least one lowercase letter <span class="hidden text-green-500" id="lowercase-check">&#10003;</span></li>
-                            <li id="number-hint" class="hidden">• At least one number <span class="hidden text-green-500" id="number-check">&#10003;</span></li>
-                            <li id="special-hint" class="hidden">• At least one special character <span class="hidden text-green-500" id="special-check">&#10003;</span></li>
-                        </ul>
-                    </div>
                 </div>
             </div>
 
             <!-- Confirm Password Field -->
             <div>
-                <label for="confirm-password" class="block text-sm font-medium text-slate-300 mb-2">
-                    Confirm Password <span class="text-[#E31837]">*</span>
+                <label for="ConfirmPassword" class="block text-sm font-medium text-slate-300 mb-2">
+                    Confirm Password
+                    <span class="text-[#E31837]">*</span>
                 </label>
                 <div class="relative">
-                    <i class="fas fa-lock absolute left-4 top-3.5 text-slate-400"></i>
                     <input type="password" 
-                           id="confirm-password" 
+                           id="ConfirmPassword" 
                            name="ConfirmPassword"
                            required
-                           class="w-full px-11 py-3 rounded-lg bg-[#0f1117] text-white placeholder-slate-500 border border-slate-800 focus:outline-none focus:border-[#E31837] focus:ring-1 focus:ring-[#E31837] transition-all duration-300 pr-24"
+                           aria-required="true"
+                           class="w-full px-4 py-3 rounded-lg bg-[#0f1117] text-white placeholder-slate-500 border border-slate-800 focus:outline-none focus:border-[#E31837] focus:ring-1 focus:ring-[#E31837] transition-all duration-300"
                            placeholder="Confirm your password">
-                    <div class="hidden text-[#E31837] text-sm mt-1" id="confirm-password-error" role="alert"></div>
+                    <button type="button" 
+                            onclick="togglePasswordVisibility('ConfirmPassword', 'confirm-password-toggle-icon')"
+                            class="absolute right-4 top-3.5 text-slate-400 hover:text-white transition-colors duration-300">
+                        <i id="confirm-password-toggle-icon" class="fas fa-eye"></i>
+                    </button>
                 </div>
             </div>
 
-            <!-- Error Message -->
+            <!-- Error Messages Container -->
             @if (!string.IsNullOrEmpty(Model.ErrorMessage))
             {
-                <div class="text-red-500">@Model.ErrorMessage</div>
+                <div class="p-4 rounded-lg bg-[#E31837]/10 border border-[#E31837]/20" role="alert">
+                    <div class="flex items-center text-[#E31837]">
+                        <i class="fas fa-exclamation-circle mr-2"></i>
+                        <span>@Model.ErrorMessage</span>
+                    </div>
+                </div>
             }
 
-
+            <!-- Submit Button -->
             <button type="submit"
                     class="w-full bg-[#E31837] text-white py-3 px-4 rounded-lg font-medium 
-                           hover:bg-[#E31837]/90 transition-all duration-300
-                           disabled:opacity-50 disabled:cursor-not-allowed"
+                           hover:bg-[#E31837]/90 transition-all duration-300 focus-ring"
                     id="submit-button">
                 <span class="flex items-center justify-center gap-2">
                     <i class="fas fa-user-plus"></i>
@@ -142,129 +127,45 @@
             </button>
         </form>
 
-        <!-- Login Link -->
+        <!-- Help & Support -->
         <div class="mt-6 text-center">
             <p class="text-slate-400">
                 Already have an account? 
-                <a asp-page="/Login" 
-                   class="text-[#E31837] hover:text-[#E31837]/80 transition-colors duration-300 font-medium">
+                <a href="/Login" class="text-[#E31837] hover:text-[#E31837]/80 transition-colors duration-300 focus-ring font-medium">
                     Log in
                 </a>
             </p>
-        </div>
-
-        <!-- Help & Support -->
-        <div class="mt-8 text-center space-y-4">
-            <p class="text-slate-400">
-                Need help? <a href="/support" class="text-[#E31837] hover:text-[#E31837]/80 transition-colors duration-300">Contact Support</a>
-            </p>
-            <p class="text-slate-400 text-sm">
-                By creating an account, you agree to our 
-                <a href="/terms" class="text-[#E31837] hover:text-[#E31837]/80 transition-colors duration-300">Terms</a> and 
-                <a href="/privacy" class="text-[#E31837] hover:text-[#E31837]/80 transition-colors duration-300">Privacy Policy</a>
-            </p>
-        </div>
-    </div>
-</div>
-
-<!-- Modal for Error Messages -->
-<div id="error-modal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden">
-    <div class="bg-white rounded-lg p-6 max-w-sm w-full">
-        <h2 class="text-lg font-bold text-red-600">Error</h2>
-        <p id="modal-error-message" class="text-sm text-gray-700"></p>
-        <div class="mt-4 flex justify-end">
-            <button id="close-modal" class="bg-[#E31837] text-white py-2 px-4 rounded">Close</button>
         </div>
     </div>
 </div>
 
 @section Scripts {
 <script>
-    function togglePassword() {
-        const passwordInput = document.getElementById('password');
-        const confirmPasswordInput = document.getElementById('confirm-password');
-        const icon = document.getElementById('password-toggle-icon');
+        document.addEventListener('DOMContentLoaded', function() {
+        const passwordInput = document.getElementById('Password');
+        const confirmPasswordInput = document.getElementById('ConfirmPassword');
 
-        if (passwordInput.type === 'password') {
-            passwordInput.type = 'text';
-            confirmPasswordInput.type = 'text';
-            icon.classList.replace('fa-eye', 'fa-eye-slash');
-        } else {
-            passwordInput.type = 'password';
-            confirmPasswordInput.type = 'password';
-            icon.classList.replace('fa-eye-slash', 'fa-eye');
-        }
-    }
+        // Function to toggle password visibility
+        function togglePasswordVisibility(inputId, iconId) {
+            const input = document.getElementById(inputId);
+            const icon = document.getElementById(iconId);
 
-    document.addEventListener('DOMContentLoaded', function() {
-        const form = document.getElementById('register-form');
-        const submitButton = document.getElementById('submit-button');
-        const errorModal = document.getElementById('error-modal');
-        const modalErrorMessage = document.getElementById('modal-error-message');
-
-        form.addEventListener('input', function() {
-            const emailInput = document.getElementById('email');
-            const nameInput = document.getElementById('name');
-            const usernameInput = document.getElementById('username');
-            const passwordInput = document.getElementById('password');
-            const confirmPasswordInput = document.getElementById('confirm-password');
-
-            if (emailInput.value && nameInput.value && usernameInput.value && passwordInput.value && confirmPasswordInput.value) {
-                submitButton.disabled = false; // Enable the button
+            if (input.type === 'password') {
+                input.type = 'text';
+                icon.classList.replace('fa-eye', 'fa-eye-slash');
             } else {
-                submitButton.disabled = true; // Disable the button
+                input.type = 'password';
+                icon.classList.replace('fa-eye-slash', 'fa-eye');
             }
+        }
+
+        // Attach event listeners to the toggle buttons
+        document.querySelector('[onclick="togglePasswordVisibility(\'Password\', \'password-toggle-icon\')"]').addEventListener('click', function() {
+            togglePasswordVisibility('Password', 'password-toggle-icon');
         });
 
-        form.addEventListener('submit', async function(e) {
-            e.preventDefault(); // Prevent default form submission
-            let isValid = true;
-            modalErrorMessage.textContent = ""; // Reset modal message
-
-            // Validate email format
-            const emailInput = document.getElementById('email');
-            if (!IsValidEmail(emailInput.value)) {
-                isValid = false;
-                modalErrorMessage.textContent = "Invalid email format.";
-                errorModal.classList.remove('hidden');
-            }
-
-            // Check for duplicate email and username
-            const nameInput = document.getElementById('name');
-            const usernameInput = document.getElementById('username');
-            const existingUsers = await fetch('/api/check-duplicates', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    name: nameInput.value,
-                    username: usernameInput.value,
-                    email: emailInput.value
-                })
-            }).then(response => response.json());
-
-            if (existingUsers.emailExists) {
-                isValid = false;
-                modalErrorMessage.textContent = "Email is already registered.";
-                errorModal.classList.remove('hidden');
-            }
-
-            if (existingUsers.usernameExists) {
-                isValid = false;
-                modalErrorMessage.textContent = "Username is already taken.";
-                errorModal.classList.remove('hidden');
-            }
-
-            // If all validations pass, submit the form
-            if (isValid) {
-                form.submit(); // Submit the form
-            }
-        });
-
-        // Close modal
-        document.getElementById('close-modal').addEventListener('click', function() {
-            errorModal.classList.add('hidden');
+        document.querySelector('[onclick="togglePasswordVisibility(\'ConfirmPassword\', \'confirm-password-toggle-icon\')"]').addEventListener('click', function() {
+            togglePasswordVisibility('ConfirmPassword', 'confirm-password-toggle-icon');
         });
     });
 </script>
