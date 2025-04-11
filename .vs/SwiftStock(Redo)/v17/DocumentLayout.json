@@ -7,20 +7,40 @@
       "RelativeMoniker": "D:0:0:{70976ED9-585F-40D5-A10C-B440C1AB5E10}|SwiftStock(Redo)\\SwiftStock(Redo).csproj|solutionrelative:swiftstock(redo)\\pages\\login.cshtml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{70976ED9-585F-40D5-A10C-B440C1AB5E10}|SwiftStock(Redo)\\SwiftStock(Redo).csproj|c:\\users\\athen\\source\\repos\\zabby210\\swiftstock\\swiftstock(redo)\\pages\\register.cshtml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{70976ED9-585F-40D5-A10C-B440C1AB5E10}|SwiftStock(Redo)\\SwiftStock(Redo).csproj|solutionrelative:swiftstock(redo)\\pages\\register.cshtml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{70976ED9-585F-40D5-A10C-B440C1AB5E10}|SwiftStock(Redo)\\SwiftStock(Redo).csproj|c:\\users\\athen\\source\\repos\\zabby210\\swiftstock\\swiftstock(redo)\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{70976ED9-585F-40D5-A10C-B440C1AB5E10}|SwiftStock(Redo)\\SwiftStock(Redo).csproj|solutionrelative:swiftstock(redo)\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{70976ED9-585F-40D5-A10C-B440C1AB5E10}|SwiftStock(Redo)\\SwiftStock(Redo).csproj|c:\\users\\athen\\source\\repos\\zabby210\\swiftstock\\swiftstock(redo)\\pages\\login.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
       "RelativeMoniker": "D:0:0:{70976ED9-585F-40D5-A10C-B440C1AB5E10}|SwiftStock(Redo)\\SwiftStock(Redo).csproj|solutionrelative:swiftstock(redo)\\pages\\login.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
+      "AbsoluteMoniker": "D:0:0:{70976ED9-585F-40D5-A10C-B440C1AB5E10}|SwiftStock(Redo)\\SwiftStock(Redo).csproj|c:\\users\\athen\\source\\repos\\zabby210\\swiftstock\\swiftstock(redo)\\swiftstock(redo).csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
+      "RelativeMoniker": "D:0:0:{70976ED9-585F-40D5-A10C-B440C1AB5E10}|SwiftStock(Redo)\\SwiftStock(Redo).csproj|solutionrelative:swiftstock(redo)\\swiftstock(redo).csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{70976ED9-585F-40D5-A10C-B440C1AB5E10}|SwiftStock(Redo)\\SwiftStock(Redo).csproj|c:\\users\\athen\\source\\repos\\zabby210\\swiftstock\\swiftstock(redo)\\properties\\models\\user.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{70976ED9-585F-40D5-A10C-B440C1AB5E10}|SwiftStock(Redo)\\SwiftStock(Redo).csproj|solutionrelative:swiftstock(redo)\\properties\\models\\user.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
+      "AbsoluteMoniker": "D:0:0:{70976ED9-585F-40D5-A10C-B440C1AB5E10}|SwiftStock(Redo)\\SwiftStock(Redo).csproj|c:\\users\\athen\\source\\repos\\zabby210\\swiftstock\\swiftstock(redo)\\pages\\sales.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{70976ED9-585F-40D5-A10C-B440C1AB5E10}|SwiftStock(Redo)\\SwiftStock(Redo).csproj|solutionrelative:swiftstock(redo)\\pages\\sales.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{70976ED9-585F-40D5-A10C-B440C1AB5E10}|SwiftStock(Redo)\\SwiftStock(Redo).csproj|c:\\users\\athen\\source\\repos\\zabby210\\swiftstock\\swiftstock(redo)\\pages\\inventory.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{70976ED9-585F-40D5-A10C-B440C1AB5E10}|SwiftStock(Redo)\\SwiftStock(Redo).csproj|solutionrelative:swiftstock(redo)\\pages\\inventory.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{70976ED9-585F-40D5-A10C-B440C1AB5E10}|SwiftStock(Redo)\\SwiftStock(Redo).csproj|c:\\users\\athen\\source\\repos\\zabby210\\swiftstock\\swiftstock(redo)\\pages\\register.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
       "RelativeMoniker": "D:0:0:{70976ED9-585F-40D5-A10C-B440C1AB5E10}|SwiftStock(Redo)\\SwiftStock(Redo).csproj|solutionrelative:swiftstock(redo)\\pages\\register.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{70976ED9-585F-40D5-A10C-B440C1AB5E10}|SwiftStock(Redo)\\SwiftStock(Redo).csproj|c:\\users\\athen\\source\\repos\\zabby210\\swiftstock\\swiftstock(redo)\\pages\\register.cshtml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{70976ED9-585F-40D5-A10C-B440C1AB5E10}|SwiftStock(Redo)\\SwiftStock(Redo).csproj|solutionrelative:swiftstock(redo)\\pages\\register.cshtml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{70976ED9-585F-40D5-A10C-B440C1AB5E10}|SwiftStock(Redo)\\SwiftStock(Redo).csproj|c:\\users\\athen\\source\\repos\\zabby210\\swiftstock\\swiftstock(redo)\\data\\applicationdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{70976ED9-585F-40D5-A10C-B440C1AB5E10}|SwiftStock(Redo)\\SwiftStock(Redo).csproj|solutionrelative:swiftstock(redo)\\data\\applicationdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{70976ED9-585F-40D5-A10C-B440C1AB5E10}|SwiftStock(Redo)\\SwiftStock(Redo).csproj|c:\\users\\athen\\source\\repos\\zabby210\\swiftstock\\swiftstock(redo)\\pages\\admin.cshtml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -29,18 +49,6 @@
     {
       "AbsoluteMoniker": "D:0:0:{70976ED9-585F-40D5-A10C-B440C1AB5E10}|SwiftStock(Redo)\\SwiftStock(Redo).csproj|c:\\users\\athen\\source\\repos\\zabby210\\swiftstock\\swiftstock(redo)\\controllers\\checkduplicatescontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{70976ED9-585F-40D5-A10C-B440C1AB5E10}|SwiftStock(Redo)\\SwiftStock(Redo).csproj|solutionrelative:swiftstock(redo)\\controllers\\checkduplicatescontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{70976ED9-585F-40D5-A10C-B440C1AB5E10}|SwiftStock(Redo)\\SwiftStock(Redo).csproj|c:\\users\\athen\\source\\repos\\zabby210\\swiftstock\\swiftstock(redo)\\data\\applicationdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{70976ED9-585F-40D5-A10C-B440C1AB5E10}|SwiftStock(Redo)\\SwiftStock(Redo).csproj|solutionrelative:swiftstock(redo)\\data\\applicationdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{70976ED9-585F-40D5-A10C-B440C1AB5E10}|SwiftStock(Redo)\\SwiftStock(Redo).csproj|c:\\users\\athen\\source\\repos\\zabby210\\swiftstock\\swiftstock(redo)\\pages\\inventory.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{70976ED9-585F-40D5-A10C-B440C1AB5E10}|SwiftStock(Redo)\\SwiftStock(Redo).csproj|solutionrelative:swiftstock(redo)\\pages\\inventory.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{70976ED9-585F-40D5-A10C-B440C1AB5E10}|SwiftStock(Redo)\\SwiftStock(Redo).csproj|c:\\users\\athen\\source\\repos\\zabby210\\swiftstock\\swiftstock(redo)\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{70976ED9-585F-40D5-A10C-B440C1AB5E10}|SwiftStock(Redo)\\SwiftStock(Redo).csproj|solutionrelative:swiftstock(redo)\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -50,7 +58,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 11,
+          "SelectedChildIndex": 13,
           "Children": [
             {
               "$type": "Bookmark",
@@ -78,39 +86,68 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 7,
+              "DocumentIndex": 3,
+              "Title": "SwiftStock(Redo)",
+              "DocumentMoniker": "C:\\Users\\athen\\source\\repos\\zabby210\\SwiftStock\\SwiftStock(Redo)\\SwiftStock(Redo).csproj",
+              "RelativeDocumentMoniker": "SwiftStock(Redo)\\SwiftStock(Redo).csproj",
+              "ToolTip": "C:\\Users\\athen\\source\\repos\\zabby210\\SwiftStock\\SwiftStock(Redo)\\SwiftStock(Redo).csproj",
+              "RelativeToolTip": "SwiftStock(Redo)\\SwiftStock(Redo).csproj",
+              "ViewState": "AgIAAAkAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
+              "WhenOpened": "2025-04-10T23:46:29.232Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "Sales.cshtml",
+              "DocumentMoniker": "C:\\Users\\athen\\source\\repos\\zabby210\\SwiftStock\\SwiftStock(Redo)\\Pages\\Sales.cshtml",
+              "RelativeDocumentMoniker": "SwiftStock(Redo)\\Pages\\Sales.cshtml",
+              "ToolTip": "C:\\Users\\athen\\source\\repos\\zabby210\\SwiftStock\\SwiftStock(Redo)\\Pages\\Sales.cshtml",
+              "RelativeToolTip": "SwiftStock(Redo)\\Pages\\Sales.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABIAAABFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-04-10T23:24:55.477Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
               "Title": "ApplicationDbContext.cs",
               "DocumentMoniker": "C:\\Users\\athen\\source\\repos\\zabby210\\SwiftStock\\SwiftStock(Redo)\\Data\\ApplicationDbContext.cs",
               "RelativeDocumentMoniker": "SwiftStock(Redo)\\Data\\ApplicationDbContext.cs",
               "ToolTip": "C:\\Users\\athen\\source\\repos\\zabby210\\SwiftStock\\SwiftStock(Redo)\\Data\\ApplicationDbContext.cs",
               "RelativeToolTip": "SwiftStock(Redo)\\Data\\ApplicationDbContext.cs",
-              "ViewState": "AgIAABMAAAAAAAAAAAAcwC4AAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAABYAAAAAAAAAAAAcwCMAAAAvAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-04-09T21:18:03.681Z"
+              "WhenOpened": "2025-04-09T21:18:03.681Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 9,
+              "DocumentIndex": 1,
               "Title": "Program.cs",
               "DocumentMoniker": "C:\\Users\\athen\\source\\repos\\zabby210\\SwiftStock\\SwiftStock(Redo)\\Program.cs",
               "RelativeDocumentMoniker": "SwiftStock(Redo)\\Program.cs",
               "ToolTip": "C:\\Users\\athen\\source\\repos\\zabby210\\SwiftStock\\SwiftStock(Redo)\\Program.cs",
               "RelativeToolTip": "SwiftStock(Redo)\\Program.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAAVAAAAAAAAAA==",
+              "ViewState": "AgIAAA0AAAAAAAAAAAAQwBwAAAAmAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-04-09T18:23:05.081Z"
+              "WhenOpened": "2025-04-09T18:23:05.081Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 8,
+              "DocumentIndex": 6,
               "Title": "Inventory.cshtml",
               "DocumentMoniker": "C:\\Users\\athen\\source\\repos\\zabby210\\SwiftStock\\SwiftStock(Redo)\\Pages\\Inventory.cshtml",
               "RelativeDocumentMoniker": "SwiftStock(Redo)\\Pages\\Inventory.cshtml",
               "ToolTip": "C:\\Users\\athen\\source\\repos\\zabby210\\SwiftStock\\SwiftStock(Redo)\\Pages\\Inventory.cshtml",
               "RelativeToolTip": "SwiftStock(Redo)\\Pages\\Inventory.cshtml",
-              "ViewState": "AgIAACcAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAABgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-04-09T17:41:56.585Z"
+              "WhenOpened": "2025-04-09T17:41:56.585Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
@@ -120,14 +157,14 @@
               "RelativeDocumentMoniker": "SwiftStock(Redo)\\Pages\\Login.cshtml",
               "ToolTip": "C:\\Users\\athen\\source\\repos\\zabby210\\SwiftStock\\SwiftStock(Redo)\\Pages\\Login.cshtml",
               "RelativeToolTip": "SwiftStock(Redo)\\Pages\\Login.cshtml",
-              "ViewState": "AgIAADgAAAAAAAAAAAAAAEsAAABCAAAAAAAAAA==",
+              "ViewState": "AgIAAGYAAAAAAAAAAAAAABIAAABJAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
               "WhenOpened": "2025-04-09T17:06:34.202Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 11,
               "Title": "CheckDuplicatesController.cs",
               "DocumentMoniker": "C:\\Users\\athen\\source\\repos\\zabby210\\SwiftStock\\SwiftStock(Redo)\\Controllers\\CheckDuplicatesController.cs",
               "RelativeDocumentMoniker": "SwiftStock(Redo)\\Controllers\\CheckDuplicatesController.cs",
@@ -135,7 +172,8 @@
               "RelativeToolTip": "SwiftStock(Redo)\\Controllers\\CheckDuplicatesController.cs",
               "ViewState": "AgIAAAcAAAAAAAAAAAAowBkAAAAFAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-04-09T16:19:21.786Z"
+              "WhenOpened": "2025-04-09T16:19:21.786Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
@@ -145,14 +183,14 @@
               "RelativeDocumentMoniker": "SwiftStock(Redo)\\Pages\\Login.cshtml.cs",
               "ToolTip": "C:\\Users\\athen\\source\\repos\\zabby210\\SwiftStock\\SwiftStock(Redo)\\Pages\\Login.cshtml.cs",
               "RelativeToolTip": "SwiftStock(Redo)\\Pages\\Login.cshtml.cs",
-              "ViewState": "AgIAABkAAAAAAAAAAAAawDAAAAAMAAAAAAAAAA==",
+              "ViewState": "AgIAABkAAAAAAAAAAAASwC8AAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-04-09T16:16:52.093Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 10,
               "Title": "Admin.cshtml.cs",
               "DocumentMoniker": "C:\\Users\\athen\\source\\repos\\zabby210\\SwiftStock\\SwiftStock(Redo)\\Pages\\Admin.cshtml.cs",
               "RelativeDocumentMoniker": "SwiftStock(Redo)\\Pages\\Admin.cshtml.cs",
@@ -160,43 +198,44 @@
               "RelativeToolTip": "SwiftStock(Redo)\\Pages\\Admin.cshtml.cs",
               "ViewState": "AgIAACUAAAAAAAAAAAAcwDkAAAAyAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-04-09T16:12:18.56Z"
+              "WhenOpened": "2025-04-09T16:12:18.56Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 7,
               "Title": "Register.cshtml",
               "DocumentMoniker": "C:\\Users\\athen\\source\\repos\\zabby210\\SwiftStock\\SwiftStock(Redo)\\Pages\\Register.cshtml",
               "RelativeDocumentMoniker": "SwiftStock(Redo)\\Pages\\Register.cshtml",
               "ToolTip": "C:\\Users\\athen\\source\\repos\\zabby210\\SwiftStock\\SwiftStock(Redo)\\Pages\\Register.cshtml",
               "RelativeToolTip": "SwiftStock(Redo)\\Pages\\Register.cshtml",
-              "ViewState": "AgIAAIgAAAAAAAAAAAAAAGoAAAAtAAAAAAAAAA==",
+              "ViewState": "AgIAAH4AAAAAAAAAAADgv5QAAAA8AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
               "WhenOpened": "2025-04-09T16:06:20.268Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 4,
               "Title": "User.cs",
               "DocumentMoniker": "C:\\Users\\athen\\source\\repos\\zabby210\\SwiftStock\\SwiftStock(Redo)\\Properties\\Models\\User.cs",
               "RelativeDocumentMoniker": "SwiftStock(Redo)\\Properties\\Models\\User.cs",
               "ToolTip": "C:\\Users\\athen\\source\\repos\\zabby210\\SwiftStock\\SwiftStock(Redo)\\Properties\\Models\\User.cs",
               "RelativeToolTip": "SwiftStock(Redo)\\Properties\\Models\\User.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAqwAYAAAAfAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAqwAUAAAAFAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-04-09T12:01:52.328Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 8,
               "Title": "Register.cshtml.cs",
               "DocumentMoniker": "C:\\Users\\athen\\source\\repos\\zabby210\\SwiftStock\\SwiftStock(Redo)\\Pages\\Register.cshtml.cs",
               "RelativeDocumentMoniker": "SwiftStock(Redo)\\Pages\\Register.cshtml.cs",
               "ToolTip": "C:\\Users\\athen\\source\\repos\\zabby210\\SwiftStock\\SwiftStock(Redo)\\Pages\\Register.cshtml.cs",
               "RelativeToolTip": "SwiftStock(Redo)\\Pages\\Register.cshtml.cs",
-              "ViewState": "AgIAACEAAAAAAAAAAAAnwDMAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAAYAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-04-09T11:58:05.707Z",
               "EditorCaption": ""

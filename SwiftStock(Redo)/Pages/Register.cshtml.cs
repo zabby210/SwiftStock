@@ -4,6 +4,8 @@ using Microsoft.EntityFrameworkCore;
 using SwiftStock.Data;
 using SwiftStock.Models;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using BCrypt.Net;
 
 namespace AlfaMart.Pages
 {
@@ -44,31 +46,22 @@ namespace AlfaMart.Pages
 
         public async Task<IActionResult> OnPostAsync()
         {
-            Console.WriteLine($"Username: {Username}, Password: {Password}, Email: {Email}");
-
             if (string.IsNullOrEmpty(Username) || string.IsNullOrEmpty(Password) || string.IsNullOrEmpty(Email))
             {
                 ErrorMessage = "All fields are required.";
                 return Page();
             }
 
-            // Validate email format
-            if (!IsValidEmail(Email))
-            {
-                ErrorMessage = "Invalid email format.";
-                return Page();
-            }
-
-            // Check if the email already exists in the users table
-            var existingEmail = await _context.users.FirstOrDefaultAsync(u => u.Email == Email); // Ensure 'Users' matches your DbSet name
+            // Check if the email already exists
+            var existingEmail = await _context.users.FirstOrDefaultAsync(u => u.Email == Email);
             if (existingEmail != null)
             {
                 ErrorMessage = "Email is already registered.";
                 return Page();
             }
 
-            // Check if the username already exists in the users table
-            var existingUser = await _context.users.FirstOrDefaultAsync(u => u.Username == Username); // Ensure 'Users' matches your DbSet name
+            // Check if the username already exists
+            var existingUser = await _context.users.FirstOrDefaultAsync(u => u.Username == Username);
             if (existingUser != null)
             {
                 ErrorMessage = "Username is already taken.";
@@ -81,24 +74,19 @@ namespace AlfaMart.Pages
                 return Page();
             }
 
-            // Hash the password
-            var hashedPassword = BCrypt.Net.BCrypt.HashPassword(Password);
-
-            // Create new user
+            // Create new user without hashing the password
             var user = new User
             {
-                Email = Email,
-                Name = Name,
-                Username = Username,
-                Password = hashedPassword,
-                Role = "Customer"
+                Username = this.Username,
+                Password = this.Password, // Store the password in plain text
+                Email = this.Email,
+                Name = this.Name,
+                Role = "Customer" // Ensure the role is set correctly
             };
 
-            _context.users.Add(user); // Ensure 'Users' matches your DbSet name
+            _context.users.Add(user);
             await _context.SaveChangesAsync();
-
-            // Redirect to the Login page
-            return RedirectToPage("/Login"); // Redirect to the Login page
+            return RedirectToPage("/Login");
         }
 
         // Implement the validation methods

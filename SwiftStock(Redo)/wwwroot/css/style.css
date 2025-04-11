@@ -821,9 +821,6 @@
   .animate-bounce {
     animation: var(--animate-bounce);
   }
-  .cursor-pointer {
-    cursor: pointer;
-  }
   .resize {
     resize: both;
   }
@@ -1600,13 +1597,6 @@
   .ease-out {
     --tw-ease: var(--ease-out);
     transition-timing-function: var(--ease-out);
-  }
-  .group-hover\:text-white {
-    &:is(:where(.group):hover *) {
-      @media (hover: hover) {
-        color: var(--color-white);
-      }
-    }
   }
   .hover\:scale-105 {
     &:hover {
