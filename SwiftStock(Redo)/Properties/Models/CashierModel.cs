@@ -1,43 +1,13 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.EntityFrameworkCore;
-using SwiftStock.Data;
-using SwiftStock.Models;
+using System.Collections.Generic;
 
-namespace SwiftStock.Pages
+namespace SwiftStock.Models
 {
-    // Allow both Admin and Cashier roles to access this page
-    [Authorize(Roles = "Personnel")]
+    // This class can be used to define properties for the Cashier page
     public class CashierModel : PageModel
     {
-        private readonly ApplicationDbContext _context;
-        private readonly ILogger<CashierModel> _logger;
-
-        public CashierModel(ApplicationDbContext context, ILogger<CashierModel> logger)
-        {
-            _context = context;
-            _logger = logger;
-        }
-
         public List<InventoryItem> InventoryItems { get; set; } = new();
-
-        public async Task<IActionResult> OnGetAsync()
-        {
-            try
-            {
-                InventoryItems = await _context.inventory
-                    .Where(i => i.Stock > 0) // Only show items with stock
-                    .OrderBy(i => i.Product_Name)
-                    .ToListAsync();
-
-                return Page();
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "Error loading cashier page");
-                return Page();
-            }
-        }
     }
 }

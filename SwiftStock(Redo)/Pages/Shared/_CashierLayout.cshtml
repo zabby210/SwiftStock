@@ -1,0 +1,77 @@
+<!-- Pages/Shared/_CashierLayout.cshtml -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"]</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <link rel="stylesheet" href="~/css/style.css" />
+    <style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #f9f9f9;
+        }
+        .header {
+            background-color: #E31837;
+            color: white;
+            padding: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .nav {
+            background-color: white;
+            padding: 1rem;
+            border-bottom: 1px solid #ddd;
+        }
+        .content {
+            padding: 1rem;
+        }
+        .footer {
+            background-color: #E31837;
+            color: white;
+            text-align: center;
+            padding: 1rem;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div>
+            <h1>Cashier Dashboard</h1>
+        </div>
+    </header>
+
+    <nav class="nav">
+        <button onclick="showSection('pos')">POS</button>
+        <button onclick="showSection('inventory')">Inventory</button>
+        <button onclick="showSection('history')">Transaction History</button>
+    </nav>
+
+    <div class="content">
+        @RenderBody()
+    </div>
+
+    <footer class="footer">
+        &copy; 2023 SwiftStock
+    </footer>
+
+    <script>
+        function showSection(section) {
+            // Logic to show/hide sections based on the button clicked
+            document.querySelectorAll('.section').forEach(s => s.classList.add('hidden'));
+            document.getElementById(section).classList.remove('hidden');
+        }
+
+        function logout() {
+            // Logic for logout
+            window.location.href = '/Account/Logout'; // Adjust the URL as necessary
+        }
+    </script>
+</body>
+</html>

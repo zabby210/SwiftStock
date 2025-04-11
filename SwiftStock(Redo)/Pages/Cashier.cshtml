@@ -1,620 +1,233 @@
 ﻿@page
-@model SwiftStock.Pages.CashierModel
+@model SwiftStock.Pages.CashierPageModel
 @{
     ViewData["Title"] = "Cashier POS";
-   
+    Layout = "_CashierLayout"; // Use the new layout
 }
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cashier POS</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <link href="~/css/main.css" rel="stylesheet" />
-    <style>
-        .pos-grid {
-            display: grid;
-            grid-template-columns: 2fr 1fr;
-            gap: 1rem;
-            height: calc(100vh - 120px);
-        }
-        
-        .product-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-            gap: 1rem;
-            padding: 1rem;
-            overflow-y: auto;
-        }
-        
-        .product-card {
-            background: white;
-            border-radius: 0.5rem;
-            padding: 1rem;
-            text-align: center;
-            cursor: pointer;
-            transition: transform 0.2s;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        }
-        
-        .product-card:hover {
-            transform: translateY(-2px);
-        }
-        
-        .cart-section {
-            background: white;
-            border-radius: 0.5rem;
-            padding: 1rem;
-            display: flex;
-            flex-direction: column;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        }
-        
-        .cart-items {
-            flex-grow: 1;
-            overflow-y: auto;
-        }
-        
-        .cart-total {
-            border-top: 2px solid #e5e7eb;
-            padding-top: 1rem;
-            margin-top: 1rem;
-        }
 
-        .inventory-table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-
-        .inventory-table td {
-            padding: 0.75rem 1rem;
-            vertical-align: middle;
-        }
-
-        .inventory-table th {
-            padding: 0.75rem 1rem;
-            font-weight: 600;
-            color: #4b5563;
-        }
-
-        .inventory-table tbody tr:hover {
-            background-color: #f9fafb;
-        }
-
-        .tab-active {
-            background-color: #E31837;
-            color: white;
-        }
-
-        /* Add proper text colors for inputs and selects */
-        input[type="text"],
-        input[type="number"],
-        select {
-            color: #111827; /* text-gray-900 */
-        }
-
-        /* Ensure placeholder text is visible */
-        input::placeholder {
-            color: #9CA3AF; /* text-gray-400 */
-        }
-    </style>
-</head>
-<body class="bg-gray-100">
-    <header class="bg-[#E31837] text-white p-4 flex justify-between items-center">
-        <div class="flex items-center">
-             <img src="~/css/Images/SwiftLogo.png" alt="Logo"  class="h-8 mr-2">
-            <span class="text-2xl font-bold">SwiftStock POS</span>
-        </div>
-        <div class="flex items-center space-x-4">
-            <span class="text-sm">Cashier: @User.Identity?.Name</span>
-            <button onclick="logout()" class="bg-white text-[#E31837] px-4 py-2 rounded-lg hover:bg-gray-100">
-                <i class="fas fa-sign-out-alt mr-2"></i>Logout
-            </button>
-        </div>
-    </header>
-
-    <div class="flex h-[calc(100vh-64px)]">
-        <!-- Sidebar -->
-        <nav class="bg-white w-64 border-r border-gray-200">
-            <div class="p-4 space-y-2">
-                <button onclick="showSection('pos')" class="w-full text-left px-4 py-2 rounded-lg transition-colors duration-200 tab-button">
-                    <i class="fas fa-cash-register mr-2"></i>POS
+<div class="flex h-screen bg-gray-100">
+    <!-- Sidebar Navigation -->
+    <nav class="bg-white w-64 shadow-lg rounded-lg p-4">
+        <h2 class="text-xl font-bold mb-4">Cashier Dashboard</h2>
+        <ul class="space-y-2">
+            <li>
+                <button onclick="showSection('pos')" class="flex items-center w-full p-2 text-left rounded-lg hover:bg-gray-200">
+                    <i class="fas fa-cash-register mr-2"></i> POS
                 </button>
-                <button onclick="showSection('inventory')" class="w-full text-left px-4 py-2 rounded-lg transition-colors duration-200 tab-button">
-                    <i class="fas fa-box mr-2"></i>Inventory
+            </li>
+            <li>
+                <button onclick="showSection('inventory')" class="flex items-center w-full p-2 text-left rounded-lg hover:bg-gray-200">
+                    <i class="fas fa-box mr-2"></i> Inventory
                 </button>
-                <button onclick="showSection('history')" class="w-full text-left px-4 py-2 rounded-lg transition-colors duration-200 tab-button">
-                    <i class="fas fa-history mr-2"></i>Transaction History
+            </li>
+            <li>
+                <button onclick="showSection('history')" class="flex items-center w-full p-2 text-left rounded-lg hover:bg-gray-200">
+                    <i class="fas fa-history mr-2"></i> Transaction History
                 </button>
-            </div>
-        </nav>
+            </li>
+            <li>
+                <button onclick="window.location.href='/Account/Login';" class="flex items-center w-full p-2 text-left rounded-lg hover:bg-gray-200">
+                    <i class="fas fa-sign-out-alt mr-2"></i> Logout
+                </button>
+            </li>
+        </ul>
+    </nav>
 
-        <!-- Main Content -->
-        <div class="flex-1 p-6">
-            <!-- POS Section -->
-            <div id="pos" class="section">
-                <div class="pos-grid">
-                    <!-- Left side - Products -->
-                    <div class="bg-white rounded-lg shadow-md">
-                        <div class="p-4 border-b border-gray-200">
-                            <div class="flex gap-4">
-                                <div class="flex-1">
-                                    <div class="relative">
-                                        <i class="fas fa-search absolute left-3 top-3 text-gray-400"></i>
-                                        <input type="text" 
-                                               id="product-search"
-                                               placeholder="Search products..."
-                                               class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#E31837] focus:border-transparent text-gray-900">
-                                    </div>
-                                </div>
-                                <select id="category-filter" class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#E31837] focus:border-transparent text-gray-900">
-                                    <option value="">All Categories</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="product-grid" id="products-container">
-                            <!-- Products will be loaded here -->
-                        </div>
-                    </div>
-
-                    <!-- Right side - Cart -->
-                    <div class="cart-section">
-                        <h2 class="text-xl font-bold mb-4 text-gray-900">Current Cart</h2>
-                        <div class="cart-items" id="cart-items">
-                            <!-- Cart items will be displayed here -->
-                        </div>
-                        <div class="cart-total">
-                            <div class="flex justify-between mb-2">
-                                <span class="text-gray-900">Subtotal:</span>
-                                <span class="text-gray-900" id="subtotal">₱0.00</span>
-                            </div>
-                            <div class="flex justify-between mb-4">
-                                <span class="text-gray-900">Tax (12%):</span>
-                                <span class="text-gray-900" id="tax">₱0.00</span>
-                            </div>
-                            <div class="flex justify-between text-xl font-bold">
-                                <span class="text-gray-900">Total:</span>
-                                <span class="text-gray-900" id="total">₱0.00</span>
-                            </div>
-                            <div class="grid grid-cols-2 gap-4 mt-4">
-                                <button onclick="clearCart()" class="px-4 py-2 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300">
-                                    Clear Cart
-                                </button>
-                                <button onclick="processPayment()" class="px-4 py-2 bg-[#E31837] text-white rounded-lg hover:bg-[#E31837]/90">
-                                    Process Payment
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Inventory Section -->
-            <div id="inventory" class="section hidden">
-                <div class="bg-white rounded-lg shadow-md p-6">
-                    <div class="flex justify-between items-center mb-6">
-                        <h2 class="text-2xl font-bold text-gray-900">Inventory</h2>
+    <div class="flex-1 p-6">
+        <div id="pos" class="section">
+            <h2 class="text-2xl font-bold mb-4">Point of Sale</h2>
+            <div class="pos-grid">
+                <div class="bg-white rounded-lg shadow-md">
+                    <div class="p-4 border-b border-gray-200">
                         <div class="flex gap-4">
-                            <div class="relative">
-                                <i class="fas fa-search absolute left-3 top-3 text-gray-400"></i>
-                                <input type="text" 
-                                       id="inventory-search"
-                                       placeholder="Search inventory..."
-                                       class="pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#E31837] focus:border-transparent text-gray-900">
+                            <div class="flex-1">
+                                <div class="relative">
+                                    <i class="fas fa-search absolute left-3 top-3 text-gray-400"></i>
+                                    <input type="text" 
+                                           id="product-search"
+                                           placeholder="Search products..."
+                                           class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#E31837] focus:border-transparent text-gray-900"
+                                           onkeyup="filterProducts()">
+                                </div>
                             </div>
-                            <select id="inventory-sort" class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#E31837] focus:border-transparent text-gray-900">
-                                <option value="name">Sort by Name</option>
-                                <option value="stock">Sort by Stock</option>
-                                <option value="price">Sort by Price</option>
-                            </select>
                         </div>
                     </div>
-                    <div class="overflow-x-auto rounded-lg border border-gray-200">
-                        <table class="inventory-table">
-                            <thead>
-                                <tr class="bg-gray-50">
-                                    <th class="text-gray-700 font-medium">#</th>
-                                    <th class="text-gray-700 font-medium">Product Name</th>
-                                    <th class="text-gray-700 font-medium">Price</th>
-                                    <th class="text-gray-700 font-medium">Stock</th>
-                                    <th class="text-gray-700 font-medium">Status</th>
+                    <div class="product-grid" id="products-container">
+                        <!-- Example product list from inventory -->
+                        @foreach (var item in Model.InventoryItems)
+                        {
+                            <div class="product-item" data-name="@item.Product_Name" style="display: none;">
+                                @item.Product_Name - ₱@item.Price
+                            </div>
+                        }
+                        <div class="no-products hidden">No products found.</div>
+                    </div>
+                </div>
+
+                <div class="cart-section">
+                    <h2 class="text-xl font-bold mb-4 text-gray-900">Current Cart</h2>
+                    <div class="cart-items" id="cart-items">
+                        <!-- Cart items will be displayed here -->
+                    </div>
+                    <div class="cart-total">
+                        <div class="flex justify-between mb-2">
+                            <span class="text-gray-900">Subtotal:</span>
+                            <span class="text-gray-900" id="subtotal">₱0.00</span>
+                        </div>
+                        <div class="flex justify-between mb-4">
+                            <span class="text-gray-900">Tax (12%):</span>
+                            <span class="text-gray-900" id="tax">₱0.00</span>
+                        </div>
+                        <div class="flex justify-between text-xl font-bold">
+                            <span class="text-gray-900">Total:</span>
+                            <span class="text-gray-900" id="total">₱0.00</span>
+                        </div>
+                        <div class="grid grid-cols-2 gap-4 mt-4">
+                            <button onclick="clearCart()" class="px-4 py-2 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300">
+                                Clear Cart
+                            </button>
+                            <button onclick="processPayment()" class="px-4 py-2 bg-[#E31837] text-white rounded-lg hover:bg-[#E31837]/90">
+                                Process Payment
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="inventory" class="section hidden">
+            <h2 class="text-2xl font-bold mb-4">Inventory</h2>
+            <div class="bg-white rounded-lg shadow-md p-6">
+                <div class="mb-4">
+                    <input type="text" 
+                           id="inventory-search" 
+                           placeholder="Search inventory..." 
+                           class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#E31837] focus:border-transparent text-gray-900"
+                           onkeyup="filterInventory()">
+                </div>
+                <div class="overflow-x-auto rounded-lg border border-gray-200">
+                    <table class="inventory-table w-full">
+                        <thead>
+                            <tr class="bg-gray-50">
+                                <th class="text-gray-700 font-medium">#</th>
+                                <th class="text-gray-700 font-medium">Product Name</th>
+                                <th class="text-gray-700 font-medium">Price</th>
+                                <th class="text-gray-700 font-medium">Stock</th>
+                                <th class="text-gray-700 font-medium">Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="inventory-table-body">
+                            @foreach (var item in Model.InventoryItems)
+                            {
+                                <tr class="hover:bg-gray-100 transition duration-200 inventory-item" data-name="@item.Product_Name">
+                                    <td>@item.Id</td>
+                                    <td>@item.Product_Name</td>
+                                    <td>₱@item.Price</td>
+                                    <td>@item.Stock</td>
+                                    <td>@(item.Stock > 0 ? "Available" : "Out of Stock")</td>
                                 </tr>
-                            </thead>
-                            <tbody id="inventory-table-body">
-                                <!-- Inventory items will be loaded here -->
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Transaction History Section -->
-            <div id="history" class="section hidden">
-                <div class="bg-white rounded-lg shadow-md p-6">
-                    <h2 class="text-2xl font-bold mb-6">Transaction History</h2>
-                    <!-- Transaction history will be implemented later -->
+                            }
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
-    </div>
 
-    <!-- Payment Modal -->
-    <div id="payment-modal" class="fixed inset-0 bg-black/50 hidden items-center justify-center">
-        <div class="bg-white rounded-lg p-6 max-w-md w-full mx-4">
-            <h3 class="text-xl font-bold mb-4 text-gray-900">Process Payment</h3>
-            <div class="space-y-4">
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Total Amount</label>
-                    <div class="text-2xl font-bold text-[#E31837]" id="payment-total">₱0.00</div>
-                </div>
-                <div>
-                    <label for="cash-amount" class="block text-sm font-medium text-gray-700 mb-1">Cash Received</label>
-                    <input type="number" 
-                           id="cash-amount" 
-                           class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#E31837] focus:border-transparent text-gray-900"
-                           step="0.01"
-                           min="0">
-                </div>
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Change</label>
-                    <div class="text-xl font-bold text-gray-900" id="change-amount">₱0.00</div>
-                </div>
-                <div class="flex space-x-4">
-                    <button onclick="closePaymentModal()" class="flex-1 px-4 py-2 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300">
-                        Cancel
-                    </button>
-                    <button onclick="completeTransaction()" class="flex-1 px-4 py-2 bg-[#E31837] text-white rounded-lg hover:bg-[#E31837]/90">
-                        Complete
-                    </button>
-                </div>
+        <div id="history" class="section hidden">
+            <h2 class="text-2xl font-bold mb-4">Transaction History</h2>
+            <div class="bg-white rounded-lg shadow-md p-6">
+                <!-- Transaction history will be implemented here -->
             </div>
         </div>
     </div>
+</div>
 
-    <script>
-        let cart = [];
-        let products = [];
+<style>
+    /* Glassmorphism effect */
+    body {
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(10px);
+    }
+    .bg-white {
+        background: rgba(255, 255, 255, 0.8);
+        backdrop-filter: blur(10px);
+        border-radius: 10px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    }
+    .inventory-table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+    .inventory-table th, .inventory-table td {
+        padding: 12px;
+        text-align: left;
+        border-bottom: 1px solid #e2e8f0; /* Light gray border */
+    }
+    .inventory-table th {
+        background-color: rgba(255, 255, 255, 0.9); /* Slightly transparent white */
+    }
+    .inventory-table tr:hover {
+        background-color: rgba(229, 231, 235, 0.5); /* Light gray on hover */
+    }
+    .no-products {
+        padding: 12px;
+        text-align: center;
+        color: gray;
+    }
+</style>
 
-        // Initialize the page
-        document.addEventListener('DOMContentLoaded', () => {
-            loadProducts();
-            loadInventory();
-            setActiveTab('pos');
-        });
+<script>
+    function filterProducts() {
+        const searchInput = document.getElementById('product-search').value.toLowerCase();
+        const products = document.querySelectorAll('.product-item');
+        const noProductsMessage = document.querySelector('.no-products');
+        let hasProducts = false;
 
-        // Tab handling
-        function showSection(sectionId) {
-            document.querySelectorAll('.section').forEach(section => {
-                section.classList.add('hidden');
+        // Hide the no products message initially
+        noProductsMessage.style.display = 'none';
+
+        // Check if the search input is empty
+        if (searchInput.trim() === "") {
+            products.forEach(product => {
+                product.style.display = 'none'; // Hide all products
             });
-            document.getElementById(sectionId).classList.remove('hidden');
-            setActiveTab(sectionId);
+            return; // Exit the function if the search bar is empty
         }
 
-        function setActiveTab(sectionId) {
-            document.querySelectorAll('.tab-button').forEach(button => {
-                button.classList.remove('tab-active');
-                if (button.textContent.toLowerCase().includes(sectionId)) {
-                    button.classList.add('tab-active');
-                }
-            });
-        }
-
-        // Products and Cart handling
-        async function loadProducts() {
-            try {
-                console.log('Fetching products...'); // Debug log
-                const response = await fetch('/api/inventory');
-                if (!response.ok) {
-                    console.error('Response not OK:', response.status); // Debug log
-                    throw new Error('Failed to fetch products');
-                }
-                
-                const data = await response.json();
-                console.log('Received products:', data); // Debug log
-                
-                products = data;
-                displayProducts(products);
-            } catch (error) {
-                console.error('Error loading products:', error);
-                showNotification('Failed to load products', 'error');
-            }
-        }
-
-        function displayProducts(products) {
-            const container = document.getElementById('products-container');
-            container.innerHTML = products.map(product => `
-                <div class="product-card" onclick="addToCart(${JSON.stringify(product).replace(/"/g, '&quot;')})">
-                    <div class="text-lg font-bold mb-2 text-gray-900">${escapeHtml(product.product_Name)}</div>
-                    <div class="text-[#E31837] font-bold">₱${product.price.toFixed(2)}</div>
-                    <div class="text-sm text-gray-500">${product.stock} in stock</div>
-                </div>
-            `).join('');
-        }
-
-        function addToCart(product) {
-            const existingItem = cart.find(item => item.id === product.id);
-            
-            if (existingItem) {
-                if (existingItem.quantity < product.stock) {
-                    existingItem.quantity++;
-                } else {
-                    showNotification('Not enough stock available', 'error');
-                    return;
-                }
+        products.forEach(product => {
+            const productName = product.getAttribute('data-name').toLowerCase();
+            if (productName.includes(searchInput)) {
+                product.style.display = 'block'; // Show matching product
+                hasProducts = true;
             } else {
-                if (product.stock > 0) {
-                    cart.push({
-                        ...product,
-                        quantity: 1
-                    });
-                } else {
-                    showNotification('Product out of stock', 'error');
-                    return;
-                }
+                product.style.display = 'none'; // Hide non-matching product
             }
-            
-            updateCartDisplay();
-        }
-
-        function updateCartDisplay() {
-            const cartContainer = document.getElementById('cart-items');
-            cartContainer.innerHTML = cart.map(item => `
-                <div class="flex justify-between items-center p-2 border-b">
-                    <div>
-                        <div class="font-bold text-gray-900">${escapeHtml(item.product_Name)}</div>
-                        <div class="text-sm text-gray-500">₱${item.price.toFixed(2)} × ${item.quantity}</div>
-                    </div>
-                    <div class="flex items-center space-x-2">
-                        <button onclick="updateQuantity(${item.id}, ${item.quantity - 1})" 
-                                class="px-2 py-1 bg-gray-200 rounded text-gray-900">-</button>
-                        <span class="text-gray-900">${item.quantity}</span>
-                        <button onclick="updateQuantity(${item.id}, ${item.quantity + 1})"
-                                class="px-2 py-1 bg-gray-200 rounded text-gray-900">+</button>
-                        <button onclick="removeFromCart(${item.id})"
-                                class="ml-2 text-red-500">
-                            <i class="fas fa-trash"></i>
-                        </button>
-                    </div>
-                </div>
-            `).join('');
-
-            updateTotals();
-        }
-
-        function updateQuantity(productId, newQuantity) {
-            const item = cart.find(item => item.id === productId);
-            const product = products.find(p => p.id === productId);
-            
-            if (newQuantity <= 0) {
-                removeFromCart(productId);
-                return;
-            }
-            
-            if (newQuantity > product.stock) {
-                showNotification('Not enough stock available', 'error');
-                return;
-            }
-            
-            item.quantity = newQuantity;
-            updateCartDisplay();
-        }
-
-        function removeFromCart(productId) {
-            cart = cart.filter(item => item.id !== productId);
-            updateCartDisplay();
-        }
-
-        function updateTotals() {
-            const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-            const tax = subtotal * 0.12;
-            const total = subtotal + tax;
-
-            document.getElementById('subtotal').textContent = `₱${subtotal.toFixed(2)}`;
-            document.getElementById('tax').textContent = `₱${tax.toFixed(2)}`;
-            document.getElementById('total').textContent = `₱${total.toFixed(2)}`;
-            document.getElementById('payment-total').textContent = `₱${total.toFixed(2)}`;
-        }
-
-        function clearCart() {
-            cart = [];
-            updateCartDisplay();
-        }
-
-        // Payment handling
-        function processPayment() {
-            if (cart.length === 0) {
-                showNotification('Cart is empty', 'error');
-                return;
-            }
-            
-            const modal = document.getElementById('payment-modal');
-            modal.classList.remove('hidden');
-            modal.classList.add('flex');
-            document.getElementById('cash-amount').value = '';
-            document.getElementById('change-amount').textContent = '₱0.00';
-        }
-
-        function closePaymentModal() {
-            const modal = document.getElementById('payment-modal');
-            modal.classList.add('hidden');
-            modal.classList.remove('flex');
-        }
-
-        document.getElementById('cash-amount').addEventListener('input', function() {
-            const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0) * 1.12;
-            const cash = parseFloat(this.value) || 0;
-            const change = cash - total;
-            
-            document.getElementById('change-amount').textContent = 
-                change >= 0 ? `₱${change.toFixed(2)}` : '₱0.00';
         });
 
-        async function completeTransaction() {
-            const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0) * 1.12;
-            const cash = parseFloat(document.getElementById('cash-amount').value) || 0;
-            
-            if (cash < total) {
-                showNotification('Insufficient cash amount', 'error');
-                return;
-            }
-
-            try {
-                const response = await fetch('/api/transactions', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'RequestVerificationToken': document.querySelector('input[name="__RequestVerificationToken"]').value
-                    },
-                    body: JSON.stringify({
-                        items: cart,
-                        total: total,
-                        cash: cash,
-                        change: cash - total
-                    })
-                });
-
-                if (!response.ok) throw new Error('Failed to process transaction');
-
-                showNotification('Transaction completed successfully', 'success');
-                clearCart();
-                closePaymentModal();
-                loadProducts(); // Refresh products to update stock
-                
-            } catch (error) {
-                console.error('Error processing transaction:', error);
-                showNotification('Failed to process transaction', 'error');
-            }
+        // Show the "No products found" message if no products match
+        if (!hasProducts) {
+            noProductsMessage.style.display = 'block';
         }
+    }
 
-        // Inventory handling
-        async function loadInventory() {
-            try {
-                const response = await fetch('/api/inventory');
-                if (!response.ok) {
-                    throw new Error('Failed to fetch inventory');
-                }
-                
-                const data = await response.json();
-                products = data; // Store in the shared products array
-                displayInventory(products);
-            } catch (error) {
-                console.error('Error loading inventory:', error);
-                showNotification('Failed to load inventory', 'error');
+    function filterInventory() {
+        const searchInput = document.getElementById('inventory-search').value.toLowerCase();
+        const items = document.querySelectorAll('.inventory-item');
+        let hasItems = false;
+
+        items.forEach(item => {
+            const itemName = item.getAttribute('data-name').toLowerCase();
+            if (itemName.includes(searchInput)) {
+                item.style.display = 'table-row'; // Show matching item
+                hasItems = true;
+            } else {
+                item.style.display = 'none'; // Hide non-matching item
             }
-        }
-
-        function displayInventory(inventory) {
-            const tbody = document.getElementById('inventory-table-body');
-            
-            if (!tbody) {
-                console.error('Inventory table body not found');
-                return;
-            }
-            
-            tbody.innerHTML = inventory.map(item => `
-                <tr class="hover:bg-gray-50">
-                    <td class="text-gray-900">#${item.id}</td>
-                    <td class="text-gray-900">
-                        <div class="flex items-center gap-3">
-                            <div class="w-10 h-10 bg-slate-200 rounded-lg flex items-center justify-center">
-                                <i class="material-icons text-slate-500">inventory_2</i>
-                            </div>
-                            <span>${escapeHtml(item.product_Name)}</span>
-                        </div>
-                    </td>
-                    <td class="text-gray-900 font-semibold text-[#E31837]">₱${item.price.toFixed(2)}</td>
-                    <td class="text-gray-900">${item.stock}</td>
-                    <td>
-                        <span class="px-2 py-1 rounded-full text-xs font-medium 
-                            ${item.stock > 10 ? 'bg-green-100 text-green-800' : 
-                              item.stock > 0 ? 'bg-yellow-100 text-yellow-800' : 
-                              'bg-red-100 text-red-800'}">
-                            ${item.stock > 10 ? 'In Stock' : 
-                              item.stock > 0 ? 'Low Stock' : 
-                              'Out of Stock'}
-                        </span>
-                    </td>
-                </tr>
-            `).join('');
-        }
-
-        // Search functionality
-        document.getElementById('product-search').addEventListener('input', debounce(function() {
-            const searchTerm = this.value.toLowerCase();
-            const filteredProducts = products.filter(product => 
-                product.product_Name.toLowerCase().includes(searchTerm)
-            );
-            displayProducts(filteredProducts);
-        }, 300));
-
-        document.getElementById('inventory-search').addEventListener('input', debounce(function() {
-            const searchTerm = this.value.toLowerCase();
-            const filteredProducts = products.filter(product => 
-                product.product_Name.toLowerCase().includes(searchTerm)
-            );
-            displayInventory(filteredProducts);
-        }, 300));
-
-        // Add sort functionality
-        document.getElementById('inventory-sort').addEventListener('change', function() {
-            const sortBy = this.value;
-            const sortedProducts = [...products].sort((a, b) => {
-                switch(sortBy) {
-                    case 'name':
-                        return a.product_Name.localeCompare(b.product_Name);
-                    case 'stock':
-                        return b.stock - a.stock;
-                    case 'price':
-                        return b.price - a.price;
-                    default:
-                        return 0;
-                }
-            });
-            displayInventory(sortedProducts);
         });
 
-        // Utility functions
-        function showNotification(message, type) {
-            const notificationDiv = document.createElement('div');
-            notificationDiv.className = `fixed top-4 right-4 p-4 rounded-lg shadow-lg ${
-                type === 'success' ? 'bg-green-500' : 'bg-red-500'
-            } text-white z-50`;
-            notificationDiv.textContent = message;
-            
-            document.body.appendChild(notificationDiv);
-            
-            setTimeout(() => {
-                notificationDiv.remove();
-            }, 3000);
+        // Optionally, you can show a message if no items match
+        if (!hasItems) {
+            // Handle "No items found" message if needed
         }
-
-        function debounce(func, wait) {
-            let timeout;
-            return function executedFunction(...args) {
-                const later = () => {
-                    clearTimeout(timeout);
-                    func.apply(this, args);
-                };
-                clearTimeout(timeout);
-                timeout = setTimeout(later, wait);
-            };
-        }
-
-        function escapeHtml(unsafe) {
-            return unsafe
-                .replace(/&/g, "&amp;")
-                .replace(/</g, "&lt;")
-                .replace(/>/g, "&gt;")
-                .replace(/"/g, "&quot;")
-                .replace(/'/g, "&#039;");
-        }
-
-        function logout() {
-            window.location.href = '/Login';
-        }
-    </script>
-</body>
-</html>
+    }
+</script>
