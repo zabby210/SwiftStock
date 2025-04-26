@@ -1,13 +1,12 @@
-using Microsoft.AspNetCore.Authorization; // For [Authorize]
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.EntityFrameworkCore;
 using SwiftStock.Data;
 using SwiftStock.Models;
+using System.Security.Claims;
 
 namespace SwiftStock.Pages.Account
 {
-    // Ensure that users are authorized to access the settings page
-    [Authorize]
     public class SettingsModel : PageModel
     {
         private readonly ApplicationDbContext _context;
@@ -17,56 +16,62 @@ namespace SwiftStock.Pages.Account
             _context = context;
         }
 
-        [BindProperty]
+        // Properties to bind user data
         public User User { get; set; }
+        public bool UsernameExists { get; set; } // To check if the username already exists
 
-        public bool UserNotFound { get; set; }
-
-        public IActionResult OnGet()
+        // OnGet method to retrieve user information
+        public async Task OnGetAsync()
         {
-            // Access the logged-in user's username from HttpContext.User.Identity.Name
-            var userName = HttpContext.User.Identity.Name; // This gives the logged-in user's username
+            // Get user ID from the authenticated user (ClaimsPrincipal)
+            var userId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);  // Access ClaimsPrincipal via HttpContext
 
-            // If no username is found (meaning the user is not authenticated), redirect to login
-            if (string.IsNullOrEmpty(userName))
-            {
-                return RedirectToPage("/Login"); // Redirect to login if the user is not authenticated
-            }
+            // Retrieve the user from the database by Id
+            User = await _context.users.FirstOrDefaultAsync(u => u.Id.ToString() == userId);
 
-            // Find the user in the database based on their username
-            User = _context.users.FirstOrDefault(u => u.Username == userName);
-
+            // If the user does not exist, handle the error
             if (User == null)
             {
-                UserNotFound = true;
-                return Page(); // Stay on the same page and show an error if user is not found.
+                RedirectToPage("/Error");
             }
-
-            return Page(); // Return the page with the user's data.
         }
 
-        public IActionResult OnPost()
+        // OnPost method to handle profile updates
+        public async Task<IActionResult> OnPostAsync(string username, string name, string email, string password)
         {
-            if (!ModelState.IsValid) return Page();
+            if (!ModelState.IsValid)
+            {
+                return Page();
+            }
 
-            // Find the user in the database by their Id
-            var existingUser = _context.users.FirstOrDefault(u => u.Id == User.Id);
+            // Check if the username already exists
+            var existingUser = await _context.users
+                .FirstOrDefaultAsync(u => u.Username == username && u.Id != User.Id);
 
             if (existingUser != null)
             {
-                existingUser.Name = User.Name;
-                existingUser.Username = User.Username;
-                existingUser.Email = User.Email;
-
-                if (!string.IsNullOrEmpty(User.Password))
-                {
-                    existingUser.Password = User.Password; // Update the password (hash in production)
-                }
-
-                _context.SaveChanges();
+                // If username exists, set the flag to show an error
+                UsernameExists = true;
+                return Page();
             }
 
-            return RedirectToPage("/Home");
+            // Update user's information (except for password unless provided)
+            User.Username = username;
+            User.Name = name;
+            User.Email = email;
+
+            if (!string.IsNullOrEmpty(password)) // Only update password if provided
+            {
+                // Ideally, you should hash the password here before saving it
+                User.Password = password;
+            }
+
+            // Save changes to the database
+            _context.users.Update(User);
+            await _context.SaveChangesAsync();
+
+            // Redirect to a confirmation page or back to the settings page
+            return RedirectToPage("/Account/Settings");
         }
     }
 }

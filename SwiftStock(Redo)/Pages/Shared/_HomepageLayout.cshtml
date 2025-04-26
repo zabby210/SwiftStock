@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - SwiftStock Admin</title>
+    <title>@ViewData["Title"] - SwiftStock</title>
 
     <!-- Existing Fonts and CSS -->
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -23,7 +23,7 @@
         }
 
         /* Sidebar */
-        .admin-sidebar {
+        .home-sidebar {
             width: 280px;
             transition: width 0.4s ease;
             background-color: #1e2024;
@@ -34,9 +34,17 @@
             z-index: 50;
         }
 
-            .admin-sidebar.collapsed {
+            .home-sidebar.collapsed {
                 width: 80px;
             }
+
+                /* Hamburger Button at the top center of the collapsed sidebar */
+                .home-sidebar.collapsed .hamburger-btn {
+                    position: absolute;
+                    top: 20px;
+                    left: 50%;
+                    transform: translateX(-50%);
+                }
 
         /* Sidebar Links */
         .nav-item {
@@ -61,18 +69,18 @@
             opacity: 1;
         }
 
-        .admin-sidebar.collapsed .sidebar-text {
+        .home-sidebar.collapsed .sidebar-text {
             opacity: 0;
             pointer-events: none;
         }
 
         /* Main Content */
-        .admin-content {
+        .home-content {
             margin-left: 280px;
             transition: margin-left 0.4s ease;
         }
 
-            .admin-content.expanded {
+            .home-content.expanded {
                 margin-left: 80px;
             }
 
@@ -89,6 +97,19 @@
             display: flex;
             align-items: center;
             padding: 0 20px;
+            transition: left 0.4s ease; /* Added transition for smooth movement */
+            justify-content: space-between; /* Ensure the content is spread out */
+        }
+
+            /* Adjust hamburger icon when sidebar is collapsed */
+            header .hamburger-btn {
+                transition: margin-left 0.3s ease; /* Smooth transition */
+                margin-left: 0;
+            }
+
+        /* When the sidebar is collapsed */
+        .home-sidebar.collapsed + header .hamburger-btn {
+            margin-left: -10px; /* Adjust hamburger icon when collapsed to stay within the header */
         }
 
         /* Main Content Section */
@@ -96,19 +117,29 @@
             padding: 80px 20px;
             background-color: #0f1117;
         }
+
+        /* Header Logo and Notification Bell */
+        .header-logo {
+            display: flex;
+            align-items: center;
+            margin-right: 20px;
+        }
+
+            .header-logo img {
+                height: 40px; /* Adjust size of logo */
+                width: auto;
+            }
     </style>
 </head>
 <body class="h-full bg-[#0f1117] text-slate-200">
 
     <!-- Sidebar -->
-    <aside id="admin-sidebar" class="admin-sidebar fixed top-0 left-0 h-full glass-card z-50">
+    <aside id="home-sidebar" class="home-sidebar fixed top-0 left-0 h-full glass-card z-50">
         <div class="p-6 border-b border-slate-800">
             <div class="flex items-center justify-between">
-                <div class="flex items-center space-x-3">
-                    <img src="~/css/Images/SwiftLogo.png" alt="Logo" class="h-8 w-auto">
-                    <span class="text-xl font-bold text-white sidebar-text">SwiftStock</span>
-                </div>
-                <button id="toggle-sidebar" class="text-slate-400 hover:text-white">
+                <!-- Remove Logo from here -->
+                <span class="text-xl font-bold text-white sidebar-text">Home</span>
+                <button id="toggle-sidebar" class="text-slate-400 hover:text-white hamburger-btn">
                     <i class="fas fa-bars"></i>
                 </button>
             </div>
@@ -116,7 +147,7 @@
 
         <!-- Navigation Menu -->
         <nav class="mt-6 px-4">
-            <a href="/" class="nav-item">
+            <a href="/Home" class="nav-item">
                 <i class="material-icons">home</i>
                 <span class="sidebar-text">Home</span>
             </a>
@@ -130,7 +161,7 @@
                 <span class="sidebar-text">Categories</span>
             </a>
 
-            <a href="/account-settings" class="nav-item">
+            <a href="/Settings" class="nav-item">
                 <i class="material-icons">settings</i>
                 <span class="sidebar-text">Account Settings</span>
             </a>
@@ -148,18 +179,20 @@
     <!-- Top Bar -->
     <header>
         <div class="flex items-center justify-between w-full">
+            <!-- Logo near Notification Bell -->
+            <div class="header-logo">
+                <img src="~/css/Images/SwiftLogo.png" alt="Logo">
+            </div>
+
             <input type="text" placeholder="Search..." class="px-4 py-2 bg-[#0f1117] text-slate-200 border border-slate-800 rounded-lg w-1/3">
             <button class="text-slate-400">
                 <i class="material-icons">notifications</i>
-            </button>
-            <button class="text-slate-400">
-                <i class="material-icons">account_circle</i>
             </button>
         </div>
     </header>
 
     <!-- Main Content -->
-    <main class="admin-content pt-16">
+    <main class="home-content pt-16">
         <div class="main-section">
             @RenderBody()
         </div>
@@ -168,18 +201,19 @@
     <script>
         // Sidebar Toggle
         document.getElementById('toggle-sidebar').addEventListener('click', function() {
-            const sidebar = document.getElementById('admin-sidebar');
-            const content = document.querySelector('.admin-content');
+            const sidebar = document.getElementById('home-sidebar');
+            const content = document.querySelector('.home-content');
             const header = document.querySelector('header');
 
+            // Toggle collapsed class
             sidebar.classList.toggle('collapsed');
             content.classList.toggle('expanded');
 
-            // Adjust the header position when the sidebar is collapsed
+            // Adjust header position based on sidebar state
             if (sidebar.classList.contains('collapsed')) {
-                header.style.left = '80px';
+                header.style.left = '80px'; // Move header when collapsed
             } else {
-                header.style.left = '280px';
+                header.style.left = '280px'; // Default position for header
             }
         });
     </script>

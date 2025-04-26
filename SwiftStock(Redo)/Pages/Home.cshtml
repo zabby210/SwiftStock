@@ -2,38 +2,33 @@
 @model SwiftStock.Pages.HomeModel
 @{
     ViewData["Title"] = "Home";
-    Layout = "_HomepageLayout";  // This should be the name of your shared layout file
+    Layout = "_HomepageLayout";
 }
 
-<!-- Page Header -->
-<h1 class="text-3xl font-bold mb-8 text-[#E31837]">Available Products</h1>
+<div class="space-y-6">
+    <!-- Page Header -->
+    <div class="flex items-center justify-between">
+        <h1 class="text-3xl font-bold text-white">Available Products</h1>
 
-<!-- Check if the user is authenticated -->
-@if (User.Identity.IsAuthenticated)
-{
-    <div class="flex items-center gap-4">
-        <!-- Display Username -->
-        <span class="text-lg">Welcome, @User.Identity.Name</span>
-
-        <!-- Account Settings Link -->
-        <a href="/Account/Settings" class="flex items-center gap-2 hover:bg-red-700 px-3 py-2 rounded-md">
-            <i class="fas fa-user-circle text-xl"></i>
-            <span class="text-sm">Account Settings</span>
-        </a>
+        @if (User.Identity.IsAuthenticated)
+        {
+            <span class="text-lg text-slate-400">Welcome, @User.Identity.Name</span>
+        }
     </div>
-}
 
-<!-- Product List -->
-<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mt-8">
-    @foreach (var product in Model.InventoryItems)
-    {
-        <div class="bg-[#1a1c23] p-4 rounded-lg border border-slate-700">
-           
-            <div class="mt-4">
+    <!-- Product List -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+        @foreach (var product in Model.InventoryItems)
+        {
+            <div class="bg-[#0f1117] p-5 rounded-xl border border-slate-800 shadow-md hover:shadow-lg transition duration-300">
                 <h2 class="text-xl font-semibold text-[#E31837]">@product.Product_Name</h2>
-                <p class="text-lg text-red-600 mt-4">$@product.Price</p>
-                <a href="/Product/@product.Id" class="mt-4 inline-block bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700">View Details</a>
+                <p class="text-lg text-slate-300 mt-2">₱@product.Price.ToString("N2")</p>
+                <p class="text-sm text-slate-400 mt-1">Stock Available: @product.Stock</p>
+                <a href="/Product/@product.Id"
+                   class="mt-4 inline-block bg-[#E31837] text-white px-4 py-2 rounded-lg hover:bg-[#E31837]/90 transition-colors duration-300">
+                    View Details
+                </a>
             </div>
-        </div>
-    }
+        }
+    </div>
 </div>
