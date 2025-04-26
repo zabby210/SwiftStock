@@ -1,71 +1,187 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="h-full">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - SwiftStock</title>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" />
+    <title>@ViewData["Title"] - SwiftStock Admin</title>
+
+    <!-- Existing Fonts and CSS -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <link rel="stylesheet" href="~/css/style.css" />
+
+    <!-- Material UI Icons -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
+
     <style>
-        body {
-            font-family: 'Plus Jakarta Sans', sans-serif;
+        /* Glassy Card Effect */
+        .glass-card {
+            background: rgba(22, 25, 34, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
         }
 
-        .aspect-square {
-            aspect-ratio: 1 / 1;
+        /* Sidebar */
+        .admin-sidebar {
+            width: 280px;
+            transition: width 0.4s ease;
+            background-color: #1e2024;
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100%;
+            z-index: 50;
+        }
+
+            .admin-sidebar.collapsed {
+                width: 80px;
+            }
+
+        /* Sidebar Links */
+        .nav-item {
+            display: flex;
+            align-items: center;
+            padding: 12px;
+            transition: background-color 0.3s;
+        }
+
+            .nav-item:hover {
+                background-color: rgba(255, 255, 255, 0.1);
+            }
+
+            .nav-item.active {
+                background-color: #E31837;
+                color: white;
+            }
+
+        /* Sidebar Text (Visibility Toggle) */
+        .sidebar-text {
+            transition: opacity 0.25s ease;
+            opacity: 1;
+        }
+
+        .admin-sidebar.collapsed .sidebar-text {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        /* Main Content */
+        .admin-content {
+            margin-left: 280px;
+            transition: margin-left 0.4s ease;
+        }
+
+            .admin-content.expanded {
+                margin-left: 80px;
+            }
+
+        /* Top Bar */
+        header {
+            position: fixed;
+            top: 0;
+            left: 280px;
+            right: 0;
+            height: 64px;
+            background: rgba(22, 25, 34, 0.7);
+            backdrop-filter: blur(12px);
+            z-index: 40;
+            display: flex;
+            align-items: center;
+            padding: 0 20px;
+        }
+
+        /* Main Content Section */
+        .main-section {
+            padding: 80px 20px;
+            background-color: #0f1117;
         }
     </style>
 </head>
-<body class="bg-[#0f1117] text-white min-h-screen flex flex-col">
+<body class="h-full bg-[#0f1117] text-slate-200">
 
-    <!-- Header/Navbar -->
-    <header class="bg-red-600 text-white p-4 shadow-md flex justify-between items-center">
-        <div class="text-xl font-bold">SwiftStock</div>
-
-        <div class="flex items-center gap-4">
-            <!-- Search -->
-            <form method="get" asp-page="/Home">
-                <div class="relative">
-                    <input type="text" name="search" placeholder="Search..." class="rounded-md px-3 py-1 text-black w-64" />
-                    <i class="fas fa-search absolute right-3 top-2 text-gray-400"></i>
+    <!-- Sidebar -->
+    <aside id="admin-sidebar" class="admin-sidebar fixed top-0 left-0 h-full glass-card z-50">
+        <div class="p-6 border-b border-slate-800">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-3">
+                    <img src="~/css/Images/SwiftLogo.png" alt="Logo" class="h-8 w-auto">
+                    <span class="text-xl font-bold text-white sidebar-text">SwiftStock</span>
                 </div>
-            </form>
+                <button id="toggle-sidebar" class="text-slate-400 hover:text-white">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+        </div>
 
-            <!-- Category Dropdown -->
-            <select class="rounded-md text-black px-2 py-1">
-                <option>All Categories</option>
-                <option>Groceries</option>
-                <option>Snacks</option>
-                <option>Beverages</option>
-            </select>
-
-            <a href="/Settings" class="flex items-center gap-2 hover:bg-red-700 px-3 py-2 rounded-md">
-                <i class="fas fa-user-circle text-xl"></i>
-                <span class="text-sm">Account Settings</span>
+        <!-- Navigation Menu -->
+        <nav class="mt-6 px-4">
+            <a href="/" class="nav-item">
+                <i class="material-icons">home</i>
+                <span class="sidebar-text">Home</span>
             </a>
 
+            <div class="py-2">
+                <p class="px-3 text-xs font-semibold text-slate-400 uppercase sidebar-text">Products</p>
+            </div>
+
+            <a href="/products" class="nav-item">
+                <i class="material-icons">category</i>
+                <span class="sidebar-text">Categories</span>
+            </a>
+
+            <a href="/account-settings" class="nav-item">
+                <i class="material-icons">settings</i>
+                <span class="sidebar-text">Account Settings</span>
+            </a>
+
+            <form method="post" action="/Index?handler=Logout">
+                @Html.AntiForgeryToken()
+                <button type="submit" class="nav-item w-full">
+                    <i class="material-icons">logout</i>
+                    <span class="sidebar-text">Logout</span>
+                </button>
+            </form>
+        </nav>
+    </aside>
+
+    <!-- Top Bar -->
+    <header>
+        <div class="flex items-center justify-between w-full">
+            <input type="text" placeholder="Search..." class="px-4 py-2 bg-[#0f1117] text-slate-200 border border-slate-800 rounded-lg w-1/3">
+            <button class="text-slate-400">
+                <i class="material-icons">notifications</i>
+            </button>
+            <button class="text-slate-400">
+                <i class="material-icons">account_circle</i>
+            </button>
         </div>
     </header>
 
-    <!-- Navigation -->
-    <nav class="bg-[#0f1117] border-b border-slate-800 p-3 flex gap-4 justify-center text-white">
-        <a href="/" class="px-4 py-2 hover:text-red-400">Home</a>
-        <a href="/Shop" class="px-4 py-2 hover:text-red-400">Shop</a>
-        <a href="/About" class="px-4 py-2 hover:text-red-400">About Us</a>
-    </nav>
-
     <!-- Main Content -->
-    <main class="flex-1 p-6 container mx-auto">
-        @RenderBody()
+    <main class="admin-content pt-16">
+        <div class="main-section">
+            @RenderBody()
+        </div>
     </main>
 
-    <!-- Footer -->
-    <footer class="bg-red-600 text-white text-center py-4">
-        &copy; 2025 SwiftStock
-    </footer>
+    <script>
+        // Sidebar Toggle
+        document.getElementById('toggle-sidebar').addEventListener('click', function() {
+            const sidebar = document.getElementById('admin-sidebar');
+            const content = document.querySelector('.admin-content');
+            const header = document.querySelector('header');
 
-    @RenderSection("Scripts", required: false)
+            sidebar.classList.toggle('collapsed');
+            content.classList.toggle('expanded');
 
+            // Adjust the header position when the sidebar is collapsed
+            if (sidebar.classList.contains('collapsed')) {
+                header.style.left = '80px';
+            } else {
+                header.style.left = '280px';
+            }
+        });
+    </script>
 </body>
 </html>

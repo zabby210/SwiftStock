@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization; // For [Authorize]
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using SwiftStock.Data;
@@ -5,6 +6,8 @@ using SwiftStock.Models;
 
 namespace SwiftStock.Pages.Account
 {
+    // Ensure that users are authorized to access the settings page
+    [Authorize]
     public class SettingsModel : PageModel
     {
         private readonly ApplicationDbContext _context;
@@ -22,7 +25,13 @@ namespace SwiftStock.Pages.Account
         public IActionResult OnGet()
         {
             // Access the logged-in user's username from HttpContext.User.Identity.Name
-            var userName = HttpContext.User.Identity.Name; // This gives the logged-in user's username.
+            var userName = HttpContext.User.Identity.Name; // This gives the logged-in user's username
+
+            // If no username is found (meaning the user is not authenticated), redirect to login
+            if (string.IsNullOrEmpty(userName))
+            {
+                return RedirectToPage("/Login"); // Redirect to login if the user is not authenticated
+            }
 
             // Find the user in the database based on their username
             User = _context.users.FirstOrDefault(u => u.Username == userName);
@@ -33,7 +42,7 @@ namespace SwiftStock.Pages.Account
                 return Page(); // Stay on the same page and show an error if user is not found.
             }
 
-            return Page();  // Return the page with the user's data.
+            return Page(); // Return the page with the user's data.
         }
 
         public IActionResult OnPost()
