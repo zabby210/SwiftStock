@@ -2,74 +2,49 @@
 @model SwiftStock.Pages.HomeModel
 @{
     ViewData["Title"] = "Home";
+    Layout = "_HomepageLayout";  // This should be the name of your shared layout file
 }
 
-<!-- Main Content -->
-<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-    <!-- Header Section -->
-    <div class="flex items-center justify-between mb-8">
-        <h1 class="text-3xl font-bold text-white">Available Products</h1>
-        
-        <!-- Search Bar -->
-        <div class="relative w-96">
-             <i class="material-icons absolute left-4 top-3 text-slate-400"></i>
-            <input type="text" 
-                   id="product-search"
-                   placeholder="Search products..."
-                   class="w-full pl-12 pr-4 py-3 bg-[#0f1117] border border-slate-800 rounded-lg focus:border-[#E31837] focus:ring-1 focus:ring-[#E31837] text-white">
-        </div>
+<!-- Page Header -->
+<h1 class="text-3xl font-bold mb-8 text-[#E31837]">Available Products</h1>
+
+<!-- Check if the user is authenticated -->
+@if (User.Identity.IsAuthenticated)
+{
+    <div class="flex items-center gap-4">
+        <!-- Display Username -->
+        <span class="text-lg">Welcome, @User.Identity.Name</span>
+
+        <!-- Account Settings Link -->
+        <a href="/Settings" class="flex items-center gap-2 hover:bg-red-700 px-3 py-2 rounded-md">
+            <i class="fas fa-user-circle text-xl"></i>
+            <span class="text-sm">Account Settings</span>
+        </a>
+
+        <!-- Purchase History Link -->
+        <a href="/PurchaseHistory" class="flex items-center gap-2 hover:bg-red-700 px-3 py-2 rounded-md">
+            <i class="fas fa-history text-xl"></i>
+            <span class="text-sm">Purchase History</span>
+        </a>
     </div>
-
-    <!-- Products Grid -->
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        @foreach (var item in Model.InventoryItems)
-        {
-            <div class="bg-[#0f1117] rounded-lg overflow-hidden border border-slate-800 transition-transform hover:scale-105">
-                <!-- Product Image Placeholder -->
-                <div class="aspect-square bg-slate-800 flex items-center justify-center">
-                    <i class="material-icons text-6xl text-slate-600">inventory_2</i>
-                </div>
-                
-                <!-- Product Info -->
-                <div class="p-4">
-                    <h3 class="text-white font-semibold text-lg mb-2">@item.Product_Name</h3>
-                    <div class="flex items-center justify-between">
-                        <span class="text-[#E31837] font-bold">₱@item.Price.ToString("N2")</span>
-                        <span class="px-3 py-1 rounded-full text-xs font-medium 
-                            @(item.Stock > 10 ? "bg-green-500/10 text-green-500" : 
-                              item.Stock > 0 ? "bg-yellow-500/10 text-yellow-500" : 
-                              "bg-red-500/10 text-red-500")">
-                            @item.Stock items left
-                        </span>
-                    </div>
-                </div>
-            </div>
-        }
+}
+else
+{
+    <!-- Show message for guests to log in -->
+    <div class="bg-[#1a1c23] p-6 rounded-lg border border-slate-700">
+        <h3 class="text-lg font-semibold text-[#e0e0e0] mb-4">Welcome, Guest</h3>
+        <p class="text-[#f5f5f5] mb-4">You are currently browsing as a guest. To view more products and make purchases, please log in.</p>
+        <a href="/Login" class="bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700">Login</a>
     </div>
-</div>
-
-<!-- Add this to your CSS -->
-<style>
-    .aspect-square {
-        aspect-ratio: 1 / 1;
-    }
-</style>
-
+}
 @section Scripts {
-<script>
-    // Simple search functionality
-    document.getElementById('product-search').addEventListener('input', function(e) {
-        const searchTerm = e.target.value.toLowerCase();
-        const products = document.querySelectorAll('.grid > div');
-        
-        products.forEach(product => {
-            const productName = product.querySelector('h3').textContent.toLowerCase();
-            if (productName.includes(searchTerm)) {
-                product.style.display = 'block';
-            } else {
-                product.style.display = 'none';
-            }
+    <script>
+        document.querySelector('input[name="search"]')?.addEventListener('input', function (e) {
+            const term = e.target.value.toLowerCase();
+            document.querySelectorAll('.grid > div').forEach(product => {
+                const name = product.querySelector('h3').textContent.toLowerCase();
+                product.style.display = name.includes(term) ? 'block' : 'none';
+            });
         });
-    });
-</script>
+    </script>
 }

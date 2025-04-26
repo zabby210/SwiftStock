@@ -1,0 +1,79 @@
+﻿@page
+@model SwiftStock.Pages.Account.SettingsModel
+@{
+    Layout = "_SettingsLayout";
+    ViewData["Title"] = "Account Settings";
+}
+
+<h1>Account Settings</h1>
+<div class="flex">
+    <!-- Sidebar Navigation -->
+    <aside class="w-64 bg-[#1a1c23] text-white p-4">
+        <h2 class="text-2xl font-bold mb-6">Account Settings</h2>
+        <ul class="space-y-4">
+            <li>
+                <a href="#profile" class="text-lg hover:text-red-400">Profile</a>
+            </li>
+            <li>
+                <a href="#security" class="text-lg hover:text-red-400">Security</a>
+            </li>
+            <li>
+                <a href="#preferences" class="text-lg hover:text-red-400">Preferences</a>
+            </li>
+        </ul>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="flex-1 p-6">
+        <!-- Profile Section -->
+        <section id="profile" class="mb-8">
+            <h3 class="text-2xl font-semibold text-white">Profile Details</h3>
+            <form method="post">
+                <div class="mb-4">
+                    <label for="name" class="block text-white">Name</label>
+                    <input type="text" id="name" name="name" class="w-full p-2 mt-1 rounded bg-[#2c2f36] text-white" value="@Model.User.Name" />
+                </div>
+                <div class="mb-4">
+                    <label for="username" class="block text-white">Username</label>
+                    <input type="text" id="username" name="username" class="w-full p-2 mt-1 rounded bg-[#2c2f36] text-white" value="@Model.User.Username" />
+                </div>
+                <div class="mb-4">
+                    <label for="email" class="block text-white">Email</label>
+                    <input type="email" id="email" name="email" class="w-full p-2 mt-1 rounded bg-[#2c2f36] text-white" value="@Model.User.Email" />
+                </div>
+                <div class="mb-4">
+                    <label for="password" class="block text-white">New Password</label>
+                    <input type="password" id="password" name="password" class="w-full p-2 mt-1 rounded bg-[#2c2f36] text-white" placeholder="Enter new password" />
+                </div>
+                <button type="submit" class="bg-red-600 text-white px-4 py-2 rounded-md">Apply Changes</button>
+            </form>
+        </section>
+
+        <!-- Security Section -->
+        <section id="security" class="mb-8">
+            <h3 class="text-2xl font-semibold text-white">Security Settings</h3>
+            <form>
+                <div class="mb-4">
+                    <label for="newPassword" class="block text-white">New Password</label>
+                    <input type="password" id="newPassword" name="newPassword" class="w-full p-2 mt-1 rounded bg-[#2c2f36] text-white" placeholder="Enter new password" />
+                </div>
+                <div class="mb-4">
+                    <label for="confirmNewPassword" class="block text-white">Confirm Password</label>
+                    <input type="password" id="confirmNewPassword" name="confirmNewPassword" class="w-full p-2 mt-1 rounded bg-[#2c2f36] text-white" placeholder="Confirm new password" />
+                </div>
+            </form>
+        </section>
+
+        <!-- Preferences Section -->
+        <section id="preferences">
+            <h3 class="text-2xl font-semibold text-white">Preferences</h3>
+            <div>
+                <label for="theme" class="block text-white">Select Theme</label>
+                <select id="theme" class="w-full p-2 mt-1 rounded bg-[#2c2f36] text-white">
+                    <option value="light">Light Mode</option>
+                    <option value="dark">Dark Mode</option>
+                </select>
+            </div>
+        </section>
+    </main>
+</div>

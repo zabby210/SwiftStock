@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "yLYBBg/VNK+G4n0fCEpK18K0Xjt809dAJDDF9yIcz/Y=",
+  "Hash": "PLk7lh9mpp6+G6kO/zMth6bbhsudQKt1bIwRBCuX2xw=",
   "Source": "SwiftStock(Redo)",
   "BasePath": "_content/SwiftStock(Redo)",
   "Mode": "Default",
@@ -59,12 +59,12 @@
       "OriginalItemSpec": "C:\\Users\\athen\\source\\repos\\zabby210\\SwiftStock\\SwiftStock(Redo)\\wwwroot\\favicon.ico"
     },
     {
-      "Identity": "C:\\Users\\athen\\source\\repos\\zabby210\\SwiftStock\\SwiftStock(Redo)\\obj\\Debug\\net9.0\\compressed\\1h3daox5to-2wmrqor044.gz",
+      "Identity": "C:\\Users\\athen\\source\\repos\\zabby210\\SwiftStock\\SwiftStock(Redo)\\obj\\Debug\\net9.0\\compressed\\1h3daox5to-0vkgc009mr.gz",
       "SourceId": "SwiftStock(Redo)",
       "SourceType": "Discovered",
       "ContentRoot": "C:\\Users\\athen\\source\\repos\\zabby210\\SwiftStock\\SwiftStock(Redo)\\obj\\Debug\\net9.0\\compressed\\",
       "BasePath": "_content/SwiftStock(Redo)",
-      "RelativePath": "css/style#[.{fingerprint=2wmrqor044}]?.css.gz",
+      "RelativePath": "css/style#[.{fingerprint=0vkgc009mr}]?.css.gz",
       "AssetKind": "All",
       "AssetMode": "All",
       "AssetRole": "Alternative",
@@ -73,8 +73,8 @@
       "RelatedAsset": "C:\\Users\\athen\\source\\repos\\zabby210\\SwiftStock\\SwiftStock(Redo)\\wwwroot\\css\\style.css",
       "AssetTraitName": "Content-Encoding",
       "AssetTraitValue": "gzip",
-      "Fingerprint": "ss600fypou",
-      "Integrity": "lOH7Bn+YmXb1sRiYnPr3oYz6rFYdveLbO8l+MlHeIto=",
+      "Fingerprint": "kjjdbp0nuw",
+      "Integrity": "MFODu1n+EugNsBWLByA4TTFc9yzXmQvSTzEm7K8r760=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "C:\\Users\\athen\\source\\repos\\zabby210\\SwiftStock\\SwiftStock(Redo)\\wwwroot\\css\\style.css"
@@ -1417,8 +1417,8 @@
       "RelatedAsset": "",
       "AssetTraitName": "",
       "AssetTraitValue": "",
-      "Fingerprint": "2wmrqor044",
-      "Integrity": "XumXqMvs+Gn0Zv5px7SNLPC8o+C4HS1r9cdU75QjSeQ=",
+      "Fingerprint": "0vkgc009mr",
+      "Integrity": "nJmx9EtWsdYy0ujJhBZOhlNzGPDedQ6+1Dsy+msfQUg=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\css\\style.css"
@@ -2850,13 +2850,13 @@
       ]
     },
     {
-      "Route": "css/style.2wmrqor044.css",
-      "AssetFile": "C:\\Users\\athen\\source\\repos\\zabby210\\SwiftStock\\SwiftStock(Redo)\\obj\\Debug\\net9.0\\compressed\\1h3daox5to-2wmrqor044.gz",
+      "Route": "css/style.0vkgc009mr.css",
+      "AssetFile": "C:\\Users\\athen\\source\\repos\\zabby210\\SwiftStock\\SwiftStock(Redo)\\obj\\Debug\\net9.0\\compressed\\1h3daox5to-0vkgc009mr.gz",
       "Selectors": [
         {
           "Name": "Content-Encoding",
           "Value": "gzip",
-          "Quality": "0.000128073770"
+          "Quality": "0.000129032258"
         }
       ],
       "ResponseHeaders": [
@@ -2866,15 +2866,15 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "7807"
+          "Value": "7749"
         },
         {
           "Name": "ETag",
-          "Value": "\"lOH7Bn+YmXb1sRiYnPr3oYz6rFYdveLbO8l+MlHeIto=\""
+          "Value": "\"MFODu1n+EugNsBWLByA4TTFc9yzXmQvSTzEm7K8r760=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 11 Apr 2025 01:58:09 GMT"
+          "Value": "Sat, 26 Apr 2025 02:19:03 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -2894,13 +2894,13 @@
         },
         {
           "Name": "ETag",
-          "Value": "W/\"XumXqMvs+Gn0Zv5px7SNLPC8o+C4HS1r9cdU75QjSeQ=\""
+          "Value": "W/\"nJmx9EtWsdYy0ujJhBZOhlNzGPDedQ6+1Dsy+msfQUg=\""
         }
       ],
       "EndpointProperties": [
         {
           "Name": "fingerprint",
-          "Value": "2wmrqor044"
+          "Value": "0vkgc009mr"
         },
         {
           "Name": "label",
@@ -2908,12 +2908,12 @@
         },
         {
           "Name": "integrity",
-          "Value": "sha256-XumXqMvs+Gn0Zv5px7SNLPC8o+C4HS1r9cdU75QjSeQ="
+          "Value": "sha256-nJmx9EtWsdYy0ujJhBZOhlNzGPDedQ6+1Dsy+msfQUg="
         }
       ]
     },
     {
-      "Route": "css/style.2wmrqor044.css",
+      "Route": "css/style.0vkgc009mr.css",
       "AssetFile": "C:\\Users\\athen\\source\\repos\\zabby210\\SwiftStock\\SwiftStock(Redo)\\wwwroot\\css\\style.css",
       "Selectors": [],
       "ResponseHeaders": [
@@ -2923,7 +2923,7 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "48407"
+          "Value": "47776"
         },
         {
           "Name": "Content-Type",
@@ -2931,11 +2931,11 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"XumXqMvs+Gn0Zv5px7SNLPC8o+C4HS1r9cdU75QjSeQ=\""
+          "Value": "\"nJmx9EtWsdYy0ujJhBZOhlNzGPDedQ6+1Dsy+msfQUg=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 11 Apr 2025 01:58:09 GMT"
+          "Value": "Sat, 26 Apr 2025 02:19:03 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -2945,7 +2945,7 @@
       "EndpointProperties": [
         {
           "Name": "fingerprint",
-          "Value": "2wmrqor044"
+          "Value": "0vkgc009mr"
         },
         {
           "Name": "label",
@@ -2953,13 +2953,13 @@
         },
         {
           "Name": "integrity",
-          "Value": "sha256-XumXqMvs+Gn0Zv5px7SNLPC8o+C4HS1r9cdU75QjSeQ="
+          "Value": "sha256-nJmx9EtWsdYy0ujJhBZOhlNzGPDedQ6+1Dsy+msfQUg="
         }
       ]
     },
     {
-      "Route": "css/style.2wmrqor044.css.gz",
-      "AssetFile": "C:\\Users\\athen\\source\\repos\\zabby210\\SwiftStock\\SwiftStock(Redo)\\obj\\Debug\\net9.0\\compressed\\1h3daox5to-2wmrqor044.gz",
+      "Route": "css/style.0vkgc009mr.css.gz",
+      "AssetFile": "C:\\Users\\athen\\source\\repos\\zabby210\\SwiftStock\\SwiftStock(Redo)\\obj\\Debug\\net9.0\\compressed\\1h3daox5to-0vkgc009mr.gz",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -2968,7 +2968,7 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "7807"
+          "Value": "7749"
         },
         {
           "Name": "Content-Type",
@@ -2976,11 +2976,11 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"lOH7Bn+YmXb1sRiYnPr3oYz6rFYdveLbO8l+MlHeIto=\""
+          "Value": "\"MFODu1n+EugNsBWLByA4TTFc9yzXmQvSTzEm7K8r760=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 11 Apr 2025 01:58:09 GMT"
+          "Value": "Sat, 26 Apr 2025 02:19:03 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -2998,7 +2998,7 @@
       "EndpointProperties": [
         {
           "Name": "fingerprint",
-          "Value": "2wmrqor044"
+          "Value": "0vkgc009mr"
         },
         {
           "Name": "label",
@@ -3006,18 +3006,18 @@
         },
         {
           "Name": "integrity",
-          "Value": "sha256-lOH7Bn+YmXb1sRiYnPr3oYz6rFYdveLbO8l+MlHeIto="
+          "Value": "sha256-MFODu1n+EugNsBWLByA4TTFc9yzXmQvSTzEm7K8r760="
         }
       ]
     },
     {
       "Route": "css/style.css",
-      "AssetFile": "C:\\Users\\athen\\source\\repos\\zabby210\\SwiftStock\\SwiftStock(Redo)\\obj\\Debug\\net9.0\\compressed\\1h3daox5to-2wmrqor044.gz",
+      "AssetFile": "C:\\Users\\athen\\source\\repos\\zabby210\\SwiftStock\\SwiftStock(Redo)\\obj\\Debug\\net9.0\\compressed\\1h3daox5to-0vkgc009mr.gz",
       "Selectors": [
         {
           "Name": "Content-Encoding",
           "Value": "gzip",
-          "Quality": "0.000128073770"
+          "Quality": "0.000129032258"
         }
       ],
       "ResponseHeaders": [
@@ -3027,15 +3027,15 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "7807"
+          "Value": "7749"
         },
         {
           "Name": "ETag",
-          "Value": "\"lOH7Bn+YmXb1sRiYnPr3oYz6rFYdveLbO8l+MlHeIto=\""
+          "Value": "\"MFODu1n+EugNsBWLByA4TTFc9yzXmQvSTzEm7K8r760=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 11 Apr 2025 01:58:09 GMT"
+          "Value": "Sat, 26 Apr 2025 02:19:03 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -3055,13 +3055,13 @@
         },
         {
           "Name": "ETag",
-          "Value": "W/\"XumXqMvs+Gn0Zv5px7SNLPC8o+C4HS1r9cdU75QjSeQ=\""
+          "Value": "W/\"nJmx9EtWsdYy0ujJhBZOhlNzGPDedQ6+1Dsy+msfQUg=\""
         }
       ],
       "EndpointProperties": [
         {
           "Name": "integrity",
-          "Value": "sha256-XumXqMvs+Gn0Zv5px7SNLPC8o+C4HS1r9cdU75QjSeQ="
+          "Value": "sha256-nJmx9EtWsdYy0ujJhBZOhlNzGPDedQ6+1Dsy+msfQUg="
         }
       ]
     },
@@ -3076,7 +3076,7 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "48407"
+          "Value": "47776"
         },
         {
           "Name": "Content-Type",
@@ -3084,11 +3084,11 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"XumXqMvs+Gn0Zv5px7SNLPC8o+C4HS1r9cdU75QjSeQ=\""
+          "Value": "\"nJmx9EtWsdYy0ujJhBZOhlNzGPDedQ6+1Dsy+msfQUg=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 11 Apr 2025 01:58:09 GMT"
+          "Value": "Sat, 26 Apr 2025 02:19:03 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -3098,13 +3098,13 @@
       "EndpointProperties": [
         {
           "Name": "integrity",
-          "Value": "sha256-XumXqMvs+Gn0Zv5px7SNLPC8o+C4HS1r9cdU75QjSeQ="
+          "Value": "sha256-nJmx9EtWsdYy0ujJhBZOhlNzGPDedQ6+1Dsy+msfQUg="
         }
       ]
     },
     {
       "Route": "css/style.css.gz",
-      "AssetFile": "C:\\Users\\athen\\source\\repos\\zabby210\\SwiftStock\\SwiftStock(Redo)\\obj\\Debug\\net9.0\\compressed\\1h3daox5to-2wmrqor044.gz",
+      "AssetFile": "C:\\Users\\athen\\source\\repos\\zabby210\\SwiftStock\\SwiftStock(Redo)\\obj\\Debug\\net9.0\\compressed\\1h3daox5to-0vkgc009mr.gz",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -3113,7 +3113,7 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "7807"
+          "Value": "7749"
         },
         {
           "Name": "Content-Type",
@@ -3121,11 +3121,11 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"lOH7Bn+YmXb1sRiYnPr3oYz6rFYdveLbO8l+MlHeIto=\""
+          "Value": "\"MFODu1n+EugNsBWLByA4TTFc9yzXmQvSTzEm7K8r760=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 11 Apr 2025 01:58:09 GMT"
+          "Value": "Sat, 26 Apr 2025 02:19:03 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -3143,7 +3143,7 @@
       "EndpointProperties": [
         {
           "Name": "integrity",
-          "Value": "sha256-lOH7Bn+YmXb1sRiYnPr3oYz6rFYdveLbO8l+MlHeIto="
+          "Value": "sha256-MFODu1n+EugNsBWLByA4TTFc9yzXmQvSTzEm7K8r760="
         }
       ]
     },
