@@ -4,8 +4,6 @@ using Microsoft.EntityFrameworkCore;
 using SwiftStock.Data;
 using SwiftStock.Models;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using BCrypt.Net;
 
 namespace AlfaMart.Pages
 {
@@ -74,14 +72,17 @@ namespace AlfaMart.Pages
                 return Page();
             }
 
+            //bcrypt encryption :)
+            string hashedPassword = BCrypt.Net.BCrypt.HashPassword(Password);
+
             // Create new user without hashing the password
             var user = new User
             {
                 Username = this.Username,
-                Password = this.Password, // Store the password in plain text
+                Password = hashedPassword,
                 Email = this.Email,
                 Name = this.Name,
-                Role = "Customer" // Ensure the role is set correctly
+                Role = "Customer"
             };
 
             _context.users.Add(user);

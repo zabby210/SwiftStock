@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using SwiftStock.Data; // Ensure this matches your ApplicationDbContext namespace
 using System.Security.Claims;
+using System.ComponentModel.DataAnnotations; // Add this!
 
 namespace AlfaMart.Pages
 {
@@ -18,15 +19,18 @@ namespace AlfaMart.Pages
         }
 
         [BindProperty]
+        [Required(ErrorMessage = "Username is required")]
         public string Username { get; set; }
 
         [BindProperty]
+        [Required(ErrorMessage = "Password is required")]
         public string Password { get; set; }
 
         public string ErrorMessage { get; set; }
 
         public async Task<IActionResult> OnPostAsync()
         {
+            // No need to check ModelState unless you add [Required]
             if (!ModelState.IsValid)
             {
                 return Page();
@@ -39,32 +43,29 @@ namespace AlfaMart.Pages
                 return Page();
             }
 
-            // Verify the entered password against the stored plain text password
-            if (Password != user.Password) // Direct comparison
+            if (!BCrypt.Net.BCrypt.Verify(Password, user.Password))
             {
                 ErrorMessage = "Invalid login attempt.";
                 return Page();
             }
 
-            // Create claims for the user
+            // Authentication
             var claims = new List<Claim>
             {
                 new Claim(ClaimTypes.Name, user.Username),
-                new Claim(ClaimTypes.Role, user.Role) // Assuming you have a Role property
+                new Claim(ClaimTypes.Role, user.Role)
             };
 
             var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
 
-            // Set authentication cookie
             var authProperties = new AuthenticationProperties
             {
-                IsPersistent = true, // Set to true if you want the cookie to persist across sessions
-                ExpiresUtc = DateTimeOffset.UtcNow.AddMinutes(30) // Set cookie expiration
+                IsPersistent = true,
+                ExpiresUtc = DateTimeOffset.UtcNow.AddMinutes(30)
             };
 
             await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity), authProperties);
 
-            // Redirect based on role
             return user.Role switch
             {
                 "Admin" => RedirectToPage("/Admin"),
