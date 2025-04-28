@@ -3,9 +3,9 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
-using SwiftStock.Data; // Ensure this matches your ApplicationDbContext namespace
+using SwiftStock.Data;
+using System.ComponentModel.DataAnnotations;
 using System.Security.Claims;
-using System.ComponentModel.DataAnnotations; // Add this!
 
 namespace AlfaMart.Pages
 {
@@ -30,30 +30,25 @@ namespace AlfaMart.Pages
 
         public async Task<IActionResult> OnPostAsync()
         {
-            // No need to check ModelState unless you add [Required]
             if (!ModelState.IsValid)
             {
                 return Page();
             }
 
             var user = await _context.users.FirstOrDefaultAsync(u => u.Username == Username);
-            if (user == null)
+            if (user == null || !BCrypt.Net.BCrypt.Verify(Password, user.Password))
             {
-                ErrorMessage = "User not found.";
+                ErrorMessage = "Invalid username or password.";
                 return Page();
             }
 
-            if (!BCrypt.Net.BCrypt.Verify(Password, user.Password))
-            {
-                ErrorMessage = "Invalid login attempt.";
-                return Page();
-            }
-
-            // Authentication
+           
             var claims = new List<Claim>
             {
+                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()), // Important: Save User ID
                 new Claim(ClaimTypes.Name, user.Username),
-                new Claim(ClaimTypes.Role, user.Role)
+                new Claim(ClaimTypes.Email, user.Email ?? ""), // optional
+                new Claim(ClaimTypes.Role, user.Role) // stores which role the user has
             };
 
             var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
@@ -64,14 +59,18 @@ namespace AlfaMart.Pages
                 ExpiresUtc = DateTimeOffset.UtcNow.AddMinutes(30)
             };
 
-            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity), authProperties);
+            await HttpContext.SignInAsync(
+                CookieAuthenticationDefaults.AuthenticationScheme,
+                new ClaimsPrincipal(claimsIdentity),
+                authProperties
+            );
 
             return user.Role switch
             {
                 "Admin" => RedirectToPage("/Admin"),
                 "Personnel" => RedirectToPage("/Cashier"),
                 "Customer" => RedirectToPage("/Home"),
-                _ => RedirectToPage("/Home"),
+                _ => RedirectToPage("/Index"),
             };
         }
     }

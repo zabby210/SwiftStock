@@ -39,9 +39,30 @@
                     <input type="email" id="email" name="email" class="w-full p-2 mt-1 rounded bg-[#2c2f36] text-white" value="@Model.User.Email" />
                 </div>
 
+                <!-- New Password -->
                 <div class="mb-4">
                     <label for="password" class="block text-white">New Password</label>
                     <input type="password" id="password" name="password" class="w-full p-2 mt-1 rounded bg-[#2c2f36] text-white" placeholder="Enter new password" />
+                </div>
+
+                <!-- Confirm Password -->
+                <div class="mb-4">
+                    <label for="confirmPassword" class="block text-white">Confirm New Password</label>
+                    <input type="password" id="confirmPassword" name="confirmPassword" class="w-full p-2 mt-1 rounded bg-[#2c2f36] text-white" placeholder="Re-enter new password" />
+                    @if (Model.PasswordsDoNotMatch)
+                    {
+                        <span class="text-red-400">Passwords do not match. Please try again.</span>
+                    }
+                </div>
+
+                <!-- Current Password -->
+                <div class="mb-4">
+                    <label for="currentPassword" class="block text-white">Current Password</label>
+                    <input type="password" id="currentPassword" name="currentPassword" class="w-full p-2 mt-1 rounded bg-[#2c2f36] text-white" placeholder="Enter your current password" />
+                    @if (Model.InvalidCurrentPassword)
+                    {
+                        <span class="text-red-400">Current password is incorrect. Please try again.</span>
+                    }
                 </div>
 
                 <button type="submit" class="bg-red-600 text-white px-4 py-2 rounded-md">Apply Changes</button>
