@@ -5,7 +5,7 @@ using SwiftStock.Data;
 using SwiftStock.Models;
 using System.ComponentModel.DataAnnotations;
 
-namespace SwiftStock.Pages.Account
+namespace SwiftStock.Pages
 {
     public class SettingsModel : PageModel
     {
