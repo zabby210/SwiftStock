@@ -27,7 +27,7 @@
 
     <!-- Product List -->
     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-        @foreach (var product in Model.InventoryItems)
+        @foreach (var product in Model.InventoryItem)
         {
             <div class="product-item bg-[#0f1117] p-5 rounded-xl border border-slate-800 shadow-md hover:shadow-lg transition duration-300"
                  data-name="@product.Product_Name.ToLower()">

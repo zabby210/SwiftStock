@@ -4,9 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using SwiftStock.Data;
-using SwiftStock.Models;
-using System.Collections.Generic;
-using System.Threading.Tasks;
+using SwiftStock.Properties.Models;
 
 namespace SwiftStock.Pages
 {

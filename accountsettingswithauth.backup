@@ -2,16 +2,16 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using SwiftStock.Data;
-using SwiftStock.Models;
+using SwiftStock.Properties.Models;
 using System.ComponentModel.DataAnnotations;
 
 namespace SwiftStock.Pages
 {
-    public class SettingsModel : PageModel
+    public class AccountSettingModel : PageModel
     {
         private readonly ApplicationDbContext _context;
 
-        public SettingsModel(ApplicationDbContext context)
+        public AccountSettingModel(ApplicationDbContext context)
         {
             _context = context;
         }
@@ -39,21 +39,25 @@ namespace SwiftStock.Pages
         [DataType(DataType.Password)]
         public string CurrentPassword { get; set; }
 
-        public User? User { get; set; }
-
+        public User User { get; set; }
         public bool UsernameExists { get; set; } = false;
         public bool InvalidCurrentPassword { get; set; } = false;
         public bool PasswordsDoNotMatch { get; set; } = false;
 
         public async Task<IActionResult> OnGetAsync()
         {
-            // Simulate logged-in user; you can replace this with session-based logic
-            var currentUserId = 1;
+            // Get the current logged-in user
+            var currentUserId = HttpContext.Session.GetInt32("UserId");
+
+            // If no user is logged in, redirect to login page
+            if (currentUserId == null)
+                return RedirectToPage("/Index");
 
             User = await _context.users.FirstOrDefaultAsync(u => u.Id == currentUserId);
             if (User == null)
-                return NotFound();
+                return RedirectToPage("/Index");
 
+            // Initialize form fields with current user data
             Name = User.Name;
             Username = User.Username;
             Email = User.Email;
@@ -63,16 +67,21 @@ namespace SwiftStock.Pages
 
         public async Task<IActionResult> OnPostAsync()
         {
-            var currentUserId = 1; // replace with real user ID logic
+            // Get the current logged-in user
+            var currentUserId = HttpContext.Session.GetInt32("UserId");
+
+            // If no user is logged in, redirect to login page
+            if (currentUserId == null)
+                return RedirectToPage("/Index");
 
             User = await _context.users.FirstOrDefaultAsync(u => u.Id == currentUserId);
             if (User == null)
-                return NotFound();
+                return RedirectToPage("/Index");
 
             // Username check
             if (Username != User.Username)
             {
-                var usernameTaken = await _context.users.AnyAsync(u => u.Username == Username);
+                var usernameTaken = await _context.users.AnyAsync(u => u.Username == Username && u.Id != currentUserId);
                 if (usernameTaken)
                 {
                     UsernameExists = true;
@@ -83,7 +92,7 @@ namespace SwiftStock.Pages
             // Password check and update
             if (!string.IsNullOrEmpty(Password))
             {
-                if (!BCrypt.Net.BCrypt.Verify(CurrentPassword, User.Password))
+                if (string.IsNullOrEmpty(CurrentPassword) || !BCrypt.Net.BCrypt.Verify(CurrentPassword, User.Password))
                 {
                     InvalidCurrentPassword = true;
                     return Page();
@@ -106,7 +115,10 @@ namespace SwiftStock.Pages
             _context.users.Update(User);
             await _context.SaveChangesAsync();
 
-            return RedirectToPage("/Dashboard");
+            // Add a success message
+            TempData["SuccessMessage"] = "Your account settings have been updated successfully!";
+
+            return RedirectToPage("/AccountSetting");
         }
     }
 }

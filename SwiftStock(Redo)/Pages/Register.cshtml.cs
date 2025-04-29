@@ -2,10 +2,10 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using SwiftStock.Data;
-using SwiftStock.Models;
+using SwiftStock.Properties.Models;
 using System.ComponentModel.DataAnnotations;
 
-namespace AlfaMart.Pages
+namespace SwiftStock.Pages
 {
 
     public class RegisterModel : PageModel
@@ -78,10 +78,10 @@ namespace AlfaMart.Pages
             // Create new user without hashing the password
             var user = new User
             {
-                Username = this.Username,
+                Username = Username,
                 Password = hashedPassword,
-                Email = this.Email,
-                Name = this.Name,
+                Email = Email,
+                Name = Name,
                 Role = "Customer"
             };
 

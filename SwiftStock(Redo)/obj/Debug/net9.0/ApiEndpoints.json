@@ -1,6 +1,6 @@
 [
   {
-    "ContainingType": "AlfaMart.Controllers.CheckDuplicatesController",
+    "ContainingType": "SwiftStock.Controllers.CheckDuplicatesController",
     "Method": "Post",
     "RelativePath": "api/CheckDuplicates",
     "HttpMethod": "POST",
@@ -9,14 +9,14 @@
     "Parameters": [
       {
         "Name": "request",
-        "Type": "AlfaMart.Controllers.CheckDuplicatesRequest",
+        "Type": "SwiftStock.Controllers.CheckDuplicatesRequest",
         "IsRequired": true
       }
     ],
     "ReturnTypes": []
   },
   {
-    "ContainingType": "AlfaMart.Controllers.InventoryController",
+    "ContainingType": "SwiftStock.Controllers.InventoryController",
     "Method": "GetInventory",
     "RelativePath": "api/Inventory",
     "HttpMethod": "GET",
@@ -36,7 +36,7 @@
     ],
     "ReturnTypes": [
       {
-        "Type": "System.Collections.Generic.IEnumerable\u00601[[SwiftStock.Models.InventoryItem, SwiftStock(Redo), Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "Type": "System.Collections.Generic.IEnumerable\u00601[[SwiftStock.Properties.Models.InventoryItem, SwiftStock(Redo), Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
         "MediaTypes": [
           "text/plain",
           "application/json",
@@ -47,7 +47,7 @@
     ]
   },
   {
-    "ContainingType": "AlfaMart.Controllers.InventoryController",
+    "ContainingType": "SwiftStock.Controllers.InventoryController",
     "Method": "DeleteProduct",
     "RelativePath": "api/Inventory/{id}",
     "HttpMethod": "DELETE",
@@ -63,7 +63,7 @@
     "ReturnTypes": []
   },
   {
-    "ContainingType": "AlfaMart.Controllers.InventoryController",
+    "ContainingType": "SwiftStock.Controllers.InventoryController",
     "Method": "AddItem",
     "RelativePath": "api/Inventory/add",
     "HttpMethod": "POST",
@@ -72,14 +72,14 @@
     "Parameters": [
       {
         "Name": "item",
-        "Type": "SwiftStock.Models.InventoryItem",
+        "Type": "SwiftStock.Properties.Models.InventoryItem",
         "IsRequired": true
       }
     ],
     "ReturnTypes": []
   },
   {
-    "ContainingType": "AlfaMart.Controllers.InventoryController",
+    "ContainingType": "SwiftStock.Controllers.InventoryController",
     "Method": "Export",
     "RelativePath": "api/Inventory/export",
     "HttpMethod": "GET",
@@ -89,7 +89,7 @@
     "ReturnTypes": []
   },
   {
-    "ContainingType": "AlfaMart.Controllers.InventoryController",
+    "ContainingType": "SwiftStock.Controllers.InventoryController",
     "Method": "UpdateProduct",
     "RelativePath": "api/Inventory/update",
     "HttpMethod": "PUT",
@@ -98,7 +98,7 @@
     "Parameters": [
       {
         "Name": "item",
-        "Type": "SwiftStock.Models.InventoryItem",
+        "Type": "SwiftStock.Properties.Models.InventoryItem",
         "IsRequired": true
       }
     ],

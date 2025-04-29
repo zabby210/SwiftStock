@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Collections.Generic;
 
-namespace SwiftStock.Models
+namespace SwiftStock.Properties.Models
 {
     // This class can be used to define properties for the Cashier page
     public class CashierModel : PageModel

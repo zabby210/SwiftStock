@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SwiftStock.Data;
 
-namespace AlfaMart.Controllers
+namespace SwiftStock.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]

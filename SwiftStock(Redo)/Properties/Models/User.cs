@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 
-namespace SwiftStock.Models
+namespace SwiftStock.Properties.Models
 {
     public class User
     {
@@ -8,8 +8,8 @@ namespace SwiftStock.Models
         public required string Email { get; set; }
         public required string Name { get; set; }
         public required string Username { get; set; }
-        public required string Password { get; set; } = string.Empty; 
-        [Column(TypeName = "nvarchar(128)")] 
+        public required string Password { get; set; } = string.Empty;
+        [Column(TypeName = "nvarchar(128)")]
         public string Role { get; set; }
     }
 }

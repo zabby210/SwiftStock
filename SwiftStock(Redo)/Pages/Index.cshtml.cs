@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace SwiftStock_Redo_.Pages
+namespace SwiftStock.Pages
 {
     public class IndexModel : PageModel
     {

@@ -1,12 +1,10 @@
 ﻿@page
-@model SwiftStock.Pages.SettingsModel
+@model SwiftStock.Pages.AccountSettingModel
 @{
-    ViewData["Title"] = "Settings";
+    ViewData["Title"] = "Account Settings";
     Layout = "_HomepageLayout";
 }
-
 <div class="space-y-6">
-    <!-- Header -->
     <div class="flex items-center justify-between">
         <div>
             <h1 class="text-3xl font-bold text-white">Account Settings</h1>
@@ -14,57 +12,47 @@
         </div>
     </div>
 
-    <!-- Profile Section -->
     <div class="glass-card p-4 rounded-xl">
         <h3 class="text-2xl font-semibold text-white mb-4">Profile Details</h3>
-        @if (Model.User != null)
+        @if (Model.CurrentUser != null)
         {
             <form method="post">
                 <div class="mb-4">
                     <label for="name" class="block text-white">Name</label>
-                    <input type="text" id="name" name="name" class="w-full p-2 mt-1 rounded bg-[#2c2f36] text-white" value="@Model.User.Name" />
+                    <input type="text" id="name" name="Name" class="w-full p-2 mt-1 rounded bg-[#2c2f36] text-white" value="@Model.Name" />
                 </div>
-
                 <div class="mb-4">
                     <label for="username" class="block text-white">Username</label>
-                    <input type="text" id="username" name="username" class="w-full p-2 mt-1 rounded bg-[#2c2f36] text-white" value="@Model.User.Username" />
+                    <input type="text" id="username" name="Username" class="w-full p-2 mt-1 rounded bg-[#2c2f36] text-white" value="@Model.Username" />
                     @if (Model.UsernameExists)
                     {
                         <span class="text-red-400">This username is already taken. Please choose another one.</span>
                     }
                 </div>
-
                 <div class="mb-4">
                     <label for="email" class="block text-white">Email</label>
-                    <input type="email" id="email" name="email" class="w-full p-2 mt-1 rounded bg-[#2c2f36] text-white" value="@Model.User.Email" />
+                    <input type="email" id="email" name="Email" class="w-full p-2 mt-1 rounded bg-[#2c2f36] text-white" value="@Model.Email" />
                 </div>
-
-                <!-- New Password -->
                 <div class="mb-4">
                     <label for="password" class="block text-white">New Password</label>
-                    <input type="password" id="password" name="password" class="w-full p-2 mt-1 rounded bg-[#2c2f36] text-white" placeholder="Enter new password" />
+                    <input type="password" id="password" name="Password" class="w-full p-2 mt-1 rounded bg-[#2c2f36] text-white" placeholder="Enter new password" />
                 </div>
-
-                <!-- Confirm Password -->
                 <div class="mb-4">
                     <label for="confirmPassword" class="block text-white">Confirm New Password</label>
-                    <input type="password" id="confirmPassword" name="confirmPassword" class="w-full p-2 mt-1 rounded bg-[#2c2f36] text-white" placeholder="Re-enter new password" />
+                    <input type="password" id="confirmPassword" name="ConfirmPassword" class="w-full p-2 mt-1 rounded bg-[#2c2f36] text-white" placeholder="Re-enter new password" />
                     @if (Model.PasswordsDoNotMatch)
                     {
                         <span class="text-red-400">Passwords do not match. Please try again.</span>
                     }
                 </div>
-
-                <!-- Current Password -->
                 <div class="mb-4">
                     <label for="currentPassword" class="block text-white">Current Password</label>
-                    <input type="password" id="currentPassword" name="currentPassword" class="w-full p-2 mt-1 rounded bg-[#2c2f36] text-white" placeholder="Enter your current password" />
+                    <input type="password" id="currentPassword" name="CurrentPassword" class="w-full p-2 mt-1 rounded bg-[#2c2f36] text-white" placeholder="Enter your current password" />
                     @if (Model.InvalidCurrentPassword)
                     {
                         <span class="text-red-400">Current password is incorrect. Please try again.</span>
                     }
                 </div>
-
                 <button type="submit" class="bg-red-600 text-white px-4 py-2 rounded-md">Apply Changes</button>
             </form>
         }

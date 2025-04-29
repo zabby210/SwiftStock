@@ -4,7 +4,7 @@
     <TargetFramework>net9.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
-    <RootNamespace>SwiftStock_Redo_</RootNamespace>
+    <RootNamespace>SwiftStock</RootNamespace>
   </PropertyGroup>
 
 	<ItemGroup>

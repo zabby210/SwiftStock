@@ -4,9 +4,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using SwiftStock.Data;
-using SwiftStock.Models;
+using SwiftStock.Properties.Models;
 
-namespace AlfaMart.Pages
+namespace SwiftStock.Pages
 {
     [Authorize(Roles = "Admin")]
     public class AdminModel : PageModel

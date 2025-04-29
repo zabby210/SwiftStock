@@ -7,7 +7,7 @@ using SwiftStock.Data;
 using System.ComponentModel.DataAnnotations;
 using System.Security.Claims;
 
-namespace AlfaMart.Pages
+namespace SwiftStock.Pages
 {
     public class LoginModel : PageModel
     {

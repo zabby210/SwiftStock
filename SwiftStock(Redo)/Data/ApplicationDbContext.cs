@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using SwiftStock.Models;
+using SwiftStock.Properties.Models;
 
 namespace SwiftStock.Data
 {

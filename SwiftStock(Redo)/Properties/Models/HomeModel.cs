@@ -1,9 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using SwiftStock.Data;
-using SwiftStock.Models;
 
-namespace SwiftStock.Pages
+namespace SwiftStock.Properties.Models
 {
     public class HomeModel : PageModel
     {

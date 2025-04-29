@@ -18,6 +18,7 @@ C:\Users\athen\source\repos\zabby210\SwiftStock\SwiftStock(Redo)\bin\Debug\net9.
 C:\Users\athen\source\repos\zabby210\SwiftStock\SwiftStock(Redo)\bin\Debug\net9.0\SwiftStock(Redo).runtimeconfig.json
 C:\Users\athen\source\repos\zabby210\SwiftStock\SwiftStock(Redo)\bin\Debug\net9.0\SwiftStock(Redo).dll
 C:\Users\athen\source\repos\zabby210\SwiftStock\SwiftStock(Redo)\bin\Debug\net9.0\SwiftStock(Redo).pdb
+C:\Users\athen\source\repos\zabby210\SwiftStock\SwiftStock(Redo)\bin\Debug\net9.0\BCrypt.Net-Next.dll
 C:\Users\athen\source\repos\zabby210\SwiftStock\SwiftStock(Redo)\bin\Debug\net9.0\BouncyCastle.Cryptography.dll
 C:\Users\athen\source\repos\zabby210\SwiftStock\SwiftStock(Redo)\bin\Debug\net9.0\Google.Protobuf.dll
 C:\Users\athen\source\repos\zabby210\SwiftStock\SwiftStock(Redo)\bin\Debug\net9.0\Humanizer.dll
@@ -134,6 +135,7 @@ C:\Users\athen\source\repos\zabby210\SwiftStock\SwiftStock(Redo)\bin\Debug\net9.
 C:\Users\athen\source\repos\zabby210\SwiftStock\SwiftStock(Redo)\obj\Debug\net9.0\scopedcss\Pages\Shared\_Layout.cshtml.rz.scp.css
 C:\Users\athen\source\repos\zabby210\SwiftStock\SwiftStock(Redo)\obj\Debug\net9.0\scopedcss\bundle\SwiftStock(Redo).styles.css
 C:\Users\athen\source\repos\zabby210\SwiftStock\SwiftStock(Redo)\obj\Debug\net9.0\scopedcss\projectbundle\SwiftStock(Redo).bundle.scp.css
+C:\Users\athen\source\repos\zabby210\SwiftStock\SwiftStock(Redo)\obj\Debug\net9.0\compressed\1h3daox5to-t6gnhvisil.gz
 C:\Users\athen\source\repos\zabby210\SwiftStock\SwiftStock(Redo)\obj\Debug\net9.0\compressed\u1uzbr8t6x-r90v3udes5.gz
 C:\Users\athen\source\repos\zabby210\SwiftStock\SwiftStock(Redo)\obj\Debug\net9.0\compressed\0yrqahfry9-61n19gt1b8.gz
 C:\Users\athen\source\repos\zabby210\SwiftStock\SwiftStock(Redo)\obj\Debug\net9.0\compressed\jgxv41ku8s-xtxxf3hu2r.gz
@@ -169,6 +171,7 @@ C:\Users\athen\source\repos\zabby210\SwiftStock\SwiftStock(Redo)\obj\Debug\net9.
 C:\Users\athen\source\repos\zabby210\SwiftStock\SwiftStock(Redo)\obj\Debug\net9.0\compressed\h4oqb82pax-4gxs3k148c.gz
 C:\Users\athen\source\repos\zabby210\SwiftStock\SwiftStock(Redo)\obj\Debug\net9.0\compressed\a832qkzr6s-9b9oa1qrmt.gz
 C:\Users\athen\source\repos\zabby210\SwiftStock\SwiftStock(Redo)\obj\Debug\net9.0\compressed\en6f9o6ynn-fctod5rc9n.gz
+C:\Users\athen\source\repos\zabby210\SwiftStock\SwiftStock(Redo)\obj\Debug\net9.0\compressed\g7odq8ylbb-f6zq8v6eb3.gz
 C:\Users\athen\source\repos\zabby210\SwiftStock\SwiftStock(Redo)\obj\Debug\net9.0\compressed\2sn5z13052-kbynt5jhd9.gz
 C:\Users\athen\source\repos\zabby210\SwiftStock\SwiftStock(Redo)\obj\Debug\net9.0\compressed\0g3y6b18nd-25iw1kog22.gz
 C:\Users\athen\source\repos\zabby210\SwiftStock\SwiftStock(Redo)\obj\Debug\net9.0\compressed\3yh342112w-c2nslu3uf3.gz
@@ -210,6 +213,3 @@ C:\Users\athen\source\repos\zabby210\SwiftStock\SwiftStock(Redo)\obj\Debug\net9.
 C:\Users\athen\source\repos\zabby210\SwiftStock\SwiftStock(Redo)\obj\Debug\net9.0\SwiftStock(Redo).pdb
 C:\Users\athen\source\repos\zabby210\SwiftStock\SwiftStock(Redo)\obj\Debug\net9.0\SwiftStock(Redo).genruntimeconfig.cache
 C:\Users\athen\source\repos\zabby210\SwiftStock\SwiftStock(Redo)\obj\Debug\net9.0\ref\SwiftStock(Redo).dll
-C:\Users\athen\source\repos\zabby210\SwiftStock\SwiftStock(Redo)\bin\Debug\net9.0\BCrypt.Net-Next.dll
-C:\Users\athen\source\repos\zabby210\SwiftStock\SwiftStock(Redo)\obj\Debug\net9.0\compressed\g7odq8ylbb-f6zq8v6eb3.gz
-C:\Users\athen\source\repos\zabby210\SwiftStock\SwiftStock(Redo)\obj\Debug\net9.0\compressed\1h3daox5to-t6gnhvisil.gz

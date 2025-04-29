@@ -1,4 +1,4 @@
-﻿namespace SwiftStock.Models
+﻿namespace SwiftStock.Properties.Models
 {
     public class Sale
     {
