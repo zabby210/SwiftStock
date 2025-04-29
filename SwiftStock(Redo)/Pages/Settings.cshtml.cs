@@ -1,12 +1,9 @@
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using SwiftStock.Data;
 using SwiftStock.Models;
 using System.ComponentModel.DataAnnotations;
-using System.Security.Claims;
 
 namespace SwiftStock.Pages.Account
 {
@@ -19,140 +16,97 @@ namespace SwiftStock.Pages.Account
             _context = context;
         }
 
-        // Properties to bind user input
         [BindProperty]
-        public User User { get; set; }
+        public string Name { get; set; }
 
         [BindProperty]
-        public string CurrentPassword { get; set; }
+        public string Username { get; set; }
 
         [BindProperty]
-        [MinLength(8, ErrorMessage = "Password must be at least 8 characters")]
-        public string NewPassword { get; set; }
+        [EmailAddress]
+        public string Email { get; set; }
 
         [BindProperty]
-        [Compare("NewPassword", ErrorMessage = "Passwords do not match")]
+        [DataType(DataType.Password)]
+        public string Password { get; set; }
+
+        [BindProperty]
+        [DataType(DataType.Password)]
+        [Compare("Password", ErrorMessage = "Passwords do not match.")]
         public string ConfirmPassword { get; set; }
 
-        // Flags for validation messages
-        public string StatusMessage { get; set; }
-        public bool IsError { get; set; }
+        [BindProperty]
+        [DataType(DataType.Password)]
+        public string CurrentPassword { get; set; }
+
+        public User? User { get; set; }
+
+        public bool UsernameExists { get; set; } = false;
+        public bool InvalidCurrentPassword { get; set; } = false;
+        public bool PasswordsDoNotMatch { get; set; } = false;
 
         public async Task<IActionResult> OnGetAsync()
         {
-            var userId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            // Simulate logged-in user; you can replace this with session-based logic
+            var currentUserId = 1;
 
-            if (userId == null)
-            {
-                return RedirectToPage("/Login");
-            }
+            User = await _context.users.FirstOrDefaultAsync(u => u.Id == currentUserId);
+            if (User == null)
+                return NotFound();
 
-            var user = await _context.users.FirstOrDefaultAsync(u => u.Id.ToString() == userId);
-            if (user == null)
-            {
-                return RedirectToPage("/Error");
-            }
+            Name = User.Name;
+            Username = User.Username;
+            Email = User.Email;
 
-            User = user;
             return Page();
         }
 
         public async Task<IActionResult> OnPostAsync()
         {
-            if (!ModelState.IsValid)
+            var currentUserId = 1; // replace with real user ID logic
+
+            User = await _context.users.FirstOrDefaultAsync(u => u.Id == currentUserId);
+            if (User == null)
+                return NotFound();
+
+            // Username check
+            if (Username != User.Username)
             {
-                IsError = true;
-                StatusMessage = "Please fix the errors and try again.";
-                return Page();
-            }
-
-            var userId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var user = await _context.users.FirstOrDefaultAsync(u => u.Id.ToString() == userId);
-
-            if (user == null)
-            {
-                return RedirectToPage("/Error");
-            }
-
-            // Check if username exists (except for current user)
-            var existingUser = await _context.users.FirstOrDefaultAsync(u => u.Username == User.Username && u.Id != user.Id);
-            if (existingUser != null)
-            {
-                IsError = true;
-                StatusMessage = "Username already exists.";
-                return Page();
-            }
-
-            bool passwordChanged = false;
-
-            // Handle password change logic
-            if (!string.IsNullOrWhiteSpace(NewPassword) || !string.IsNullOrWhiteSpace(ConfirmPassword))
-            {
-                // Require current password when changing password
-                if (string.IsNullOrWhiteSpace(CurrentPassword))
+                var usernameTaken = await _context.users.AnyAsync(u => u.Username == Username);
+                if (usernameTaken)
                 {
-                    IsError = true;
-                    StatusMessage = "Current password is required to set a new password.";
+                    UsernameExists = true;
+                    return Page();
+                }
+            }
+
+            // Password check and update
+            if (!string.IsNullOrEmpty(Password))
+            {
+                if (!BCrypt.Net.BCrypt.Verify(CurrentPassword, User.Password))
+                {
+                    InvalidCurrentPassword = true;
                     return Page();
                 }
 
-                // Verify current password
-                if (!BCrypt.Net.BCrypt.Verify(CurrentPassword, user.Password))
+                if (Password != ConfirmPassword)
                 {
-                    IsError = true;
-                    StatusMessage = "Current password is incorrect.";
+                    PasswordsDoNotMatch = true;
                     return Page();
                 }
 
-                // Confirmation check (redundant with attribute validation but keeping as a safety)
-                if (NewPassword != ConfirmPassword)
-                {
-                    IsError = true;
-                    StatusMessage = "New password and confirmation do not match.";
-                    return Page();
-                }
-
-                // Update password
-                user.Password = BCrypt.Net.BCrypt.HashPassword(NewPassword);
-                passwordChanged = true;
+                User.Password = BCrypt.Net.BCrypt.HashPassword(Password);
             }
 
-            // Update basic user details
-            user.Username = User.Username;
-            user.Name = User.Name;
-            user.Email = User.Email;
+            // Update other info
+            User.Name = Name;
+            User.Username = Username;
+            User.Email = Email;
 
-            _context.users.Update(user);
+            _context.users.Update(User);
             await _context.SaveChangesAsync();
 
-            // Update cookie claims
-            var claims = new List<Claim>
-            {
-                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
-                new Claim(ClaimTypes.Name, user.Username),
-                new Claim(ClaimTypes.Email, user.Email ?? ""),
-                new Claim(ClaimTypes.Role, user.Role)
-            };
-
-            var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
-
-            await HttpContext.SignInAsync(
-                CookieAuthenticationDefaults.AuthenticationScheme,
-                new ClaimsPrincipal(claimsIdentity),
-                new AuthenticationProperties { IsPersistent = true }
-            );
-
-            // Set success message
-            StatusMessage = passwordChanged
-                ? "Your profile and password have been updated successfully."
-                : "Your profile has been updated successfully.";
-
-            return RedirectToPage("/Account/Settings", new { statusMessage = StatusMessage });
-        }
-
-        public void OnGetAsync(string statusMessage = null)
-        {
-            StatusMessage = statusMessage;
+            return RedirectToPage("/Dashboard");
         }
     }
 }

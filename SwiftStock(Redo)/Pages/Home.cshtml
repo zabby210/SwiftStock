@@ -16,11 +16,21 @@
         }
     </div>
 
+    <!-- Search Bar -->
+    <div class="relative">
+        <input id="product-search"
+               type="text"
+               placeholder="Search for products..."
+               class="px-4 py-2 w-full bg-[#0f1117] text-slate-200 border border-slate-800 rounded-lg"
+               onkeyup="filterProducts()" />
+    </div>
+
     <!-- Product List -->
     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
         @foreach (var product in Model.InventoryItems)
         {
-            <div class="bg-[#0f1117] p-5 rounded-xl border border-slate-800 shadow-md hover:shadow-lg transition duration-300">
+            <div class="product-item bg-[#0f1117] p-5 rounded-xl border border-slate-800 shadow-md hover:shadow-lg transition duration-300"
+                 data-name="@product.Product_Name.ToLower()">
                 <h2 class="text-xl font-semibold text-[#E31837]">@product.Product_Name</h2>
                 <p class="text-lg text-slate-300 mt-2">₱@product.Price.ToString("N2")</p>
                 <p class="text-sm text-slate-400 mt-1">Stock Available: @product.Stock</p>
@@ -31,4 +41,65 @@
             </div>
         }
     </div>
+
+    <!-- No products found message -->
+    <div class="no-products text-center text-slate-400 mt-6" style="display: none;">
+        No products found
+    </div>
 </div>
+
+<script>
+    function filterProducts() {
+        const searchInput = document.getElementById('product-search').value.toLowerCase();
+        const products = document.querySelectorAll('.product-item');
+        const noProductsMessage = document.querySelector('.no-products');
+        let hasProducts = false;
+
+        // Hide the no products message initially
+        noProductsMessage.style.display = 'none';
+
+        // Check if the search input is empty
+        if (searchInput.trim() === "") {
+            products.forEach(product => {
+                product.style.display = 'none'; // Hide all products
+            });
+            return; // Exit the function if the search bar is empty
+        }
+
+        products.forEach(product => {
+            const productName = product.getAttribute('data-name').toLowerCase();
+            if (productName.includes(searchInput)) {
+                product.style.display = 'block'; // Show matching product
+                hasProducts = true;
+            } else {
+                product.style.display = 'none'; // Hide non-matching product
+            }
+        });
+
+        // Show the "No products found" message if no products match
+        if (!hasProducts) {
+            noProductsMessage.style.display = 'block';
+        }
+    }
+
+    function filterInventory() {
+        const searchInput = document.getElementById('inventory-search').value.toLowerCase();
+        const items = document.querySelectorAll('.inventory-item');
+        let hasItems = false;
+
+        items.forEach(item => {
+            const itemName = item.getAttribute('data-name').toLowerCase();
+            if (itemName.includes(searchInput)) {
+                item.style.display = 'table-row'; // Show matching item
+                hasItems = true;
+            } else {
+                item.style.display = 'none'; // Hide non-matching item
+            }
+        });
+
+        // Optionally, you can show a message if no items match
+        if (!hasItems) {
+            // Handle "No items found" message if needed
+        }
+    }
+</script>
