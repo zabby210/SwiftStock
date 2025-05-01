@@ -36,8 +36,28 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQWRtaW4uY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
+[C:/Users/athen/source/repos/zabby210/SwiftStock/SwiftStock(Redo)/Pages/A_Customer.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQV9DdXN0b21lci5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/athen/source/repos/zabby210/SwiftStock/SwiftStock(Redo)/Pages/A_RegisterStaff.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQV9SZWdpc3RlclN0YWZmLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/athen/source/repos/zabby210/SwiftStock/SwiftStock(Redo)/Pages/A_Sales.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQV9TYWxlcy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/athen/source/repos/zabby210/SwiftStock/SwiftStock(Redo)/Pages/A_Staff.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQV9TdGFmZi5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/Users/athen/source/repos/zabby210/SwiftStock/SwiftStock(Redo)/Pages/Cashier.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ2FzaGllci5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/athen/source/repos/zabby210/SwiftStock/SwiftStock(Redo)/Pages/C_Transaction.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ19UcmFuc2FjdGlvbi5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/athen/source/repos/zabby210/SwiftStock/SwiftStock(Redo)/Pages/Home.cshtml]
@@ -58,10 +78,6 @@ build_metadata.AdditionalFiles.CssScope =
 
 [C:/Users/athen/source/repos/zabby210/SwiftStock/SwiftStock(Redo)/Pages/Register.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUmVnaXN0ZXIuY3NodG1s
-build_metadata.AdditionalFiles.CssScope = 
-
-[C:/Users/athen/source/repos/zabby210/SwiftStock/SwiftStock(Redo)/Pages/Sales.cshtml]
-build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU2FsZXMuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/athen/source/repos/zabby210/SwiftStock/SwiftStock(Redo)/Pages/Shared/_AdminLayout.cshtml]
