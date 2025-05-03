@@ -103,5 +103,21 @@
       }
     ],
     "ReturnTypes": []
+  },
+  {
+    "ContainingType": "SwiftStock.Controllers.TransactionController",
+    "Method": "SaveTransaction",
+    "RelativePath": "api/Transaction/SaveTransaction",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "transaction",
+        "Type": "SwiftStock.Properties.Models.Transaction",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
   }
 ]

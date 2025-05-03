@@ -48,10 +48,11 @@ namespace SwiftStock.Data
             // Configure Transaction entity
             modelBuilder.Entity<Transaction>(entity =>
             {
-                entity.ToTable("transactions"); // Map to "transactions" table
+                entity.ToTable("transaction"); // Map to "transactions" table
                 entity.HasKey(e => e.Id); // Primary key
                 entity.Property(e => e.Name).IsRequired(); // Name of the personnel
-                entity.Property(e => e.Products).IsRequired(); // List of products
+                entity.Property(e => e.Products).IsRequired();
+                entity.Property(e => e.Quantity).IsRequired();// List of products
                 entity.Property(e => e.Total).HasColumnType("decimal(18,2)"); // Total amount
                 entity.Property(e => e.Transaction_Date).IsRequired(); // Transaction date
             });
