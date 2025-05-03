@@ -5,142 +5,212 @@
     Layout = "_CashierLayout"; // Use the new layout
 }
 
-<div class="flex h-screen bg-gray-100">
+<div class="flex flex-col min-h-screen bg-gray-100">
     <!-- Sidebar Navigation -->
-    <nav class="bg-white w-64 shadow-lg rounded-lg p-4">
-        <h2 class="text-xl font-bold mb-4">Cashier Dashboard</h2>
-        <ul class="space-y-2">
-            <li>
-                <button onclick="showSection('pos')" class="flex items-center w-full p-2 text-left rounded-lg hover:bg-gray-200">
-                    <i class="fas fa-cash-register mr-2"></i> POS
-                </button>
-            </li>
-            <li>
-                <button onclick="showSection('inventory')" class="flex items-center w-full p-2 text-left rounded-lg hover:bg-gray-200">
-                    <i class="fas fa-box mr-2"></i> Inventory
-                </button>
-            </li>
-            <li>
-                <button onclick="showSection('history')" class="flex items-center w-full p-2 text-left rounded-lg hover:bg-gray-200">
-                    <i class="fas fa-history mr-2"></i> Transaction History
-                </button>
-            </li>
-            <li>
-                <button onclick="window.location.href='/Login';" class="flex items-center w-full p-2 text-left rounded-lg hover:bg-gray-200">
-                    <i class="fas fa-sign-out-alt mr-2"></i> Logout
-                </button>
-            </li>
-        </ul>
-    </nav>
+    <div class="flex flex-row flex-grow">
+        <nav class="bg-white w-64 shadow-lg rounded-lg p-4 flex-shrink-0">
+            <h2 class="text-lg font-semibold mb-4">Cashier Dashboard</h2>
+            <ul class="space-y-2">
+                <li>
+                    <button onclick="showSection('pos')" class="flex items-center w-full p-2 text-left rounded-lg hover:bg-gray-200">
+                        <i class="fas fa-cash-register mr-2"></i> POS
+                    </button>
+                </li>
+                <li>
+                    <button onclick="showSection('inventory')" class="flex items-center w-full p-2 text-left rounded-lg hover:bg-gray-200">
+                        <i class="fas fa-box mr-2"></i> Inventory
+                    </button>
+                </li>
+                <li>
+                    <button onclick="showSection('history')" class="flex items-center w-full p-2 text-left rounded-lg hover:bg-gray-200">
+                        <i class="fas fa-history mr-2"></i> Transaction History
+                    </button>
+                </li>
+                <li>
+                    <button onclick="window.location.href='/Login';" class="flex items-center w-full p-2 text-left rounded-lg hover:bg-gray-200">
+                        <i class="fas fa-sign-out-alt mr-2"></i> Logout
+                    </button>
+                </li>
+            </ul>
+        </nav>
 
-    <div class="flex-1 p-6">
-        <div id="pos" class="section">
-            <h2 class="text-2xl font-bold mb-4">Point of Sale</h2>
-            <div class="pos-grid">
-                <div class="bg-white rounded-lg shadow-md">
-                    <div class="p-4 border-b border-gray-200">
-                        <div class="flex gap-4">
-                            <div class="flex-1">
-                                <div class="relative">
-                                    <i class="fas fa-search absolute left-3 top-3 text-gray-400"></i>
-                                    <input type="text" 
-                                           id="product-search"
-                                           placeholder="Search products..."
-                                           class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#E31837] focus:border-transparent text-gray-900"
-                                           onkeyup="filterProducts()">
+        <div class="flex-1 flex flex-col overflow-y-auto">
+            <div class="p-6">
+                <div id="pos" class="section">
+                    <h2 class="text-xl font-semibold mb-4">Point of Sale</h2>
+                    <div class="pos-grid">
+                        <div class="bg-white rounded-lg shadow-md">
+                            <div class="p-4 border-b border-gray-200">
+                                <div class="flex gap-4">
+                                    <div class="flex-1">
+                                        <div class="relative">
+                                            <i class="fas fa-search absolute left-3 top-3 text-gray-400"></i>
+                                            <input type="text"
+                                                   id="product-search"
+                                                   placeholder="Search products..."
+                                                   class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#E31837] focus:border-transparent text-sm text-gray-900"
+                                                   onkeyup="filterProducts()">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="product-grid" id="products-container">
+                                @foreach (var item in Model.InventoryItems)
+                                {
+                                    <div class="product-item flex items-center justify-between bg-white rounded-lg shadow-md p-4 mb-2"
+                                         data-name="@item.Product_Name"
+                                         style="display: none;">
+                                        <div class="flex items-center gap-4">
+                                            <span class="text-gray-900 font-medium text-sm">@item.Product_Name</span>
+                                            <span class="text-gray-900 font-medium text-sm">₱@item.Price</span>
+                                        </div>
+                                        <button onclick="addToCart('@item.Id', '@item.Product_Name', @item.Price)"
+                                                class="p-2 bg-[#E31837] text-white rounded-full hover:bg-[#E31837]/90 flex items-center justify-center"
+                                                style="width: 36px; height: 36px;">
+                                            <i class="fas fa-shopping-cart"></i>
+                                        </button>
+                                    </div>
+                                }
+                                <div class="no-products hidden text-sm text-gray-500">No products found.</div>
+                            </div>
+
+                            <div class="cart-section">
+                                <h2 class="text-lg font-semibold mb-4 text-gray-900">Current Cart</h2>
+                                <div class="cart-container overflow-y-auto max-h-64 border border-gray-200 rounded-lg">
+                                    <table class="w-full text-left border-collapse">
+                                        <thead>
+                                            <tr>
+                                                <th class="border-b py-2 text-sm">Product</th>
+                                                <th class="border-b py-2 text-center text-sm">Item</th>
+                                                <th class="border-b py-2 text-right text-sm">Price</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="cart-items">
+                                            <!-- Cart items will be dynamically added here -->
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="cart-total mt-4">
+                                    <div class="flex justify-between mb-2">
+                                        <span class="text-gray-900 text-sm">Subtotal:</span>
+                                        <span class="text-gray-900 text-sm" id="subtotal">₱0.00</span>
+                                    </div>
+                                    <div class="flex justify-between mb-2">
+                                        <span class="text-gray-900 text-sm">Tax (12%):</span>
+                                        <span class="text-gray-900 text-sm" id="tax">₱0.00</span>
+                                    </div>
+                                    <div class="flex justify-between text-lg font-bold mb-4">
+                                        <span class="text-gray-900">Total:</span>
+                                        <span class="text-gray-900" id="total">₱0.00</span>
+                                    </div>
+                                    <div class="flex justify-between items-center mb-2">
+                                        <label for="cash-payment" class="text-gray-900 text-sm">Cash Payment:</label>
+                                        <input type="number" id="cash-payment" class="w-32 h-8 p-1 border border-gray-300 rounded-lg text-sm text-gray-900" placeholder="₱0.00" oninput="updateChange()">
+                                    </div>
+                                    <div class="flex justify-between text-lg font-bold mb-4">
+                                        <span class="text-gray-900">Change:</span>
+                                        <span class="text-gray-900" id="change">₱0.00</span>
+                                    </div>
+                                    <div class="flex justify-between mt-4 gap-4">
+                                        <button onclick="clearCart()" class="w-full px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 text-sm">Clear Cart</button>
+                                        <button onclick="proceedPayment()" class="w-full px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 text-sm">Proceed Payment</button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="product-grid" id="products-container">
-                        <!-- Example product list from inventory -->
-                        @foreach (var item in Model.InventoryItems)
-                        {
-                            <div class="product-item" data-name="@item.Product_Name" style="display: none;">
-                                @item.Product_Name - ₱@item.Price
-                            </div>
-                        }
-                        <div class="no-products hidden">No products found.</div>
+                </div>
+
+                <div id="inventory" class="section hidden">
+                    <h2 class="text-xl font-semibold mb-4">Inventory</h2>
+                    <div class="bg-white rounded-lg shadow-md p-6">
+                        <div class="mb-4">
+                            <input type="text"
+                                   id="inventory-search"
+                                   placeholder="Search inventory..."
+                                   class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#E31837] focus:border-transparent text-sm text-gray-900"
+                                   onkeyup="filterInventory()">
+                        </div>
+                        <div class="overflow-x-auto rounded-lg border border-gray-200">
+                            <table class="inventory-table w-full">
+                                <thead>
+                                    <tr class="bg-gray-50">
+                                        <th class="text-gray-700 font-medium text-sm">#</th>
+                                        <th class="text-gray-700 font-medium text-sm">Product Name</th>
+                                        <th class="text-gray-700 font-medium text-sm">Price</th>
+                                        <th class="text-gray-700 font-medium text-sm">Stock</th>
+                                        <th class="text-gray-700 font-medium text-sm">Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="inventory-table-body">
+                                    @foreach (var item in Model.InventoryItems)
+                                    {
+                                        <tr class="hover:bg-gray-100 transition duration-200 inventory-item" data-name="@item.Product_Name">
+                                            <td class="text-sm">@item.Id</td>
+                                            <td class="text-sm">@item.Product_Name</td>
+                                            <td class="text-sm">₱@item.Price</td>
+                                            <td class="text-sm">@item.Stock</td>
+                                            <td class="text-sm">@((item.Stock > 0) ? "Available" : "Out of Stock")</td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
 
-                <div class="cart-section">
-                    <h2 class="text-xl font-bold mb-4 text-gray-900">Current Cart</h2>
-                    <div class="cart-items" id="cart-items">
-                        <!-- Cart items will be displayed here -->
-                    </div>
-                    <div class="cart-total">
-                        <div class="flex justify-between mb-2">
-                            <span class="text-gray-900">Subtotal:</span>
-                            <span class="text-gray-900" id="subtotal">₱0.00</span>
-                        </div>
-                        <div class="flex justify-between mb-4">
-                            <span class="text-gray-900">Tax (12%):</span>
-                            <span class="text-gray-900" id="tax">₱0.00</span>
-                        </div>
-                        <div class="flex justify-between text-xl font-bold">
-                            <span class="text-gray-900">Total:</span>
-                            <span class="text-gray-900" id="total">₱0.00</span>
-                        </div>
-                        <div class="grid grid-cols-2 gap-4 mt-4">
-                            <button onclick="clearCart()" class="px-4 py-2 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300">
-                                Clear Cart
-                            </button>
-                            <button onclick="processPayment()" class="px-4 py-2 bg-[#E31837] text-white rounded-lg hover:bg-[#E31837]/90">
-                                Process Payment
-                            </button>
-                        </div>
+                <div id="history" class="section hidden">
+                    <h2 class="text-xl font-semibold mb-4">Transaction History</h2>
+                    <div class="bg-white rounded-lg shadow-md p-6">
+                        <!-- Transaction history will be implemented here -->
                     </div>
                 </div>
-            </div>
-        </div>
-
-        <div id="inventory" class="section hidden">
-            <h2 class="text-2xl font-bold mb-4">Inventory</h2>
-            <div class="bg-white rounded-lg shadow-md p-6">
-                <div class="mb-4">
-                    <input type="text" 
-                           id="inventory-search" 
-                           placeholder="Search inventory..." 
-                           class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#E31837] focus:border-transparent text-gray-900"
-                           onkeyup="filterInventory()">
-                </div>
-                <div class="overflow-x-auto rounded-lg border border-gray-200">
-                    <table class="inventory-table w-full">
-                        <thead>
-                            <tr class="bg-gray-50">
-                                <th class="text-gray-700 font-medium">#</th>
-                                <th class="text-gray-700 font-medium">Product Name</th>
-                                <th class="text-gray-700 font-medium">Price</th>
-                                <th class="text-gray-700 font-medium">Stock</th>
-                                <th class="text-gray-700 font-medium">Status</th>
-                            </tr>
-                        </thead>
-                        <tbody id="inventory-table-body">
-                            @foreach (var item in Model.InventoryItems)
-                            {
-                                <tr class="hover:bg-gray-100 transition duration-200 inventory-item" data-name="@item.Product_Name">
-                                    <td>@item.Id</td>
-                                    <td>@item.Product_Name</td>
-                                    <td>₱@item.Price</td>
-                                    <td>@item.Stock</td>
-                                    <td>@(item.Stock > 0 ? "Available" : "Out of Stock")</td>
-                                </tr>
-                            }
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-
-        <div id="history" class="section hidden">
-            <h2 class="text-2xl font-bold mb-4">Transaction History</h2>
-            <div class="bg-white rounded-lg shadow-md p-6">
-                <!-- Transaction history will be implemented here -->
             </div>
         </div>
     </div>
 </div>
+
+<!-- Receipt Modal -->
+<div id="receipt-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden">
+    <div class="bg-white w-96 rounded-lg shadow-lg p-6">
+        <div class="text-center">
+            <img src="~/css/Images/SwiftLogo.png" alt="Logo" class="mx-auto w-28 h-28 mb-0"> <!-- Reduced margin below the logo -->
+            <p class="text-sm font-medium">Alfamart</p>
+            <p class="text-sm text-gray-500" id="receipt-date"></p>
+        </div>
+        <hr class="my-4">
+        <div id="receipt-items" class="text-sm text-gray-800">
+            <!-- Receipt items will be dynamically added here -->
+        </div>
+        <hr class="my-4">
+        <div class="text-sm">
+            <div class="flex justify-between">
+                <span>Subtotal:</span>
+                <span id="receipt-subtotal">₱0.00</span>
+            </div>
+            <div class="flex justify-between">
+                <span>Tax (12%):</span>
+                <span id="receipt-tax">₱0.00</span>
+            </div>
+            <div class="flex justify-between font-bold">
+                <span>Total:</span>
+                <span id="receipt-total">₱0.00</span>
+            </div>
+            <div class="flex justify-between">
+                <span>Payment:</span>
+                <span id="receipt-payment">₱0.00</span>
+            </div>
+            <div class="flex justify-between">
+                <span>Change:</span>
+                <span id="receipt-change">₱0.00</span>
+            </div>
+        </div>
+        <button onclick="closeReceiptModal()" class="mt-4 w-full bg-red-500 text-white py-2 rounded-lg hover:bg-red-600">Close</button>
+    </div>
+</div>
+
+
+
 
 <style>
     /* Glassmorphism effect */
@@ -148,59 +218,220 @@
         background: rgba(255, 255, 255, 0.1);
         backdrop-filter: blur(10px);
     }
+
     .bg-white {
         background: rgba(255, 255, 255, 0.8);
         backdrop-filter: blur(10px);
         border-radius: 10px;
         box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
     }
+
+    .cart-container {
+        max-height: 256px; /* Limit cart height to make it scrollable */
+        overflow-y: auto;
+    }
+
     .inventory-table {
         width: 100%;
         border-collapse: collapse;
     }
-    .inventory-table th, .inventory-table td {
-        padding: 12px;
-        text-align: left;
-        border-bottom: 1px solid #e2e8f0; /* Light gray border */
-    }
-    .inventory-table th {
-        background-color: rgba(255, 255, 255, 0.9); /* Slightly transparent white */
-    }
-    .inventory-table tr:hover {
-        background-color: rgba(229, 231, 235, 0.5); /* Light gray on hover */
-    }
+
+        .inventory-table th, .inventory-table td {
+            padding: 8px;
+            text-align: left;
+            border-bottom: 1px solid #e2e8f0; /* Light gray border */
+        }
+
+        .inventory-table th {
+            background-color: rgba(255, 255, 255, 0.9); /* Slightly transparent white */
+        }
+
+        .inventory-table tr:hover {
+            background-color: rgba(229, 231, 235, 0.5); /* Light gray on hover */
+        }
+
     .no-products {
         padding: 12px;
         text-align: center;
         color: gray;
     }
+
+    /* Lock the width of the "Item" column */
+    table {
+        table-layout: fixed; /* Prevent dynamic resizing of columns */
+        width: 100%; /* Ensure the table takes up full width */
+    }
+
+        table th:nth-child(2), table td:nth-child(2) {
+            width: 120px; /* Set a fixed width for the "Item" column */
+            text-align: center; /* Center the content */
+        }
+
+    /* Modal styles */
+    #receipt-modal {
+        z-index: 50;
+    }
 </style>
 
 <script>
+    const cart = [];
+
+    function addToCart(productId, productName, productPrice) {
+        const existingProduct = cart.find(item => item.id === productId);
+        if (existingProduct) {
+            existingProduct.quantity += 1;
+        } else {
+            cart.push({ id: productId, name: productName, price: productPrice, quantity: 1 });
+        }
+        updateCartUI();
+    }
+
+    function updateCartUI() {
+        const cartItemsContainer = document.getElementById('cart-items');
+        const subtotalElement = document.getElementById('subtotal');
+        const taxElement = document.getElementById('tax');
+        const totalElement = document.getElementById('total');
+
+        cartItemsContainer.innerHTML = '';
+        let subtotal = 0;
+
+        cart.forEach(item => {
+            const itemTotal = item.price * item.quantity;
+            subtotal += itemTotal;
+
+            const cartRow = document.createElement('tr');
+            cartRow.innerHTML = `
+                <td class="py-2 border-b">
+                    <button onclick="removeFromCart('${item.id}')" class="text-red-500 font-bold">
+                        <i class="fas fa-times"></i>
+                    </button>
+                    <span class="ml-2">${item.name}</span>
+                </td>
+                <td class="py-2 border-b text-center">
+                    <button onclick="decrementQuantity('${item.id}')" class="px-2 text-red-500 font-bold">
+                        <i class="fas fa-minus"></i>
+                    </button>
+                    <span class="mx-2">${item.quantity}</span>
+                    <button onclick="incrementQuantity('${item.id}')" class="px-2 text-green-500 font-bold">
+                        <i class="fas fa-plus"></i>
+                    </button>
+                </td>
+                <td class="py-2 border-b text-right">₱${itemTotal.toFixed(2)}</td>
+            `;
+            cartItemsContainer.appendChild(cartRow);
+        });
+
+        const tax = subtotal * 0.12;
+        const total = subtotal + tax;
+
+        subtotalElement.textContent = `₱${subtotal.toFixed(2)}`;
+        taxElement.textContent = `₱${tax.toFixed(2)}`;
+        totalElement.textContent = `₱${total.toFixed(2)}`;
+    }
+
+    function incrementQuantity(productId) {
+        const product = cart.find(item => item.id === productId);
+        if (product) {
+            product.quantity += 1;
+            updateCartUI();
+        }
+    }
+
+    function decrementQuantity(productId) {
+        const product = cart.find(item => item.id === productId);
+        if (product && product.quantity > 1) {
+            product.quantity -= 1;
+            updateCartUI();
+        } else if (product) {
+            removeFromCart(productId);
+        }
+    }
+
+    function removeFromCart(productId) {
+        const productIndex = cart.findIndex(item => item.id === productId);
+        if (productIndex !== -1) {
+            cart.splice(productIndex, 1);
+            updateCartUI();
+        }
+    }
+
+    function clearCart() {
+        cart.length = 0;
+        updateCartUI();
+    }
+
+    function proceedPayment() {
+        const totalElement = document.getElementById('total');
+        const cashPaymentElement = document.getElementById('cash-payment');
+        const changeElement = document.getElementById('change');
+
+        const total = parseFloat(totalElement.textContent.replace('₱', '').replace(',', '')) || 0;
+        const cashPayment = parseFloat(cashPaymentElement.value) || 0;
+
+        if (cashPayment < total) {
+            alert('Insufficient cash payment.');
+            return;
+        }
+
+        const change = cashPayment - total;
+        changeElement.textContent = `₱${change.toFixed(2)}`;
+
+        // Populate receipt modal
+        const receiptDate = new Date().toLocaleString();
+        document.getElementById('receipt-date').textContent = receiptDate;
+
+        const receiptItemsContainer = document.getElementById('receipt-items');
+        receiptItemsContainer.innerHTML = '';
+        cart.forEach(item => {
+            const itemRow = document.createElement('div');
+            itemRow.className = 'flex justify-between';
+            itemRow.innerHTML = `
+                <span>${item.name} (x${item.quantity})</span>
+                <span>₱${(item.price * item.quantity).toFixed(2)}</span>
+            `;
+            receiptItemsContainer.appendChild(itemRow);
+        });
+
+        document.getElementById('receipt-subtotal').textContent = `₱${(total / 1.12).toFixed(2)}`;
+        document.getElementById('receipt-tax').textContent = `₱${(total - total / 1.12).toFixed(2)}`;
+        document.getElementById('receipt-total').textContent = `₱${total.toFixed(2)}`;
+        document.getElementById('receipt-payment').textContent = `₱${cashPayment.toFixed(2)}`;
+        document.getElementById('receipt-change').textContent = `₱${change.toFixed(2)}`;
+
+        // Show modal
+        document.getElementById('receipt-modal').classList.remove('hidden');
+
+        clearCart();
+    }
+
+    function closeReceiptModal() {
+        document.getElementById('receipt-modal').classList.add('hidden');
+    }
+
     function filterProducts() {
         const searchInput = document.getElementById('product-search').value.toLowerCase();
         const products = document.querySelectorAll('.product-item');
         const noProductsMessage = document.querySelector('.no-products');
         let hasProducts = false;
 
-        // Hide the no products message initially
         noProductsMessage.style.display = 'none';
 
-        // Check if the search input is empty
+        // If the search input is empty, hide all products
         if (searchInput.trim() === "") {
             products.forEach(product => {
-                product.style.display = 'none'; // Hide all products
+                product.style.display = 'none';
             });
-            return; // Exit the function if the search bar is empty
+            return;
         }
 
+        // Filter and display matching products
         products.forEach(product => {
             const productName = product.getAttribute('data-name').toLowerCase();
             if (productName.includes(searchInput)) {
-                product.style.display = 'block'; // Show matching product
+                product.style.display = 'flex';
                 hasProducts = true;
             } else {
-                product.style.display = 'none'; // Hide non-matching product
+                product.style.display = 'none';
             }
         });
 
@@ -210,24 +441,15 @@
         }
     }
 
-    function filterInventory() {
-        const searchInput = document.getElementById('inventory-search').value.toLowerCase();
-        const items = document.querySelectorAll('.inventory-item');
-        let hasItems = false;
+    function updateChange() {
+        const totalElement = document.getElementById('total');
+        const cashPaymentElement = document.getElementById('cash-payment');
+        const changeElement = document.getElementById('change');
 
-        items.forEach(item => {
-            const itemName = item.getAttribute('data-name').toLowerCase();
-            if (itemName.includes(searchInput)) {
-                item.style.display = 'table-row'; // Show matching item
-                hasItems = true;
-            } else {
-                item.style.display = 'none'; // Hide non-matching item
-            }
-        });
+        const total = parseFloat(totalElement.textContent.replace('₱', '').replace(',', '')) || 0;
+        const cashPayment = parseFloat(cashPaymentElement.value) || 0;
 
-        // Optionally, you can show a message if no items match
-        if (!hasItems) {
-            // Handle "No items found" message if needed
-        }
+        const change = cashPayment - total;
+        changeElement.textContent = `₱${change.toFixed(2)}`;
     }
 </script>
