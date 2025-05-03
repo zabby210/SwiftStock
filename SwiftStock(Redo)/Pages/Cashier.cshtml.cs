@@ -19,9 +19,6 @@ namespace SwiftStock.Pages
             _context = context;
         }
 
-        public CashierModel CashierData { get; set; } = new CashierModel();
-
-        // Define the InventoryItems property
         public List<InventoryItem> InventoryItems { get; set; } = new();
 
         public async Task<IActionResult> OnGetAsync()
@@ -39,6 +36,29 @@ namespace SwiftStock.Pages
             {
                 // Handle the error (e.g., log it)
                 return Page();
+            }
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> OnPostSaveTransaction([FromBody] Transaction transaction)
+        {
+            if (transaction == null)
+            {
+                return BadRequest("Invalid transaction data.");
+            }
+
+            try
+            {
+                // Add the transaction to the database
+                _context.Transactions.Add(transaction);
+                await _context.SaveChangesAsync();
+
+                return new JsonResult(new { success = true });
+            }
+            catch (Exception ex)
+            {
+                // Return an error response if something goes wrong
+                return new JsonResult(new { success = false, error = ex.Message });
             }
         }
     }

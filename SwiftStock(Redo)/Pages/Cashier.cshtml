@@ -5,6 +5,15 @@
     Layout = "_CashierLayout"; // Use the new layout
 }
 
+<div class="space-y-6">
+    <div class="flex items-center justify-between">
+        <h1 class="text-3xl font-bold text-white">Cashier Interface</h1>
+        @if (User.Identity.IsAuthenticated)
+        {
+            <span class="user-name">@User.Identity.Name</span>
+        }
+    </div>
+</div>
 <div class="flex flex-col min-h-screen bg-gray-100">
     <!-- Sidebar Navigation -->
     <div class="flex flex-row flex-grow">
@@ -452,4 +461,63 @@
         const change = cashPayment - total;
         changeElement.textContent = `₱${change.toFixed(2)}`;
     }
+    
+    function addToCart(productId, productName, productPrice) {
+        const existingProduct = cart.find(item => item.id === productId);
+        if (existingProduct) {
+            existingProduct.quantity += 1;
+        } else {
+            cart.push({ id: productId, name: productName, price: productPrice, quantity: 1 });
+        }
+        updateCartUI();
+
+        // Clear the search bar
+        document.getElementById('product-search').value = '';
+
+        // Reapply the filter to reset the product list
+        filterProducts();
+    }
+    function closeReceiptModal() {
+    // Hide the receipt modal
+    document.getElementById('receipt-modal').classList.add('hidden');
+
+    // Clear the cart
+    clearCart();
+
+    // Save transaction data to the database
+    saveTransaction();
+}
+
+
+    function saveTransaction() {
+        const transactionData = {
+            name: document.querySelector('.user-name').textContent.trim(), // Get the logged-in user's name
+            products: cart.map(item => `${item.name} (x${item.quantity})`).join(', '), // List of products and quantities
+            total: parseFloat(document.getElementById('receipt-total').textContent.replace('₱', '').replace(',', '')), // Total amount
+            transaction_date: new Date().toISOString() // Current date and time
+        };
+
+        fetch('/Cashier/SaveTransaction', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(transactionData)
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Failed to save transaction.');
+            }
+            return response.json();
+        })
+        .then(data => {
+            console.log('Transaction saved successfully:', data);
+        })
+        .catch(error => {
+            console.error('Error saving transaction:', error);
+        });
+    }
+
+
 </script>
+

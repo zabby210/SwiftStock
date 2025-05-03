@@ -135,7 +135,6 @@ C:\Users\athen\source\repos\zabby210\SwiftStock\SwiftStock(Redo)\bin\Debug\net9.
 C:\Users\athen\source\repos\zabby210\SwiftStock\SwiftStock(Redo)\obj\Debug\net9.0\scopedcss\Pages\Shared\_Layout.cshtml.rz.scp.css
 C:\Users\athen\source\repos\zabby210\SwiftStock\SwiftStock(Redo)\obj\Debug\net9.0\scopedcss\bundle\SwiftStock(Redo).styles.css
 C:\Users\athen\source\repos\zabby210\SwiftStock\SwiftStock(Redo)\obj\Debug\net9.0\scopedcss\projectbundle\SwiftStock(Redo).bundle.scp.css
-C:\Users\athen\source\repos\zabby210\SwiftStock\SwiftStock(Redo)\obj\Debug\net9.0\compressed\1h3daox5to-t6gnhvisil.gz
 C:\Users\athen\source\repos\zabby210\SwiftStock\SwiftStock(Redo)\obj\Debug\net9.0\compressed\u1uzbr8t6x-r90v3udes5.gz
 C:\Users\athen\source\repos\zabby210\SwiftStock\SwiftStock(Redo)\obj\Debug\net9.0\compressed\0yrqahfry9-61n19gt1b8.gz
 C:\Users\athen\source\repos\zabby210\SwiftStock\SwiftStock(Redo)\obj\Debug\net9.0\compressed\jgxv41ku8s-xtxxf3hu2r.gz
@@ -428,3 +427,4 @@ C:\Users\DELL\Source\Repos\SwiftStock\SwiftStock(Redo)\obj\Debug\net9.0\SwiftSto
 C:\Users\DELL\Source\Repos\SwiftStock\SwiftStock(Redo)\obj\Debug\net9.0\SwiftStock(Redo).genruntimeconfig.cache
 C:\Users\DELL\Source\Repos\SwiftStock\SwiftStock(Redo)\obj\Debug\net9.0\ref\SwiftStock(Redo).dll
 C:\Users\DELL\Source\Repos\SwiftStock\SwiftStock(Redo)\obj\Debug\net9.0\compressed\1h3daox5to-mymon2s4s8.gz
+C:\Users\athen\source\repos\zabby210\SwiftStock\SwiftStock(Redo)\obj\Debug\net9.0\compressed\1h3daox5to-mymon2s4s8.gz

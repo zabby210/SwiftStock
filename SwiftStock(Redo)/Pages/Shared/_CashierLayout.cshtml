@@ -45,6 +45,12 @@
         <div>
             <h1>Cashier Dashboard</h1>
         </div>
+        @if (User.Identity.IsAuthenticated)
+        {
+            <div class="user-name">
+                @User.Identity.Name
+            </div>
+        }
     </header>
 
     <nav class="nav">
