@@ -78,6 +78,7 @@
                                                 style="width: 36px; height: 36px;">
                                             <i class="fas fa-shopping-cart"></i>
                                         </button>
+
                                     </div>
                                 }
                                 <div class="no-products hidden text-sm text-gray-500">No products found.</div>
@@ -286,6 +287,7 @@
     const cart = [];
 
     function addToCart(productId, productName, productPrice) {
+        // Add the product to the cart
         const existingProduct = cart.find(item => item.Id === productId);
         if (existingProduct) {
             existingProduct.Quantity += 1;
@@ -293,7 +295,25 @@
             cart.push({ Id: productId, Name: productName, Price: productPrice, Quantity: 1 });
         }
         updateCartUI();
+
+        // Clear the search bar
+        const searchInput = document.getElementById('product-search');
+        searchInput.value = '';
+
+        // Hide the specific product that was added to the cart
+        const productItems = document.querySelectorAll('.product-item');
+        productItems.forEach(item => {
+            const itemId = item.querySelector('button').getAttribute('onclick').match(/'([^']+)'/)[1];
+            if (itemId === productId) {
+                item.style.display = 'none'; // Hide the product that was added to the cart
+            }
+        });
+
+        // Hide the "No products found" message
+        const noProductsMessage = document.querySelector('.no-products');
+        noProductsMessage.classList.add('hidden');
     }
+
 
     function updateCartUI() {
         const cartItemsContainer = document.getElementById('cart-items');
@@ -337,6 +357,42 @@
         taxElement.textContent = `₱${tax.toFixed(2)}`;
         totalElement.textContent = `₱${total.toFixed(2)}`;
     }
+        function filterProducts() {
+        const searchInput = document.getElementById('product-search').value.toLowerCase();
+        const productItems = document.querySelectorAll('.product-item');
+        const noProductsMessage = document.querySelector('.no-products');
+        let hasMatch = false;
+
+        // Hide all products if the search bar is empty
+        if (searchInput.trim() === "") {
+            productItems.forEach(item => {
+                item.style.display = 'none'; // Hide all products
+            });
+            noProductsMessage.classList.add('hidden'); // Hide "No products found" message
+            return; // Exit the function
+        }
+
+        // Filter products based on the search input
+        productItems.forEach(item => {
+            const productName = item.getAttribute('data-name').toLowerCase();
+            if (productName.includes(searchInput)) {
+                item.style.display = 'flex'; // Show matching product
+                hasMatch = true;
+            } else {
+                item.style.display = 'none'; // Hide non-matching product
+            }
+        });
+
+        // Show or hide the "No products found" message
+        if (hasMatch) {
+            noProductsMessage.classList.add('hidden');
+        } else {
+            noProductsMessage.classList.remove('hidden');
+        }
+    }
+
+
+
 
     function incrementQuantity(productId) {
         const product = cart.find(item => item.Id === productId);
@@ -368,6 +424,7 @@
         cart.length = 0;
         updateCartUI();
     }
+
 
     function proceedPayment() {
         const totalElement = document.getElementById('total');
@@ -412,24 +469,37 @@
 
         clearCart();
     }
-
     function closeReceiptModal() {
-        document.getElementById('receipt-modal').classList.add('hidden');
+        console.log("closeReceiptModal called");
+        saveTransaction(); // Save transaction before closing the modal
+        const modal = document.getElementById('receipt-modal');
+        if (modal) {
+            modal.classList.add('hidden');
+            console.log("Modal hidden");
+        } else {
+            console.error("Modal element not found");
+        }
     }
+     function saveTransaction() {
+        if (cart.length === 0) {
+            alert("Cart is empty. Cannot save transaction.");
+            return;
+        }
 
-    function saveTransaction() {
-        // Collect transaction data from the cart
         const transactionData = {
-            Name: document.querySelector('.user-name')?.textContent.trim() || "Unknown User", // Current logged-in user
-            Products: cart.map(item => `${item.Name} (x${item.Quantity})`).join(', '), // Products in the cart
-            Quantity: cart.reduce((total, item) => total + item.Quantity, 0), // Total quantity of all products
-            Total: parseFloat(document.getElementById('receipt-total').textContent.replace('₱', '').replace(',', '')), // Total price
-            Transaction_Date: new Date().toISOString() // Current date and time
+            Name: document.querySelector('.user-name')?.textContent.trim() || "Unknown User",
+            Products: JSON.stringify(cart.map(item => ({
+                ProductId: item.Id,
+                ProductName: item.Name,
+                Quantity: item.Quantity
+            }))),
+            Quantity: cart.reduce((total, item) => total + item.Quantity, 0),
+            Total: parseFloat(document.getElementById('receipt-total').textContent.replace('₱', '').replace(',', '')),
+            Transaction_Date: new Date().toISOString()
         };
 
         console.log("Transaction Data Sent to Backend:", transactionData);
 
-        // Send the transaction data to the backend
         fetch('/api/Transaction/SaveTransaction', {
             method: 'POST',
             headers: {
@@ -440,18 +510,16 @@
         .then(response => response.json())
         .then(data => {
             if (data.success) {
-                console.log('Transaction saved successfully:', data);
                 alert('Transaction saved successfully!');
             } else {
-                console.error('Error saving transaction:', data.error);
                 alert(`Error: ${data.error}`);
             }
         })
         .catch(error => {
-            console.error('Error saving transaction:', error);
             alert('An unexpected error occurred while saving the transaction.');
         });
     }
 
-    }
+
 </script>
+

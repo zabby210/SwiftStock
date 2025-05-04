@@ -13,7 +13,7 @@ namespace SwiftStock.Data
         public DbSet<InventoryItem> inventory { get; set; }
         public DbSet<User> users { get; set; }
         public DbSet<Sale> sales { get; set; }
-        public DbSet<Transaction> Transactions { get; set; } // Add this line
+        public DbSet<Transaction> transaction { get; set; } // Add this line
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

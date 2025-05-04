@@ -20,26 +20,26 @@ namespace SwiftStock.Controllers
         {
             if (transaction == null)
             {
-                Console.Error.WriteLine("Transaction data is null.");
                 return BadRequest(new { success = false, error = "Invalid transaction data." });
             }
 
             try
             {
-                // Log transaction details for debugging
-                Console.WriteLine($"Saving transaction: Name={transaction.Name}, Products={transaction.Products}, Quantity={transaction.Quantity}, Total={transaction.Total}, Date={transaction.Transaction_Date}");
+                // Log the incoming data
+                Console.WriteLine($"Transaction Data: {transaction.Name}, {transaction.Products}, {transaction.Quantity}, {transaction.Total}, {transaction.Transaction_Date}");
 
-                // Save the transaction to the database
-                _context.Transactions.Add(transaction);
+                // Add the transaction to the database
+                _context.transaction.Add(transaction);
                 await _context.SaveChangesAsync();
 
                 return Ok(new { success = true });
             }
             catch (Exception ex)
             {
-                Console.Error.WriteLine($"Error saving transaction: {ex.Message}");
-                return StatusCode(500, new { success = false, error = "An unexpected error occurred while saving the transaction." });
+                Console.WriteLine($"Error: {ex.Message}");
+                return StatusCode(500, new { success = false, error = ex.Message });
             }
         }
+
     }
 }
