@@ -8,10 +8,7 @@
 <div class="space-y-6">
     <div class="flex items-center justify-between">
         <h1 class="text-3xl font-bold text-white">Cashier Interface</h1>
-        @if (User.Identity.IsAuthenticated)
-        {
-            <span class="user-name">@User.Identity.Name</span>
-        }
+       
     </div>
 </div>
 <div class="flex flex-col min-h-screen bg-gray-100">
@@ -63,24 +60,25 @@
                                     </div>
                                 </div>
                             </div>
+
+                                <!-- Render Product Items -->
                             <div class="product-grid" id="products-container">
                                 @foreach (var item in Model.InventoryItems)
                                 {
-                                    <div class="product-item flex items-center justify-between bg-white rounded-lg shadow-md p-4 mb-2"
-                                         data-name="@item.Product_Name"
-                                         style="display: none;">
+                                    <div class="product-item hidden flex items-center justify-between bg-white rounded-lg shadow-md p-4 mb-2"
+                                         data-name="@item.Product_Name.ToLower()">
                                         <div class="flex items-center gap-4">
                                             <span class="text-gray-900 font-medium text-sm">@item.Product_Name</span>
                                             <span class="text-gray-900 font-medium text-sm">₱@item.Price</span>
                                         </div>
-                                        <button onclick="addToCart('@item.Id', '@item.Product_Name', @item.Price)"
+                                        <button onclick="addToCart(@item.Id, '@item.Product_Name', @item.Price)"
                                                 class="p-2 bg-[#E31837] text-white rounded-full hover:bg-[#E31837]/90 flex items-center justify-center"
                                                 style="width: 36px; height: 36px;">
                                             <i class="fas fa-shopping-cart"></i>
                                         </button>
-
                                     </div>
                                 }
+
                                 <div class="no-products hidden text-sm text-gray-500">No products found.</div>
                             </div>
 
@@ -124,6 +122,7 @@
                                     <div class="flex justify-between mt-4 gap-4">
                                         <button onclick="clearCart()" class="w-full px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 text-sm">Clear Cart</button>
                                         <button onclick="proceedPayment()" class="w-full px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 text-sm">Proceed Payment</button>
+
                                     </div>
                                 </div>
                             </div>
@@ -131,60 +130,13 @@
                     </div>
                 </div>
 
-                <div id="inventory" class="section hidden">
-                    <h2 class="text-xl font-semibold mb-4">Inventory</h2>
-                    <div class="bg-white rounded-lg shadow-md p-6">
-                        <div class="mb-4">
-                            <input type="text"
-                                   id="inventory-search"
-                                   placeholder="Search inventory..."
-                                   class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#E31837] focus:border-transparent text-sm text-gray-900"
-                                   onkeyup="filterInventory()">
-                        </div>
-                        <div class="overflow-x-auto rounded-lg border border-gray-200">
-                            <table class="inventory-table w-full">
-                                <thead>
-                                    <tr class="bg-gray-50">
-                                        <th class="text-gray-700 font-medium text-sm">#</th>
-                                        <th class="text-gray-700 font-medium text-sm">Product Name</th>
-                                        <th class="text-gray-700 font-medium text-sm">Price</th>
-                                        <th class="text-gray-700 font-medium text-sm">Stock</th>
-                                        <th class="text-gray-700 font-medium text-sm">Status</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="inventory-table-body">
-                                    @foreach (var item in Model.InventoryItems)
-                                    {
-                                        <tr class="hover:bg-gray-100 transition duration-200 inventory-item" data-name="@item.Product_Name">
-                                            <td class="text-sm">@item.Id</td>
-                                            <td class="text-sm">@item.Product_Name</td>
-                                            <td class="text-sm">₱@item.Price</td>
-                                            <td class="text-sm">@item.Stock</td>
-                                            <td class="text-sm">@((item.Stock > 0) ? "Available" : "Out of Stock")</td>
-                                        </tr>
-                                    }
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-
-                <div id="history" class="section hidden">
-                    <h2 class="text-xl font-semibold mb-4">Transaction History</h2>
-                    <div class="bg-white rounded-lg shadow-md p-6">
-                        <!-- Transaction history will be implemented here -->
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+               
 
 <!-- Receipt Modal -->
 <div id="receipt-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden">
     <div class="bg-white w-96 rounded-lg shadow-lg p-6">
         <div class="text-center">
-            <img src="~/css/Images/SwiftLogo.png" alt="Logo" class="mx-auto w-28 h-28 mb-0"> <!-- Reduced margin below the logo -->
+            <img src="~/css/Images/SwiftLogo.png" alt="Logo" class="mx-auto w-28 h-28 mb-0">
             <p class="text-sm font-medium">Alfamart</p>
             <p class="text-sm text-gray-500" id="receipt-date"></p>
         </div>
@@ -219,9 +171,6 @@
     </div>
 </div>
 
-
-
-
 <style>
     /* Glassmorphism effect */
     body {
@@ -237,7 +186,7 @@
     }
 
     .cart-container {
-        max-height: 256px; /* Limit cart height to make it scrollable */
+        max-height: 256px;
         overflow-y: auto;
     }
 
@@ -249,15 +198,15 @@
         .inventory-table th, .inventory-table td {
             padding: 8px;
             text-align: left;
-            border-bottom: 1px solid #e2e8f0; /* Light gray border */
+            border-bottom: 1px solid #e2e8f0;
         }
 
         .inventory-table th {
-            background-color: rgba(255, 255, 255, 0.9); /* Slightly transparent white */
+            background-color: rgba(255, 255, 255, 0.9);
         }
 
         .inventory-table tr:hover {
-            background-color: rgba(229, 231, 235, 0.5); /* Light gray on hover */
+            background-color: rgba(229, 231, 235, 0.5);
         }
 
     .no-products {
@@ -266,53 +215,82 @@
         color: gray;
     }
 
-    /* Lock the width of the "Item" column */
     table {
-        table-layout: fixed; /* Prevent dynamic resizing of columns */
-        width: 100%; /* Ensure the table takes up full width */
+        table-layout: fixed;
+        width: 100%;
     }
 
         table th:nth-child(2), table td:nth-child(2) {
-            width: 120px; /* Set a fixed width for the "Item" column */
-            text-align: center; /* Center the content */
+            width: 120px;
+            text-align: center;
         }
 
-    /* Modal styles */
     #receipt-modal {
         z-index: 50;
     }
 </style>
 
+
 <script>
     const cart = [];
 
-    function addToCart(productId, productName, productPrice) {
-        // Add the product to the cart
-        const existingProduct = cart.find(item => item.Id === productId);
-        if (existingProduct) {
-            existingProduct.Quantity += 1;
-        } else {
-            cart.push({ Id: productId, Name: productName, Price: productPrice, Quantity: 1 });
-        }
-        updateCartUI();
+    function filterProducts() {
+        const searchInput = document.getElementById("product-search").value.toLowerCase();
+        console.log("Search Input:", searchInput);
 
-        // Clear the search bar
-        const searchInput = document.getElementById('product-search');
-        searchInput.value = '';
+        const productItems = document.querySelectorAll(".product-item");
+        const noProductsMessage = document.querySelector(".no-products");
+        let hasMatch = false;
 
-        // Hide the specific product that was added to the cart
-        const productItems = document.querySelectorAll('.product-item');
         productItems.forEach(item => {
-            const itemId = item.querySelector('button').getAttribute('onclick').match(/'([^']+)'/)[1];
-            if (itemId === productId) {
-                item.style.display = 'none'; // Hide the product that was added to the cart
+            const productName = item.getAttribute("data-name");
+            console.log("Product Name:", productName);
+
+            if (productName.includes(searchInput)) {
+                item.style.display = "flex";
+                hasMatch = true;
+            } else {
+                item.style.display = "none";
             }
         });
 
-        // Hide the "No products found" message
-        const noProductsMessage = document.querySelector('.no-products');
-        noProductsMessage.classList.add('hidden');
+        noProductsMessage.classList.toggle("hidden", hasMatch);
     }
+
+                       function addToCart(productId, productName, productPrice) {
+                        // Add the product to the cart
+                        const existingProduct = cart.find(item => item.Id === productId);
+                        if (existingProduct) {
+                            existingProduct.Quantity += 1;
+                        } else {
+                            cart.push({ Id: productId, Name: productName, Price: productPrice, Quantity: 1 });
+                        }
+                        updateCartUI();
+
+                        // Clear the search bar
+                        const searchInput = document.getElementById('product-search');
+                        if (searchInput) {
+                            searchInput.value = '';
+                        }
+
+                        // Hide the specific product that was added to the cart
+                        const productItems = document.querySelectorAll('.product-item');
+                        productItems.forEach(item => {
+                            const button = item.querySelector('button');
+                            if (button) {
+                                const itemId = button.getAttribute('onclick').match(/\((\d+),/)[1]; // Extract productId
+                                if (itemId === productId.toString()) {
+                                    item.style.display = 'none'; // Hide the product that was added to the cart
+                                }
+                            }
+                        });
+
+                        // Hide the "No products found" message if applicable
+                        const noProductsMessage = document.querySelector('.no-products');
+                        if (noProductsMessage) {
+                            noProductsMessage.classList.add('hidden');
+                        }
+                    }
 
 
     function updateCartUI() {
@@ -320,6 +298,11 @@
         const subtotalElement = document.getElementById('subtotal');
         const taxElement = document.getElementById('tax');
         const totalElement = document.getElementById('total');
+
+        if (!cartItemsContainer || !subtotalElement || !taxElement || !totalElement) {
+            console.error('One or more required elements are missing in the DOM.');
+            return;
+        }
 
         cartItemsContainer.innerHTML = '';
         let subtotal = 0;
@@ -357,42 +340,20 @@
         taxElement.textContent = `₱${tax.toFixed(2)}`;
         totalElement.textContent = `₱${total.toFixed(2)}`;
     }
-        function filterProducts() {
-        const searchInput = document.getElementById('product-search').value.toLowerCase();
-        const productItems = document.querySelectorAll('.product-item');
-        const noProductsMessage = document.querySelector('.no-products');
-        let hasMatch = false;
 
-        // Hide all products if the search bar is empty
-        if (searchInput.trim() === "") {
-            productItems.forEach(item => {
-                item.style.display = 'none'; // Hide all products
-            });
-            noProductsMessage.classList.add('hidden'); // Hide "No products found" message
-            return; // Exit the function
-        }
+                     function clearCart() {
+                         cart.length = 0; // Clear the cart array
+                         updateCartUI();  // Update the UI to reflect the cleared cart
+                     }
 
-        // Filter products based on the search input
-        productItems.forEach(item => {
-            const productName = item.getAttribute('data-name').toLowerCase();
-            if (productName.includes(searchInput)) {
-                item.style.display = 'flex'; // Show matching product
-                hasMatch = true;
-            } else {
-                item.style.display = 'none'; // Hide non-matching product
-            }
-        });
 
-        // Show or hide the "No products found" message
-        if (hasMatch) {
-            noProductsMessage.classList.add('hidden');
-        } else {
-            noProductsMessage.classList.remove('hidden');
+                    function removeFromCart(productId) {
+        const productIndex = cart.findIndex(item => item.Id === productId);
+        if (productIndex !== -1) {
+            cart.splice(productIndex, 1);
+            updateCartUI();
         }
     }
-
-
-
 
     function incrementQuantity(productId) {
         const product = cart.find(item => item.Id === productId);
@@ -404,122 +365,70 @@
 
     function decrementQuantity(productId) {
         const product = cart.find(item => item.Id === productId);
-        if (product && product.Quantity > 1) {
-            product.Quantity -= 1;
-            updateCartUI();
-        } else if (product) {
-            removeFromCart(productId);
-        }
-    }
-
-    function removeFromCart(productId) {
-        const productIndex = cart.findIndex(item => item.Id === productId);
-        if (productIndex !== -1) {
-            cart.splice(productIndex, 1);
-            updateCartUI();
-        }
-    }
-
-    function clearCart() {
-        cart.length = 0;
-        updateCartUI();
-    }
-
-
-    function proceedPayment() {
-        const totalElement = document.getElementById('total');
-        const cashPaymentElement = document.getElementById('cash-payment');
-        const changeElement = document.getElementById('change');
-
-        const total = parseFloat(totalElement.textContent.replace('₱', '').replace(',', '')) || 0;
-        const cashPayment = parseFloat(cashPaymentElement.value) || 0;
-
-        if (cashPayment < total) {
-            alert('Insufficient cash payment.');
-            return;
-        }
-
-        const change = cashPayment - total;
-        changeElement.textContent = `₱${change.toFixed(2)}`;
-
-        // Populate receipt modal
-        const receiptDate = new Date().toLocaleString();
-        document.getElementById('receipt-date').textContent = receiptDate;
-
-        const receiptItemsContainer = document.getElementById('receipt-items');
-        receiptItemsContainer.innerHTML = '';
-        cart.forEach(item => {
-            const itemRow = document.createElement('div');
-            itemRow.className = 'flex justify-between';
-            itemRow.innerHTML = `
-                <span>${item.Name} (x${item.Quantity})</span>
-                <span>₱${(item.Price * item.Quantity).toFixed(2)}</span>
-            `;
-            receiptItemsContainer.appendChild(itemRow);
-        });
-
-        document.getElementById('receipt-subtotal').textContent = `₱${(total / 1.12).toFixed(2)}`;
-        document.getElementById('receipt-tax').textContent = `₱${(total - total / 1.12).toFixed(2)}`;
-        document.getElementById('receipt-total').textContent = `₱${total.toFixed(2)}`;
-        document.getElementById('receipt-payment').textContent = `₱${cashPayment.toFixed(2)}`;
-        document.getElementById('receipt-change').textContent = `₱${change.toFixed(2)}`;
-
-        // Show modal
-        document.getElementById('receipt-modal').classList.remove('hidden');
-
-        clearCart();
-    }
-    function closeReceiptModal() {
-        console.log("closeReceiptModal called");
-        saveTransaction(); // Save transaction before closing the modal
-        const modal = document.getElementById('receipt-modal');
-        if (modal) {
-            modal.classList.add('hidden');
-            console.log("Modal hidden");
-        } else {
-            console.error("Modal element not found");
-        }
-    }
-     function saveTransaction() {
-        if (cart.length === 0) {
-            alert("Cart is empty. Cannot save transaction.");
-            return;
-        }
-
-        const transactionData = {
-            Name: document.querySelector('.user-name')?.textContent.trim() || "Unknown User",
-            Products: JSON.stringify(cart.map(item => ({
-                ProductId: item.Id,
-                ProductName: item.Name,
-                Quantity: item.Quantity
-            }))),
-            Quantity: cart.reduce((total, item) => total + item.Quantity, 0),
-            Total: parseFloat(document.getElementById('receipt-total').textContent.replace('₱', '').replace(',', '')),
-            Transaction_Date: new Date().toISOString()
-        };
-
-        console.log("Transaction Data Sent to Backend:", transactionData);
-
-        fetch('/api/Transaction/SaveTransaction', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(transactionData)
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                alert('Transaction saved successfully!');
+        if (product) {
+            if (product.Quantity > 1) {
+                product.Quantity -= 1;
             } else {
-                alert(`Error: ${data.error}`);
+                removeFromCart(productId);
             }
-        })
-        .catch(error => {
-            alert('An unexpected error occurred while saving the transaction.');
-        });
+            updateCartUI();
+        }
     }
+
+                        function proceedPayment() {
+                        const cashPayment = parseFloat(document.getElementById("cash-payment").value);
+                        const total = parseFloat(document.getElementById("total").textContent.replace("₱", ""));
+
+                        if (isNaN(cashPayment) || cashPayment <= 0) {
+                            alert("Please enter a valid cash payment.");
+                            return;
+                        }
+
+                        if (cashPayment < total) {
+                            alert("Insufficient payment. Please enter an amount greater than or equal to the total.");
+                            return;
+                        }
+
+                        const change = cashPayment - total;
+
+                        // Update the receipt modal
+                        document.getElementById("receipt-date").textContent = new Date().toLocaleString();
+                        document.getElementById("receipt-subtotal").textContent = document.getElementById("subtotal").textContent;
+                        document.getElementById("receipt-tax").textContent = document.getElementById("tax").textContent;
+                        document.getElementById("receipt-total").textContent = document.getElementById("total").textContent;
+                        document.getElementById("receipt-payment").textContent = `₱${cashPayment.toFixed(2)}`;
+                        document.getElementById("receipt-change").textContent = `₱${change.toFixed(2)}`;
+
+                        // Populate receipt items
+                        const receiptItemsContainer = document.getElementById("receipt-items");
+                        receiptItemsContainer.innerHTML = ""; // Clear previous items
+                        cart.forEach(item => {
+                            const itemRow = document.createElement("div");
+                            itemRow.className = "flex justify-between mb-2";
+                            itemRow.innerHTML = `
+                                <span>${item.Name} (x${item.Quantity})</span>
+                                <span>₱${(item.Price * item.Quantity).toFixed(2)}</span>
+                            `;
+                            receiptItemsContainer.appendChild(itemRow);
+                        });
+
+                        // Show the receipt modal
+                        document.getElementById("receipt-modal").classList.remove("hidden");
+
+                        // Clear the cart
+                        clearCart();
+                    }
+
+                                          function closeReceiptModal() {
+                        // Hide the receipt modal
+                        document.getElementById("receipt-modal").classList.add("hidden");
+
+                        // Clear the cash payment input field
+                        const cashPaymentInput = document.getElementById("cash-payment");
+                        if (cashPaymentInput) {
+                            cashPaymentInput.value = ""; // Reset the input field
+                        }
+                    }
 
 
 </script>
-

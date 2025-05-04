@@ -427,4 +427,4 @@ C:\Users\DELL\Source\Repos\SwiftStock\SwiftStock(Redo)\obj\Debug\net9.0\SwiftSto
 C:\Users\DELL\Source\Repos\SwiftStock\SwiftStock(Redo)\obj\Debug\net9.0\SwiftStock(Redo).genruntimeconfig.cache
 C:\Users\DELL\Source\Repos\SwiftStock\SwiftStock(Redo)\obj\Debug\net9.0\ref\SwiftStock(Redo).dll
 C:\Users\DELL\Source\Repos\SwiftStock\SwiftStock(Redo)\obj\Debug\net9.0\compressed\1h3daox5to-mymon2s4s8.gz
-C:\Users\athen\source\repos\zabby210\SwiftStock\SwiftStock(Redo)\obj\Debug\net9.0\compressed\1h3daox5to-mymon2s4s8.gz
+C:\Users\athen\source\repos\zabby210\SwiftStock\SwiftStock(Redo)\obj\Debug\net9.0\compressed\1h3daox5to-ob1k149mqm.gz
