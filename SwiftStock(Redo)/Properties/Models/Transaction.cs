@@ -1,12 +1,28 @@
-﻿namespace SwiftStock.Properties.Models
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
+namespace SwiftStock.Properties.Models
 {
     public class Transaction
     {
-        public int Id { get; set; } // Primary Key
-        public string Name { get; set; } // Name of the cashier
-        public string Products { get; set; } // JSON or string representation of products
-        public int Quantity { get; set; } // Total quantity of items
-        public decimal Total { get; set; } // Total amount
-        public DateTime Transaction_Date { get; set; } // Date of transaction
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int Id { get; set; }
+        
+        [Required]
+        [StringLength(100)]
+        public string Name { get; set; } = string.Empty;
+        
+        [Required]
+        public string Products { get; set; } = string.Empty;
+        
+        [Required]
+        public int Quantity { get; set; }
+        
+        [Required]
+        public decimal Total { get; set; }
+        
+        [Required]
+        public DateTime Transaction_Date { get; set; } = DateTime.Now;
     }
 }

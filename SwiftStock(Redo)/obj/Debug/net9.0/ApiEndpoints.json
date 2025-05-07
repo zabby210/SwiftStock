@@ -1,5 +1,37 @@
 [
   {
+    "ContainingType": "SwiftStock.Controllers.AdminController",
+    "Method": "GetProductSales",
+    "RelativePath": "api/Admin/ProductSales",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "period",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "SwiftStock.Controllers.AdminController",
+    "Method": "GetRevenue",
+    "RelativePath": "api/Admin/Revenue",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "period",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "SwiftStock.Controllers.CheckDuplicatesController",
     "Method": "Post",
     "RelativePath": "api/CheckDuplicates",

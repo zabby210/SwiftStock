@@ -1,4 +1,52 @@
 ﻿@page
 @model SwiftStock.Pages.CustomerAdminModel
 @{
+    ViewData["Title"] = "Customer Management";
+    Layout = "_AdminLayout";
 }
+
+<div class="space-y-4">
+    <!-- Header -->
+    <div class="flex items-center justify-between">
+        <div>
+            <h1 class="text-2xl font-bold text-white">Customer Management</h1>
+            <p class="text-slate-400 text-sm">View and manage customer accounts</p>
+        </div>
+    </div>
+
+    <!-- Customers Table -->
+    <div class="glass-card rounded-lg overflow-hidden">
+        <div class="p-3 border-b border-slate-800">
+            <div class="flex items-center justify-between">
+                <h3 class="text-base font-semibold text-white">Customer List</h3>
+            </div>
+        </div>
+        <div class="overflow-x-auto">
+            <table class="w-full">
+                <thead>
+                    <tr class="text-left bg-[#0f1117]">
+                        <th class="px-4 py-2 text-xs font-semibold text-slate-400">ID</th>
+                        <th class="px-4 py-2 text-xs font-semibold text-slate-400">Name</th>
+                        <th class="px-4 py-2 text-xs font-semibold text-slate-400">Username</th>
+                        <th class="px-4 py-2 text-xs font-semibold text-slate-400">Email</th>
+                        <th class="px-4 py-2 text-xs font-semibold text-slate-400">Password</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-800">
+                    @foreach (var user in Model.Users)
+                    {
+                        <tr class="hover:bg-[#0f1117]/50">
+                            <td class="px-4 py-2 text-sm">@user.Id</td>
+                            <td class="px-4 py-2 text-sm">@user.Name</td>
+                            <td class="px-4 py-2 text-sm">@user.Username</td>
+                            <td class="px-4 py-2 text-sm">@user.Email</td>
+                            <td class="px-4 py-2 text-sm">
+                                <span class="font-mono">••••••••</span>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

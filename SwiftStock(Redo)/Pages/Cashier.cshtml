@@ -113,7 +113,13 @@
                                     </div>
                                     <div class="flex justify-between items-center mb-2">
                                         <label for="cash-payment" class="text-gray-900 text-sm">Cash Payment:</label>
-                                        <input type="number" id="cash-payment" class="w-32 h-8 p-1 border border-gray-300 rounded-lg text-sm text-gray-900" placeholder="₱0.00" oninput="updateChange()">
+                                        <input type="number" 
+                                               id="cash-payment" 
+                                               class="w-32 h-8 p-1 border border-gray-300 rounded-lg text-sm text-gray-900" 
+                                               placeholder="₱0.00" 
+                                               oninput="updateChange()"
+                                               min="0"
+                                               step="0.01">
                                     </div>
                                     <div class="flex justify-between text-lg font-bold mb-4">
                                         <span class="text-gray-900">Change:</span>
@@ -392,53 +398,115 @@
 
 
 
-                                                        function proceedPayment() {
-                                        const cashPayment = parseFloat(document.getElementById("cash-payment").value);
-                                        const total = parseFloat(document.getElementById("total").textContent.replace("₱", ""));
+                                                        function updateChange() {
+                        const cashPayment = parseFloat(document.getElementById("cash-payment").value) || 0;
+                        const total = parseFloat(document.getElementById("total").textContent.replace("₱", "")) || 0;
+                        const change = cashPayment - total;
+                        
+                        // Update the change display
+                        document.getElementById("change").textContent = `₱${change >= 0 ? change.toFixed(2) : "0.00"}`;
+                    }
 
-                                        if (isNaN(cashPayment) || cashPayment <= 0) {
-                                            alert("Please enter a valid cash payment.");
-                                            return;
-                                        }
+                    function proceedPayment() {
+                        const cashPayment = parseFloat(document.getElementById("cash-payment").value);
+                        const total = parseFloat(document.getElementById("total").textContent.replace("₱", ""));
 
-                                        if (cashPayment < total) {
-                                            alert("Insufficient payment. Please enter an amount greater than or equal to the total.");
-                                            return;
-                                        }
+                        if (isNaN(cashPayment) || cashPayment <= 0) {
+                            alert("Please enter a valid cash payment.");
+                            return;
+                        }
 
-                                        const change = cashPayment - total;
+                        if (cashPayment < total) {
+                            alert("Insufficient payment. Please enter an amount greater than or equal to the total.");
+                            return;
+                        }
 
-                                        // Update the receipt modal
-                                        document.getElementById("receipt-date").textContent = new Date().toLocaleString();
-                                        document.getElementById("receipt-subtotal").textContent = document.getElementById("subtotal").textContent;
-                                        document.getElementById("receipt-tax").textContent = document.getElementById("tax").textContent;
-                                        document.getElementById("receipt-total").textContent = document.getElementById("total").textContent;
-                                        document.getElementById("receipt-payment").textContent = `₱${cashPayment.toFixed(2)}`;
-                                        document.getElementById("receipt-change").textContent = `₱${change.toFixed(2)}`;
+                        const change = cashPayment - total;
 
-                                        // Populate receipt items
-                                        const receiptItemsContainer = document.getElementById("receipt-items");
-                                        receiptItemsContainer.innerHTML = ""; // Clear previous items
-                                        cart.forEach(item => {
-                                            const itemRow = document.createElement("div");
-                                            itemRow.className = "flex justify-between mb-2";
-                                            itemRow.innerHTML = `
-                                                <span>${item.Name} (x${item.Quantity})</span>
-                                                <span>₱${(item.Price * item.Quantity).toFixed(2)}</span>
-                                            `;
-                                            receiptItemsContainer.appendChild(itemRow);
-                                        });
+                        // Get the current user's name - with error handling
+                        let userName = "Cashier"; // Default name if we can't get the actual name
+                        const nameElement = document.querySelector('.text-slate-400');
+                        if (nameElement && nameElement.textContent) {
+                            userName = nameElement.textContent.replace('Welcome, ', '').trim();
+                        }
 
-                                        // Show the receipt modal
-                                        document.getElementById("receipt-modal").classList.remove("hidden");
+                        // Log cart contents for debugging
+                        console.log('Current cart contents:', cart);
 
-                                        // Clear the cart
-                                        clearCart();
-                                    }
+                        // Prepare transaction data
+                        const transactionData = {
+                            Name: userName,
+                            Products: cart.map(item => `${item.Name} (${item.Quantity})`).join(', '),
+                            Quantity: cart.reduce((total, item) => total + item.Quantity, 0),
+                            Total: total,
+                            Transaction_Date: new Date().toISOString()
+                        };
+
+                        // Log the exact data being sent
+                        console.log('Transaction data being sent:', JSON.stringify(transactionData, null, 2));
+
+                        // Save transaction to database
+                        fetch('/api/Transaction/SaveTransaction', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                            body: JSON.stringify(transactionData)
+                        })
+                        .then(async response => {
+                            console.log('Response status:', response.status);
+                            const responseText = await response.text();
+                            console.log('Raw response:', responseText);
+                            return responseText ? JSON.parse(responseText) : {};
+                        })
+                        .then(data => {
+                            console.log('Parsed response data:', data);
+                            if (data.success) {
+                                console.log('Transaction saved successfully with ID:', data.id);
+                                
+                                // Update the receipt modal
+                                document.getElementById("receipt-date").textContent = new Date().toLocaleString();
+                                document.getElementById("receipt-subtotal").textContent = document.getElementById("subtotal").textContent;
+                                document.getElementById("receipt-tax").textContent = document.getElementById("tax").textContent;
+                                document.getElementById("receipt-total").textContent = document.getElementById("total").textContent;
+                                document.getElementById("receipt-payment").textContent = `₱${cashPayment.toFixed(2)}`;
+                                document.getElementById("receipt-change").textContent = `₱${change.toFixed(2)}`;
+
+                                // Populate receipt items
+                                const receiptItemsContainer = document.getElementById("receipt-items");
+                                receiptItemsContainer.innerHTML = ""; // Clear previous items
+                                cart.forEach(item => {
+                                    const itemRow = document.createElement("div");
+                                    itemRow.className = "flex justify-between mb-2";
+                                    itemRow.innerHTML = `
+                                        <span>${item.Name} (x${item.Quantity})</span>
+                                        <span>₱${(item.Price * item.Quantity).toFixed(2)}</span>
+                                    `;
+                                    receiptItemsContainer.appendChild(itemRow);
+                                });
+
+                                // Show the receipt modal
+                                document.getElementById("receipt-modal").classList.remove("hidden");
+                                
+                                // Clear the cart after successful save
+                                clearCart();
+                            } else {
+                                console.error('Error saving transaction:', data.error);
+                                alert('Error saving transaction: ' + (data.error || 'Unknown error'));
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error details:', error);
+                            alert('Error saving transaction. Please check the console for details.');
+                        });
+                    }
 
                                                           function closeReceiptModal() {
                                         // Hide the receipt modal
                                         document.getElementById("receipt-modal").classList.add("hidden");
+
+                                        // Clear the cart
+                                        clearCart();
 
                                         // Clear the cash payment input field
                                         const cashPaymentInput = document.getElementById("cash-payment");

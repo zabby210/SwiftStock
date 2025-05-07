@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using SwiftStock.Data;
 using SwiftStock.Properties.Models;
+using System.Text.Json;
 
 namespace SwiftStock.Pages
 {
@@ -44,42 +45,67 @@ namespace SwiftStock.Pages
         {
             try
             {
-                // Calculate total sales amount
-                TotalSales = _context.sales
-                    .Include(s => s.InventoryItem)
-                    .Sum(s => s.Quantity * s.InventoryItem.Price);
+                var today = DateTime.Today;
+                var transactions = _context.transaction.ToList();
 
-                TotalOrders = _context.sales.Count();
-                ActiveCustomers = _context.users.Count();
-                LowStockItems = _context.inventory.Count(i => i.Stock < 10);
+                // Calculate total sales for today
+                TotalSales = transactions
+                    .Where(t => t.Transaction_Date.Date == today)
+                    .Sum(t => t.Total);
 
-                // Get recent orders with related data
-                RecentOrders = _context.sales
-                    .Include(s => s.InventoryItem)
-                    .OrderByDescending(s => s.Date)
-                    .Take(5)
+                // Calculate total transactions for today
+                TotalTransactions = transactions
+                    .Count(t => t.Transaction_Date.Date == today);
+
+                // Calculate average transaction value
+                AverageTransaction = transactions.Any() 
+                    ? transactions.Average(t => t.Total) 
+                    : 0m;
+
+                // Get top selling product
+                var topProduct = transactions
+                    .GroupBy(t => t.Products)
+                    .OrderByDescending(g => g.Count())
+                    .FirstOrDefault();
+
+                TopSellingProduct = topProduct?.Key ?? "No sales yet";
+                TopSellingQuantity = topProduct?.Count() ?? 0;
+
+                // Get recent transactions
+                RecentTransactions = transactions
+                    .OrderByDescending(t => t.Transaction_Date)
+                    .Take(10)
                     .ToList();
 
-                // Get top products by stock level
-                TopProducts = _context.inventory
-                    .OrderByDescending(i => i.Stock)
-                    .Take(5)
+                // Prepare product sales data for pie chart
+                var productSales = transactions
+                    .GroupBy(t => t.Products)
+                    .Select(g => new { Product = g.Key, Count = (decimal)g.Count() })
+                    .OrderByDescending(x => x.Count)
+                    .Take(7)
                     .ToList();
 
-                // Prepare sales chart data
+                ProductSalesData = new ChartData
+                {
+                    Labels = productSales.Select(x => x.Product).ToList(),
+                    Values = productSales.Select(x => x.Count).ToList()
+                };
+
+                // Prepare revenue data for bar chart
                 var last7Days = Enumerable.Range(0, 7)
-                    .Select(i => DateTime.Today.AddDays(-i))
+                    .Select(i => today.AddDays(-i))
                     .Reverse()
                     .ToList();
 
-                SalesData = new
+                var dailyRevenue = transactions
+                    .Where(t => t.Transaction_Date.Date >= last7Days.First())
+                    .GroupBy(t => t.Transaction_Date.Date)
+                    .ToDictionary(g => g.Key, g => g.Sum(t => t.Total));
+
+                RevenueData = new ChartData
                 {
-                    labels = last7Days.Select(d => d.ToString("ddd")),
-                    values = last7Days.Select(d =>
-                        _context.sales
-                            .Where(s => s.Date.Date == d)
-                            .Include(s => s.InventoryItem)
-                            .Sum(s => s.Quantity * s.InventoryItem.Price))
+                    Labels = last7Days.Select(d => d.ToString("ddd")).ToList(),
+                    Values = last7Days.Select(d => dailyRevenue.ContainsKey(d) ? dailyRevenue[d] : 0m).ToList()
                 };
             }
             catch (Exception ex)
@@ -97,11 +123,18 @@ namespace SwiftStock.Pages
 
         // Dashboard data properties
         public decimal TotalSales { get; set; }
-        public int TotalOrders { get; set; }
-        public int ActiveCustomers { get; set; }
-        public int LowStockItems { get; set; }
-        public List<Sale> RecentOrders { get; set; }
-        public List<InventoryItem> TopProducts { get; set; }
-        public object SalesData { get; set; }
+        public int TotalTransactions { get; set; }
+        public decimal AverageTransaction { get; set; }
+        public string TopSellingProduct { get; set; }
+        public int TopSellingQuantity { get; set; }
+        public List<Transaction> RecentTransactions { get; set; }
+        public ChartData ProductSalesData { get; set; }
+        public ChartData RevenueData { get; set; }
+    }
+
+    public class ChartData
+    {
+        public List<string> Labels { get; set; }
+        public List<decimal> Values { get; set; }
     }
 }
