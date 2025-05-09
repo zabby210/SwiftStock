@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SwiftStock.Properties.Models;
-using Microsoft.Extensions.Logging;
 
 namespace SwiftStock.Data
 {
@@ -19,6 +18,7 @@ namespace SwiftStock.Data
         public DbSet<Sale> sales { get; set; }
         public DbSet<Transaction> transaction { get; set; }
         public DbSet<MUser> _musers { get; set; }
+
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

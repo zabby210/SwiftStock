@@ -61,7 +61,7 @@
         // Check if the search input is empty
         if (searchInput.trim() === "") {
             products.forEach(product => {
-                product.style.display = 'none'; // Hide all products
+                product.style.display = 'block'; // Show all products
             });
             return; // Exit the function if the search bar is empty
         }
@@ -81,6 +81,7 @@
             noProductsMessage.style.display = 'block';
         }
     }
+
 
     function filterInventory() {
         const searchInput = document.getElementById('inventory-search').value.toLowerCase();

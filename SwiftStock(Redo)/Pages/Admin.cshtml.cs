@@ -2,10 +2,8 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.EntityFrameworkCore;
 using SwiftStock.Data;
 using SwiftStock.Properties.Models;
-using System.Text.Json;
 
 namespace SwiftStock.Pages
 {
@@ -46,6 +44,7 @@ namespace SwiftStock.Pages
             try
             {
                 var today = DateTime.Today;
+
                 var transactions = _context.transaction.ToList();
 
                 // Calculate total sales for today
@@ -58,8 +57,8 @@ namespace SwiftStock.Pages
                     .Count(t => t.Transaction_Date.Date == today);
 
                 // Calculate average transaction value
-                AverageTransaction = transactions.Any() 
-                    ? transactions.Average(t => t.Total) 
+                AverageTransaction = transactions.Any()
+                    ? transactions.Average(t => t.Total)
                     : 0m;
 
                 // Get top selling product
@@ -77,19 +76,27 @@ namespace SwiftStock.Pages
                     .Take(10)
                     .ToList();
 
+
+
                 // Prepare product sales data for pie chart
                 var productSales = transactions
-                    .GroupBy(t => t.Products)
-                    .Select(g => new { Product = g.Key, Count = (decimal)g.Count() })
+                    .SelectMany(t => t.Products.Split(", ")) // Split products into individual items
+                    .GroupBy(product => product.Trim()) // Group by product name (trimmed to avoid whitespace issues)
+                    .Select(g => new
+                    {
+                        Product = g.Key,
+                        Count = g.Count() // Count how many times the product appears across all transactions
+                    })
                     .OrderByDescending(x => x.Count)
-                    .Take(7)
                     .ToList();
 
                 ProductSalesData = new ChartData
                 {
                     Labels = productSales.Select(x => x.Product).ToList(),
-                    Values = productSales.Select(x => x.Count).ToList()
+                    Values = productSales.Select(x => (decimal)x.Count).ToList() // Cast Count to decimal
                 };
+
+
 
                 // Prepare revenue data for bar chart
                 var last7Days = Enumerable.Range(0, 7)

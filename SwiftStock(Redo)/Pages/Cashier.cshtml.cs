@@ -15,6 +15,7 @@ namespace SwiftStock.Pages
         {
             _context = context;
         }
+        public string CurrentUserName { get; private set; }
 
         public List<InventoryItem> InventoryItems { get; set; } = new();
 
@@ -38,7 +39,6 @@ namespace SwiftStock.Pages
                 Console.WriteLine($"Item: {item.Product_Name}, Price: {item.Price}, Stock: {item.Stock}");
             }
         }
-
 
         public void AddToCart(int productId, string productName, decimal price)
         {
@@ -152,8 +152,27 @@ namespace SwiftStock.Pages
 
             // Save the transaction to the database
             _context.transaction.Add(transaction);
+
+            // Update inventory stock
+            foreach (var cartItem in cart)
+            {
+                var inventoryItem = await _context.inventory.FirstOrDefaultAsync(i => i.Id == cartItem.ProductId);
+                if (inventoryItem != null)
+                {
+                    inventoryItem.Stock -= cartItem.Quantity;
+
+                    // Ensure stock doesn't go below zero
+                    if (inventoryItem.Stock < 0)
+                    {
+                        inventoryItem.Stock = 0;
+                    }
+                }
+            }
+
             await _context.SaveChangesAsync();
         }
+
+
 
         public List<InventoryItem> FilterProducts(string searchInput)
         {

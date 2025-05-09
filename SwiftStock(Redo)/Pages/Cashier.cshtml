@@ -23,16 +23,6 @@
                     </button>
                 </li>
                 <li>
-                    <button onclick="showSection('inventory')" class="flex items-center w-full p-2 text-left rounded-lg hover:bg-gray-200">
-                        <i class="fas fa-box mr-2"></i> Inventory
-                    </button>
-                </li>
-                <li>
-                    <button onclick="showSection('history')" class="flex items-center w-full p-2 text-left rounded-lg hover:bg-gray-200">
-                        <i class="fas fa-history mr-2"></i> Transaction History
-                    </button>
-                </li>
-                <li>
                     <button onclick="window.location.href='/Login';" class="flex items-center w-full p-2 text-left rounded-lg hover:bg-gray-200">
                         <i class="fas fa-sign-out-alt mr-2"></i> Logout
                     </button>
@@ -272,40 +262,35 @@
 
 
 
-                                       function addToCart(productId, productName, productPrice) {
-                                        // Add the product to the cart
-                                        const existingProduct = cart.find(item => item.Id === productId);
-                                        if (existingProduct) {
-                                            existingProduct.Quantity += 1;
-                                        } else {
-                                            cart.push({ Id: productId, Name: productName, Price: productPrice, Quantity: 1 });
-                                        }
-                                        updateCartUI();
+                    function addToCart(productId, productName, productPrice) {
+                        // Add the product to the cart
+                        const existingProduct = cart.find(item => item.Id === productId);
+                        if (existingProduct) {
+                            existingProduct.Quantity += 1;
+                        } else {
+                            cart.push({ Id: productId, Name: productName, Price: productPrice, Quantity: 1 });
+                        }
+                        updateCartUI();
 
-                                        // Clear the search bar
-                                        const searchInput = document.getElementById('product-search');
-                                        if (searchInput) {
-                                            searchInput.value = '';
-                                        }
+                        // Clear the search bar
+                        const searchInput = document.getElementById('product-search');
+                        if (searchInput) {
+                            searchInput.value = ''; // Reset the search input
+                        }
 
-                                        // Hide the specific product that was added to the cart
-                                        const productItems = document.querySelectorAll('.product-item');
-                                        productItems.forEach(item => {
-                                            const button = item.querySelector('button');
-                                            if (button) {
-                                                const itemId = button.getAttribute('onclick').match(/\((\d+),/)[1]; // Extract productId
-                                                if (itemId === productId.toString()) {
-                                                    item.style.display = 'none'; // Hide the product that was added to the cart
-                                                }
-                                            }
-                                        });
+                        // Hide all product items
+                        const productItems = document.querySelectorAll('.product-item');
+                        productItems.forEach(item => {
+                            item.style.display = 'none'; // Hide all product items
+                        });
 
-                                        // Hide the "No products found" message if applicable
-                                        const noProductsMessage = document.querySelector('.no-products');
-                                        if (noProductsMessage) {
-                                            noProductsMessage.classList.add('hidden');
-                                        }
-                                    }
+                        // Hide the "No products found" message
+                        const noProductsMessage = document.querySelector('.no-products');
+                        if (noProductsMessage) {
+                            noProductsMessage.classList.add('hidden');
+                        }
+                    }
+
 
 
                     function updateCartUI() {
@@ -501,19 +486,25 @@
                         });
                     }
 
-                                                          function closeReceiptModal() {
-                                        // Hide the receipt modal
-                                        document.getElementById("receipt-modal").classList.add("hidden");
+                    function closeReceiptModal() {
+                        // Hide the receipt modal
+                        document.getElementById("receipt-modal").classList.add("hidden");
 
-                                        // Clear the cart
-                                        clearCart();
+                        // Clear the cart
+                        clearCart();
 
-                                        // Clear the cash payment input field
-                                        const cashPaymentInput = document.getElementById("cash-payment");
-                                        if (cashPaymentInput) {
-                                            cashPaymentInput.value = ""; // Reset the input field
-                                        }
-                                    }
+                        // Reset the cash payment input field
+                        const cashPaymentInput = document.getElementById("cash-payment");
+                        if (cashPaymentInput) {
+                            cashPaymentInput.value = ""; // Reset the input field
+                        }
+
+                        // Reset the change display
+                        const changeElement = document.getElementById("change");
+                        if (changeElement) {
+                            changeElement.textContent = "₱0.00"; // Reset the change display
+                        }
+                    }
 
 
                 </script>
