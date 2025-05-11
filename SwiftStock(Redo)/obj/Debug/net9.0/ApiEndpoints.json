@@ -122,6 +122,27 @@
   },
   {
     "ContainingType": "SwiftStock.Controllers.InventoryController",
+    "Method": "GetTransactions",
+    "RelativePath": "api/Inventory/transactions",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "startDate",
+        "Type": "System.Nullable\u00601[[System.DateTime, System.Private.CoreLib, Version=9.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
+        "IsRequired": false
+      },
+      {
+        "Name": "endDate",
+        "Type": "System.Nullable\u00601[[System.DateTime, System.Private.CoreLib, Version=9.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "SwiftStock.Controllers.InventoryController",
     "Method": "UpdateProduct",
     "RelativePath": "api/Inventory/update",
     "HttpMethod": "PUT",
@@ -145,8 +166,8 @@
     "Order": 0,
     "Parameters": [
       {
-        "Name": "transaction",
-        "Type": "SwiftStock.Properties.Models.Transaction",
+        "Name": "request",
+        "Type": "SwiftStock.Controllers.TransactionRequest",
         "IsRequired": true
       }
     ],

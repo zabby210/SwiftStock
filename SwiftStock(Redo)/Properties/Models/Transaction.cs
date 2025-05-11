@@ -1,28 +1,15 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using System;
 
 namespace SwiftStock.Properties.Models
 {
     public class Transaction
     {
-        [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
-        
-        [Required]
-        [StringLength(100)]
-        public string Name { get; set; } = string.Empty;
-        
-        [Required]
-        public string Products { get; set; } = string.Empty;
-        
-        [Required]
-        public int Quantity { get; set; }
-        
-        [Required]
+        public int Personnel_ID { get; set; }
         public decimal Total { get; set; }
+        public DateTime Transaction_Date { get; set; }
         
-        [Required]
-        public DateTime Transaction_Date { get; set; } = DateTime.Now;
+        public virtual List<TransactionItem> TransactionItems { get; set; } = [];
     }
 }
+

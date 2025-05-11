@@ -17,9 +17,10 @@ namespace SwiftStock.Data
         public DbSet<User> users { get; set; }
         public DbSet<Sale> sales { get; set; }
         public DbSet<Transaction> transaction { get; set; }
+        public DbSet<TransactionItem> transaction_items { get; set; }
         public DbSet<MUser> _musers { get; set; }
 
-
+         
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
@@ -65,22 +66,19 @@ namespace SwiftStock.Data
                 {
                     entity.ToTable("transaction");
                     entity.HasKey(e => e.Id);
-                    entity.Property(e => e.Id).ValueGeneratedOnAdd();
-                    entity.Property(e => e.Name).IsRequired();
-                    entity.Property(e => e.Products).IsRequired();
-                    entity.Property(e => e.Quantity).IsRequired();
-                    entity.Property(e => e.Total).IsRequired();
-                    entity.Property(e => e.Transaction_Date).IsRequired();
+                    entity.HasMany(e => e.TransactionItems)
+                          .WithOne(e => e.Transaction)
+                          .HasForeignKey(e => e.Transaction_ID);
                 });
 
-                // Configure MUser entity
-                modelBuilder.Entity<MUser>(entity =>
+                modelBuilder.Entity<TransactionItem>(entity =>
                 {
-                    entity.ToTable("_musers");
+                    entity.ToTable("transaction_items");
                     entity.HasKey(e => e.Id);
+                    entity.HasOne(e => e.Product)
+                          .WithMany()
+                          .HasForeignKey(e => e.Product_ID);
                 });
-
-                _logger.LogInformation("Database model configuration completed successfully.");
             }
             catch (Exception ex)
             {

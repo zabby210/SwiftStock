@@ -25,21 +25,33 @@ namespace SwiftStock.Controllers
         {
             try
             {
-                var transactions = await _context.transaction.ToListAsync();
                 var startDate = GetStartDate(period);
+                var transactions = await _context.transaction
+                    .Include(t => t.TransactionItems)
+                    .ThenInclude(ti => ti.Product)
+                    .Where(t => t.Transaction_Date >= startDate)
+                    .ToListAsync();
 
                 var productSales = transactions
-                    .Where(t => t.Transaction_Date >= startDate)
-                    .GroupBy(t => t.Products)
-                    .Select(g => new { Product = g.Key, Count = (decimal)g.Count() })
-                    .OrderByDescending(x => x.Count)
+                    .SelectMany(t => t.TransactionItems)
+                    .GroupBy(ti => new { ti.Product.Product_Name, ti.Product.Id })
+                    .Select(g => new 
+                    { 
+                        ProductId = g.Key.Id,
+                        Product = g.Key.Product_Name,
+                        Count = g.Sum(ti => ti.Quantity),
+                        Revenue = g.Sum(ti => ti.Subtotal)
+                    })
+                    .OrderByDescending(x => x.Revenue)
                     .Take(7)
                     .ToList();
 
                 return Ok(new
                 {
                     labels = productSales.Select(x => x.Product).ToList(),
-                    values = productSales.Select(x => x.Count).ToList()
+                    values = productSales.Select(x => x.Count).ToList(),
+                    revenue = productSales.Select(x => x.Revenue).ToList(),
+                    productIds = productSales.Select(x => x.ProductId).ToList()
                 });
             }
             catch (Exception ex)
@@ -54,20 +66,36 @@ namespace SwiftStock.Controllers
         {
             try
             {
-                var transactions = await _context.transaction.ToListAsync();
                 var startDate = GetStartDate(period);
-                var endDate = DateTime.Today;
-
-                var dates = GetDateRange(startDate, endDate, period);
-                var revenue = transactions
+                var transactions = await _context.transaction
+                    .Include(t => t.TransactionItems)
                     .Where(t => t.Transaction_Date >= startDate)
+                    .ToListAsync();
+
+                var endDate = DateTime.Today;
+                var dates = GetDateRange(startDate, endDate, period);
+                
+                var revenue = transactions
                     .GroupBy(t => GetDateKey(t.Transaction_Date, period))
-                    .ToDictionary(g => g.Key, g => g.Sum(t => t.Total));
+                    .ToDictionary(g => g.Key, g => new
+                    {
+                        Total = g.Sum(t => t.Total),
+                        ItemCount = g.Sum(t => t.TransactionItems.Count),
+                        TransactionCount = g.Count()
+                    });
 
                 return Ok(new
                 {
                     labels = dates.Select(d => FormatDate(d, period)).ToList(),
-                    values = dates.Select(d => revenue.ContainsKey(GetDateKey(d, period)) ? revenue[GetDateKey(d, period)] : 0m).ToList()
+                    values = dates.Select(d => 
+                        revenue.TryGetValue(GetDateKey(d, period), out var value) ? value.Total : 0m)
+                        .ToList(),
+                    itemCounts = dates.Select(d =>
+                        revenue.TryGetValue(GetDateKey(d, period), out var value) ? value.ItemCount : 0)
+                        .ToList(),
+                    transactionCounts = dates.Select(d =>
+                        revenue.TryGetValue(GetDateKey(d, period), out var value) ? value.TransactionCount : 0)
+                        .ToList()
                 });
             }
             catch (Exception ex)
@@ -134,4 +162,4 @@ namespace SwiftStock.Controllers
             };
         }
     }
-} 
+}

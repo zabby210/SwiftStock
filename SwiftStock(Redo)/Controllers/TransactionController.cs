@@ -13,91 +13,82 @@ namespace SwiftStock.Controllers
         private readonly ILogger<TransactionController> _logger;
 
         public TransactionController(ApplicationDbContext context, ILogger<TransactionController> logger)
-        {
-            _context = context;
-            _logger = logger;
-        }
+            => (_context, _logger) = (context, logger);
 
         [HttpPost("SaveTransaction")]
-        public async Task<IActionResult> SaveTransaction([FromBody] Transaction transaction)
+        public async Task<IActionResult> SaveTransaction([FromBody] TransactionRequest request)
         {
-            if (transaction == null)
+            if (request == null)
             {
                 _logger.LogError("Transaction data is null");
                 return BadRequest(new { success = false, error = "Invalid transaction data." });
             }
 
+            using var transaction = await _context.Database.BeginTransactionAsync();
             try
             {
-                // Log the incoming data
-                _logger.LogInformation($"Saving transaction: Name={transaction.Name}, Products={transaction.Products}, Quantity={transaction.Quantity}, Total={transaction.Total}, Date={transaction.Transaction_Date}");
-
-                // Validate the data
-                if (string.IsNullOrEmpty(transaction.Name))
+                // Create and save the main transaction first
+                var transactionEntity = new Transaction
                 {
-                    return BadRequest(new { success = false, error = "Name is required." });
-                }
+                    Personnel_ID = request.PersonnelId,
+                    Total = request.Total,
+                    Transaction_Date = DateTime.Now
+                };
 
-                if (string.IsNullOrEmpty(transaction.Products))
+                _context.transaction.Add(transactionEntity);
+                await _context.SaveChangesAsync();
+
+                // Create and save transaction items
+                foreach (var item in request.Items)
                 {
-                    return BadRequest(new { success = false, error = "Products are required." });
-                }
-
-                if (transaction.Quantity <= 0)
-                {
-                    return BadRequest(new { success = false, error = "Quantity must be greater than 0." });
-                }
-
-                if (transaction.Total <= 0)
-                {
-                    return BadRequest(new { success = false, error = "Total must be greater than 0." });
-                }
-
-                // Ensure transaction date is set
-                if (transaction.Transaction_Date == default)
-                {
-                    transaction.Transaction_Date = DateTime.Now;
-                }
-
-                // Log the entity state before saving
-                var entry = _context.Entry(transaction);
-                _logger.LogInformation($"Entity State: {entry.State}");
-                _logger.LogInformation($"Entity Properties: {string.Join(", ", entry.Properties.Select(p => $"{p.Metadata.Name}: {p.CurrentValue}"))}");
-
-                // Add the transaction to the database
-                _context.transaction.Add(transaction);
-                
-                try
-                {
-                    // Log the SQL that will be executed
-                    var sql = _context.transaction.ToQueryString();
-                    _logger.LogInformation($"SQL Query: {sql}");
-
-                    await _context.SaveChangesAsync();
-                    _logger.LogInformation($"Transaction saved successfully with ID: {transaction.Id}");
-                    return Ok(new { success = true, id = transaction.Id });
-                }
-                catch (DbUpdateException dbEx)
-                {
-                    _logger.LogError(dbEx, "Database update error: {Message}", dbEx.Message);
-                    if (dbEx.InnerException != null)
+                    var product = await _context.inventory.FindAsync(item.ProductId);
+                    if (product == null)
                     {
-                        _logger.LogError(dbEx.InnerException, "Inner exception: {Message}", dbEx.InnerException.Message);
-                        _logger.LogError(dbEx.InnerException, "Stack trace: {StackTrace}", dbEx.InnerException.StackTrace);
+                        throw new InvalidOperationException($"Product with ID {item.ProductId} not found");
                     }
-                    return StatusCode(500, new { success = false, error = $"Database error: {dbEx.Message}" });
+
+                    // Create transaction item following the exact table structure
+                    var transactionItem = new TransactionItem
+                    {
+                        Transaction_ID = transactionEntity.Id,  // Matches the table's Transaction_ID
+                        Product_ID = item.ProductId,           // Matches the table's Product_ID
+                        Quantity = item.Quantity,              // Matches the table's Quantity
+                        Subtotal = item.Subtotal              // Matches the table's Subtotal
+                    };
+
+                    _context.Set<TransactionItem>().Add(transactionItem);
+
+                    // Update inventory
+                    product.Stock -= item.Quantity;
+                    if (product.Stock < 0) product.Stock = 0;
                 }
+
+                await _context.SaveChangesAsync();
+                await transaction.CommitAsync();
+
+                _logger.LogInformation("Transaction saved successfully. ID: {TransactionId}", transactionEntity.Id);
+                return Ok(new { success = true, id = transactionEntity.Id });
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error saving transaction: {Message}", ex.Message);
-                if (ex.InnerException != null)
-                {
-                    _logger.LogError(ex.InnerException, "Inner exception: {Message}", ex.InnerException.Message);
-                    _logger.LogError(ex.InnerException, "Stack trace: {StackTrace}", ex.InnerException.StackTrace);
-                }
-                return StatusCode(500, new { success = false, error = $"An error occurred: {ex.Message}" });
+                await transaction.RollbackAsync();
+                _logger.LogError(ex, "Error saving transaction");
+                return StatusCode(500, new { success = false, error = $"Error saving transaction: {ex.Message}" });
             }
         }
+    }
+
+    public class TransactionRequest
+    {
+        public int PersonnelId { get; set; }
+        public decimal Total { get; set; }
+        public List<TransactionItemRequest> Items { get; set; } = [];
+    }
+
+    public class TransactionItemRequest
+    {
+        public int ProductId { get; set; }
+        public int Quantity { get; set; }
+        public decimal Subtotal { get; set; }
     }
 }

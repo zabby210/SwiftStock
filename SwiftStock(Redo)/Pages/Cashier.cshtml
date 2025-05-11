@@ -12,6 +12,7 @@
     </div>
 </div>
 <div class="flex flex-col min-h-screen bg-gray-100">
+    @Html.AntiForgeryToken()
     <!-- Sidebar Navigation -->
     <div class="flex flex-row flex-grow">
         <nav class="bg-white w-64 shadow-lg rounded-lg p-4 flex-shrink-0">
@@ -228,7 +229,7 @@
 
 
                 <script>
-                    const cart = [];
+                   let cart = [];
 
                     function filterProducts() {
                         const searchInput = document.getElementById("product-search").value.toLowerCase();
@@ -259,252 +260,199 @@
                         }
                     }
 
-
-
-
-                    function addToCart(productId, productName, productPrice) {
-                        // Add the product to the cart
-                        const existingProduct = cart.find(item => item.Id === productId);
-                        if (existingProduct) {
-                            existingProduct.Quantity += 1;
+                    function addToCart(productId, productName, price) {
+                        const existingItem = cart.find(item => item.Id === productId);
+                        if (existingItem) {
+                            existingItem.Quantity += 1;
                         } else {
-                            cart.push({ Id: productId, Name: productName, Price: productPrice, Quantity: 1 });
+                            cart.push({
+                                Id: productId,
+                                Name: productName,
+                                Price: price,
+                                Quantity: 1
+                            });
                         }
                         updateCartUI();
-
-                        // Clear the search bar
-                        const searchInput = document.getElementById('product-search');
-                        if (searchInput) {
-                            searchInput.value = ''; // Reset the search input
-                        }
-
-                        // Hide all product items
-                        const productItems = document.querySelectorAll('.product-item');
-                        productItems.forEach(item => {
-                            item.style.display = 'none'; // Hide all product items
-                        });
-
-                        // Hide the "No products found" message
-                        const noProductsMessage = document.querySelector('.no-products');
-                        if (noProductsMessage) {
-                            noProductsMessage.classList.add('hidden');
-                        }
-                    }
-
-
-
-                    function updateCartUI() {
-                        const cartItemsContainer = document.getElementById('cart-items');
-                        const subtotalElement = document.getElementById('subtotal');
-                        const taxElement = document.getElementById('tax');
-                        const totalElement = document.getElementById('total');
-
-                        if (!cartItemsContainer || !subtotalElement || !taxElement || !totalElement) {
-                            console.error('One or more required elements are missing in the DOM.');
-                            return;
-                        }
-
-                        cartItemsContainer.innerHTML = '';
-                        let subtotal = 0;
-
-                        cart.forEach(item => {
-                            const itemTotal = item.Price * item.Quantity;
-                            subtotal += itemTotal;
-
-                            const cartRow = document.createElement('tr');
-                            cartRow.innerHTML = `
-                                <td class="py-2 border-b">
-                                    <button onclick="removeFromCart(${item.Id})" class="text-red-500 font-bold">
-                                        <i class="fas fa-times"></i>
-                                    </button>
-                                    <span class="ml-2">${item.Name}</span>
-                                </td>
-                                <td class="py-2 border-b text-center">
-                                    <button onclick="decrementQuantity(${item.Id})" class="px-2 text-red-500 font-bold">
-                                        <i class="fas fa-minus"></i>
-                                    </button>
-                                    <span class="mx-2">${item.Quantity}</span>
-                                    <button onclick="incrementQuantity(${item.Id})" class="px-2 text-green-500 font-bold">
-                                        <i class="fas fa-plus"></i>
-                                    </button>
-                                </td>
-                                <td class="py-2 border-b text-right">₱${itemTotal.toFixed(2)}</td>
-                            `;
-                            cartItemsContainer.appendChild(cartRow);
-                        });
-
-                        const tax = subtotal * 0.12;
-                        const total = subtotal + tax;
-
-                        subtotalElement.textContent = `₱${subtotal.toFixed(2)}`;
-                        taxElement.textContent = `₱${tax.toFixed(2)}`;
-                        totalElement.textContent = `₱${total.toFixed(2)}`;
-                    }
-
-
-                                     function clearCart() {
-                                         cart.length = 0; // Clear the cart array
-                                         updateCartUI();  // Update the UI to reflect the cleared cart
-                                     }
-
-                    function incrementQuantity(productId) {
-                        console.log("Incrementing product:", productId);
-                        const product = cart.find(item => item.Id === productId);
-                        if (product) {
-                            product.Quantity += 1;
-                            console.log("Updated product:", product);
-                            updateCartUI();
-                        }
-                    }
-
-                    function decrementQuantity(productId) {
-                        console.log("Decrementing product:", productId);
-                        const product = cart.find(item => item.Id === productId);
-                        if (product) {
-                            if (product.Quantity > 1) {
-                                product.Quantity -= 1;
-                            } else {
-                                removeFromCart(productId);
-                            }
-                            console.log("Updated product:", product);
-                            updateCartUI();
-                        }
-                    }
-
-                    function removeFromCart(productId) {
-                        console.log("Removing product:", productId);
-                        const productIndex = cart.findIndex(item => item.Id === productId);
-                        if (productIndex !== -1) {
-                            cart.splice(productIndex, 1);
-                            console.log("Cart after removal:", cart);
-                            updateCartUI();
-                        }
-                    }
-
-
-
-                                                        function updateChange() {
-                        const cashPayment = parseFloat(document.getElementById("cash-payment").value) || 0;
-                        const total = parseFloat(document.getElementById("total").textContent.replace("₱", "")) || 0;
-                        const change = cashPayment - total;
                         
-                        // Update the change display
-                        document.getElementById("change").textContent = `₱${change >= 0 ? change.toFixed(2) : "0.00"}`;
+                        // Clear search input and results
+                        const searchInput = document.getElementById("product-search");
+                        searchInput.value = "";
+                        filterProducts(); // This will hide all products since search input is empty
+                    }
+
+                    function updateChange() {
+                        const cashPaymentInput = document.getElementById('cash-payment');
+                        const totalElement = document.getElementById('total');
+                        const changeElement = document.getElementById('change');
+                        
+                        const cashPayment = parseFloat(cashPaymentInput.value) || 0;
+                        const total = parseFloat(totalElement.textContent.replace('₱', '')) || 0;
+                        
+                        const change = cashPayment - total;
+                        changeElement.textContent = `₱${change.toFixed(2)}`;
                     }
 
                     function proceedPayment() {
-                        const cashPayment = parseFloat(document.getElementById("cash-payment").value);
-                        const total = parseFloat(document.getElementById("total").textContent.replace("₱", ""));
-
-                        if (isNaN(cashPayment) || cashPayment <= 0) {
-                            alert("Please enter a valid cash payment.");
-                            return;
-                        }
-
+                        const cashPaymentInput = document.getElementById('cash-payment');
+                        const totalElement = document.getElementById('total');
+                        
+                        const cashPayment = parseFloat(cashPaymentInput.value) || 0;
+                        const total = parseFloat(totalElement.textContent.replace('₱', '')) || 0;
+                        
                         if (cashPayment < total) {
-                            alert("Insufficient payment. Please enter an amount greater than or equal to the total.");
+                            alert('Insufficient payment amount!');
                             return;
                         }
 
-                        const change = cashPayment - total;
-
-                        // Get the current user's name - with error handling
-                        let userName = "Cashier"; // Default name if we can't get the actual name
-                        const nameElement = document.querySelector('.text-slate-400');
-                        if (nameElement && nameElement.textContent) {
-                            userName = nameElement.textContent.replace('Welcome, ', '').trim();
+                        // Get the anti-forgery token with error handling
+                        const tokenElement = document.querySelector('input[name="__RequestVerificationToken"]');
+                        if (!tokenElement) {
+                            console.error('Anti-forgery token not found');
+                            alert('Error: Security token missing. Please refresh the page.');
+                            return;
                         }
+                        const token = tokenElement.value;
 
-                        // Log cart contents for debugging
-                        console.log('Current cart contents:', cart);
-
-                        // Prepare transaction data
+                        // Prepare the transaction data
                         const transactionData = {
-                            Name: userName,
-                            Products: cart.map(item => `${item.Name} (${item.Quantity})`).join(', '),
-                            Quantity: cart.reduce((total, item) => total + item.Quantity, 0),
-                            Total: total,
-                            Transaction_Date: new Date().toISOString()
+                            cart: cart.map(item => ({
+                                productId: item.Id,
+                                quantity: item.Quantity,
+                                price: item.Price
+                            })),
+                            cashPayment: cashPayment,
+                            total: total
                         };
 
-                        // Log the exact data being sent
-                        console.log('Transaction data being sent:', JSON.stringify(transactionData, null, 2));
-
-                        // Save transaction to database
-                        fetch('/api/Transaction/SaveTransaction', {
+                        // Send the transaction to the server
+                        fetch('?handler=ProcessTransaction', {
                             method: 'POST',
                             headers: {
                                 'Content-Type': 'application/json',
+                                'RequestVerificationToken': token
                             },
                             body: JSON.stringify(transactionData)
                         })
-                        .then(async response => {
-                            console.log('Response status:', response.status);
-                            const responseText = await response.text();
-                            console.log('Raw response:', responseText);
-                            return responseText ? JSON.parse(responseText) : {};
+                        .then(response => {
+                            if (!response.ok) {
+                                throw new Error(`HTTP error! status: ${response.status}`);
+                            }
+                            return response.json();
                         })
                         .then(data => {
-                            console.log('Parsed response data:', data);
+                            console.log('Server response:', data);
                             if (data.success) {
-                                console.log('Transaction saved successfully with ID:', data.id);
-                                
-                                // Update the receipt modal
-                                document.getElementById("receipt-date").textContent = new Date().toLocaleString();
-                                document.getElementById("receipt-subtotal").textContent = document.getElementById("subtotal").textContent;
-                                document.getElementById("receipt-tax").textContent = document.getElementById("tax").textContent;
-                                document.getElementById("receipt-total").textContent = document.getElementById("total").textContent;
-                                document.getElementById("receipt-payment").textContent = `₱${cashPayment.toFixed(2)}`;
-                                document.getElementById("receipt-change").textContent = `₱${change.toFixed(2)}`;
+                                // Update receipt details
+                                document.getElementById('receipt-date').textContent = new Date().toLocaleString();
+                                document.getElementById('receipt-subtotal').textContent = document.getElementById('subtotal').textContent;
+                                document.getElementById('receipt-tax').textContent = document.getElementById('tax').textContent;
+                                document.getElementById('receipt-total').textContent = document.getElementById('total').textContent;
+                                document.getElementById('receipt-payment').textContent = `₱${cashPayment.toFixed(2)}`;
+                                document.getElementById('receipt-change').textContent = `₱${(cashPayment - total).toFixed(2)}`;
 
-                                // Populate receipt items
-                                const receiptItemsContainer = document.getElementById("receipt-items");
-                                receiptItemsContainer.innerHTML = ""; // Clear previous items
+                                // Update receipt items
+                                const receiptItemsContainer = document.getElementById('receipt-items');
+                                receiptItemsContainer.innerHTML = '';
                                 cart.forEach(item => {
-                                    const itemRow = document.createElement("div");
-                                    itemRow.className = "flex justify-between mb-2";
-                                    itemRow.innerHTML = `
-                                        <span>${item.Name} (x${item.Quantity})</span>
+                                    const itemElement = document.createElement('div');
+                                    itemElement.className = 'flex justify-between mb-2';
+                                    itemElement.innerHTML = `
+                                        <span>${item.Name} x${item.Quantity}</span>
                                         <span>₱${(item.Price * item.Quantity).toFixed(2)}</span>
                                     `;
-                                    receiptItemsContainer.appendChild(itemRow);
+                                    receiptItemsContainer.appendChild(itemElement);
                                 });
 
-                                // Show the receipt modal
-                                document.getElementById("receipt-modal").classList.remove("hidden");
-                                
-                                // Clear the cart after successful save
-                                clearCart();
+                                // Show receipt modal
+                                const receiptModal = document.getElementById('receipt-modal');
+                                receiptModal.classList.remove('hidden');
                             } else {
-                                console.error('Error saving transaction:', data.error);
-                                alert('Error saving transaction: ' + (data.error || 'Unknown error'));
+                                alert(data.message || 'Transaction failed');
                             }
                         })
                         .catch(error => {
-                            console.error('Error details:', error);
-                            alert('Error saving transaction. Please check the console for details.');
+                            console.error('Error:', error);
+                            alert('Failed to process transaction. Please try again.');
                         });
                     }
 
                     function closeReceiptModal() {
-                        // Hide the receipt modal
-                        document.getElementById("receipt-modal").classList.add("hidden");
-
-                        // Clear the cart
-                        clearCart();
-
-                        // Reset the cash payment input field
-                        const cashPaymentInput = document.getElementById("cash-payment");
-                        if (cashPaymentInput) {
-                            cashPaymentInput.value = ""; // Reset the input field
-                        }
-
-                        // Reset the change display
-                        const changeElement = document.getElementById("change");
-                        if (changeElement) {
-                            changeElement.textContent = "₱0.00"; // Reset the change display
+                        const receiptModal = document.getElementById('receipt-modal');
+                        if (receiptModal) {
+                            receiptModal.classList.add('hidden');
+                            // Clear cart and reset UI
+                            cart = [];
+                            updateCartUI();
+                            // Clear payment input
+                            const cashPaymentInput = document.getElementById('cash-payment');
+                            if (cashPaymentInput) {
+                                cashPaymentInput.value = '';
+                            }
+                            // Reset change display
+                            const changeElement = document.getElementById('change');
+                            if (changeElement) {
+                                changeElement.textContent = '₱0.00';
+                            }
                         }
                     }
 
+                    function updateCartUI() {
+                        const cartItemsContainer = document.getElementById('cart-items');
+                        cartItemsContainer.innerHTML = '';
+                        
+                        let subtotal = 0;
+                        
+                        cart.forEach(item => {
+                            const row = document.createElement('tr');
+                            row.innerHTML = `
+                                <td class="py-2 text-sm">${item.Name}</td>
+                                <td class="py-2 text-center text-sm">
+                                    <div class="flex items-center justify-center gap-2">
+                                        <button onclick="decreaseQuantity(${item.Id})" class="px-2 py-1 bg-red-500 text-white rounded-lg hover:bg-red-600">-</button>
+                                        ${item.Quantity}
+                                        <button onclick="increaseQuantity(${item.Id})" class="px-2 py-1 bg-green-500 text-white rounded-lg hover:bg-green-600">+</button>
+                                    </div>
+                                </td>
+                                <td class="py-2 text-right text-sm">₱${(item.Price * item.Quantity).toFixed(2)}</td>
+                            `;
+                            cartItemsContainer.appendChild(row);
+                            
+                            subtotal += item.Price * item.Quantity;
+                        });
+                        
+                        const tax = subtotal * 0.12;
+                        const total = subtotal + tax;
+                        
+                        document.getElementById('subtotal').textContent = `₱${subtotal.toFixed(2)}`;
+                        document.getElementById('tax').textContent = `₱${tax.toFixed(2)}`;
+                        document.getElementById('total').textContent = `₱${total.toFixed(2)}`;
+                        
+                        // Update change if there's a cash payment entered
+                        updateChange();
+                    }
 
+                    function increaseQuantity(productId) {
+                        const item = cart.find(item => item.Id === productId);
+                        if (item) {
+                            item.Quantity += 1;
+                            updateCartUI();
+                        }
+                    }
+
+                    function decreaseQuantity(productId) {
+                        const item = cart.find(item => item.Id === productId);
+                        if (item) {
+                            if (item.Quantity > 1) {
+                                item.Quantity -= 1;
+                            } else {
+                                // Remove item if quantity becomes 0
+                                cart = cart.filter(i => i.Id !== productId);
+                            }
+                            updateCartUI();
+                        }
+                    }
+                    function clearCart() {
+                        cart = [];
+                        updateCartUI();
+                    }
                 </script>

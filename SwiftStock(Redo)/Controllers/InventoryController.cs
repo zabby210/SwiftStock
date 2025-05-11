@@ -147,5 +147,38 @@ namespace SwiftStock.Controllers
                 return StatusCode(500, "Error exporting inventory");
             }
         }
+
+        [HttpGet("transactions")]
+        public async Task<IActionResult> GetTransactions(DateTime? startDate = null, DateTime? endDate = null)
+        {
+            try
+            {
+                var query = _context.transaction
+                    .Include(t => t.TransactionItems)
+                        .ThenInclude(ti => ti.Product)
+                    .AsQueryable();
+
+                if (startDate.HasValue)
+                {
+                    query = query.Where(t => t.Transaction_Date >= startDate.Value);
+                }
+
+                if (endDate.HasValue)
+                {
+                    query = query.Where(t => t.Transaction_Date <= endDate.Value);
+                }
+
+                var transactions = await query
+                    .OrderByDescending(t => t.Transaction_Date)
+                    .ToListAsync();
+
+                return Ok(transactions);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error retrieving transactions");
+                return StatusCode(500, "Error retrieving transactions");
+            }
+        }
     }
 }

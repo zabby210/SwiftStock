@@ -140,8 +140,8 @@
             <table class="w-full">
                 <thead>
                     <tr class="text-left bg-[#0f1117]">
-                        <th class="px-3 py-1.5 text-xs font-semibold text-slate-400">Name</th>
-                        <th class="px-3 py-1.5 text-xs font-semibold text-slate-400">Products</th>
+                        <th class="px-3 py-1.5 text-xs font-semibold text-slate-400">Personnel ID</th>
+                        <th class="px-3 py-1.5 text-xs font-semibold text-slate-400">Items</th>
                         <th class="px-3 py-1.5 text-xs font-semibold text-slate-400">Total</th>
                         <th class="px-3 py-1.5 text-xs font-semibold text-slate-400">Date</th>
                     </tr>
@@ -150,8 +150,8 @@
                     @foreach (var transaction in Model.RecentTransactions)
                     {
                         <tr class="hover:bg-[#0f1117]/50">
-                            <td class="px-3 py-1.5 text-xs">@transaction.Name</td>
-                            <td class="px-3 py-1.5 text-xs">@transaction.Products</td>
+                            <td class="px-3 py-1.5 text-xs">@transaction.Personnel_ID</td>
+                            <td class="px-3 py-1.5 text-xs">@transaction.TransactionItems.Count items</td>
                             <td class="px-3 py-1.5 text-xs">₱@transaction.Total.ToString("N2")</td>
                             <td class="px-3 py-1.5 text-xs text-slate-400">@transaction.Transaction_Date.ToString("MM/dd/yyyy HH:mm")</td>
                         </tr>

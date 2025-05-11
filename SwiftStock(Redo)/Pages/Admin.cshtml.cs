@@ -2,22 +2,27 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.EntityFrameworkCore;
 using SwiftStock.Data;
 using SwiftStock.Properties.Models;
 
 namespace SwiftStock.Pages
 {
     [Authorize(Roles = "Admin")]
-    public class AdminModel : PageModel
+    public class AdminModel(ApplicationDbContext context, ILogger<AdminModel> logger) : PageModel
     {
-        private readonly ApplicationDbContext _context;
-        private readonly ILogger<AdminModel> _logger;
+        private readonly ApplicationDbContext _context = context;
+        private readonly ILogger<AdminModel> _logger = logger;
 
-        public AdminModel(ApplicationDbContext context, ILogger<AdminModel> logger)
-        {
-            _context = context;
-            _logger = logger;
-        }
+        // Dashboard data properties
+        public decimal TotalSales { get; set; }
+        public int TotalTransactions { get; set; }
+        public decimal AverageTransaction { get; set; }
+        public string TopSellingProduct { get; set; } = "No sales yet";
+        public int TopSellingQuantity { get; set; }
+        public List<Transaction> RecentTransactions { get; set; } = [];
+        public ChartData ProductSalesData { get; set; } = new();
+        public ChartData RevenueData { get; set; } = new();
 
         public IActionResult OnGet()
         {
@@ -45,7 +50,19 @@ namespace SwiftStock.Pages
             {
                 var today = DateTime.Today;
 
-                var transactions = _context.transaction.ToList();
+                // Add transaction items to the query
+                var transactions = _context.transaction
+                    .Include(t => t.TransactionItems)
+                    .ThenInclude(ti => ti.Product)
+                    .ToList();
+
+                // Get recent transactions with their items
+                RecentTransactions = _context.transaction
+                    .Include(t => t.TransactionItems)
+                    .ThenInclude(ti => ti.Product)
+                    .OrderByDescending(t => t.Transaction_Date)
+                    .Take(10)
+                    .ToList();
 
                 // Calculate total sales for today
                 TotalSales = transactions
@@ -57,18 +74,23 @@ namespace SwiftStock.Pages
                     .Count(t => t.Transaction_Date.Date == today);
 
                 // Calculate average transaction value
-                AverageTransaction = transactions.Any()
+                AverageTransaction = transactions.Count > 0
                     ? transactions.Average(t => t.Total)
                     : 0m;
 
                 // Get top selling product
                 var topProduct = transactions
-                    .GroupBy(t => t.Products)
-                    .OrderByDescending(g => g.Count())
+                    .SelectMany(t => t.TransactionItems)
+                    .GroupBy(ti => ti.Product.Product_Name)
+                    .Select(g => new { Name = g.Key, Quantity = g.Sum(ti => ti.Quantity) })
+                    .OrderByDescending(x => x.Quantity)
                     .FirstOrDefault();
 
-                TopSellingProduct = topProduct?.Key ?? "No sales yet";
-                TopSellingQuantity = topProduct?.Count() ?? 0;
+                if (topProduct != null)
+                {
+                    TopSellingProduct = topProduct.Name;
+                    TopSellingQuantity = topProduct.Quantity;
+                }
 
                 // Get recent transactions
                 RecentTransactions = transactions
@@ -76,27 +98,22 @@ namespace SwiftStock.Pages
                     .Take(10)
                     .ToList();
 
-
-
                 // Prepare product sales data for pie chart
+                // Update product sales calculation to use TransactionItems
                 var productSales = transactions
-                    .SelectMany(t => t.Products.Split(", ")) // Split products into individual items
-                    .GroupBy(product => product.Trim()) // Group by product name (trimmed to avoid whitespace issues)
+                    .SelectMany(t => t.TransactionItems)
+                    .GroupBy(ti => ti.Product.Product_Name)
                     .Select(g => new
                     {
                         Product = g.Key,
-                        Count = g.Count() // Count how many times the product appears across all transactions
+                        TotalQuantity = g.Sum(ti => ti.Quantity)
                     })
-                    .OrderByDescending(x => x.Count)
+                    .OrderByDescending(x => x.TotalQuantity)
+                    .Take(5)
                     .ToList();
 
-                ProductSalesData = new ChartData
-                {
-                    Labels = productSales.Select(x => x.Product).ToList(),
-                    Values = productSales.Select(x => (decimal)x.Count).ToList() // Cast Count to decimal
-                };
-
-
+                ProductSalesData.Labels = productSales.Select(x => x.Product).ToList();
+                ProductSalesData.Values = productSales.Select(x => (decimal)x.TotalQuantity).ToList();
 
                 // Prepare revenue data for bar chart
                 var last7Days = Enumerable.Range(0, 7)
@@ -109,11 +126,9 @@ namespace SwiftStock.Pages
                     .GroupBy(t => t.Transaction_Date.Date)
                     .ToDictionary(g => g.Key, g => g.Sum(t => t.Total));
 
-                RevenueData = new ChartData
-                {
-                    Labels = last7Days.Select(d => d.ToString("ddd")).ToList(),
-                    Values = last7Days.Select(d => dailyRevenue.ContainsKey(d) ? dailyRevenue[d] : 0m).ToList()
-                };
+                RevenueData.Labels = last7Days.Select(d => d.ToString("ddd")).ToList();
+                RevenueData.Values = last7Days.Select(d => 
+                    dailyRevenue.TryGetValue(d.Date, out var value) ? value : 0m).ToList();
             }
             catch (Exception ex)
             {
@@ -127,21 +142,11 @@ namespace SwiftStock.Pages
             await HttpContext.SignOutAsync();
             return RedirectToPage("/Login");
         }
-
-        // Dashboard data properties
-        public decimal TotalSales { get; set; }
-        public int TotalTransactions { get; set; }
-        public decimal AverageTransaction { get; set; }
-        public string TopSellingProduct { get; set; }
-        public int TopSellingQuantity { get; set; }
-        public List<Transaction> RecentTransactions { get; set; }
-        public ChartData ProductSalesData { get; set; }
-        public ChartData RevenueData { get; set; }
     }
 
     public class ChartData
     {
-        public List<string> Labels { get; set; }
-        public List<decimal> Values { get; set; }
+        public List<string> Labels { get; set; } = [];
+        public List<decimal> Values { get; set; } = [];
     }
 }
