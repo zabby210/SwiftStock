@@ -2,10 +2,8 @@
   "ExpandedNodes": [
     "",
     "\\SwiftStock(Redo)",
-    "\\SwiftStock(Redo)\\Data",
-    "\\SwiftStock(Redo)\\Pages",
-    "\\SwiftStock(Redo)\\Pages\\Shared"
+    "\\SwiftStock(Redo)\\Pages"
   ],
-  "SelectedNode": "\\SwiftStock(Redo)\\Pages\\A_RegisterStaff.cshtml",
+  "SelectedNode": "\\SwiftStock(Redo)\\Pages\\Cashier.cshtml",
   "PreviewInSolutionExplorer": false
 }

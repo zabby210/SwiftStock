@@ -127,7 +127,7 @@ namespace SwiftStock.Pages
                     .ToDictionary(g => g.Key, g => g.Sum(t => t.Total));
 
                 RevenueData.Labels = last7Days.Select(d => d.ToString("ddd")).ToList();
-                RevenueData.Values = last7Days.Select(d => 
+                RevenueData.Values = last7Days.Select(d =>
                     dailyRevenue.TryGetValue(d.Date, out var value) ? value : 0m).ToList();
             }
             catch (Exception ex)

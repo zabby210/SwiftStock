@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\athen\\source\\repos\\zabby210\\SwiftStock\\SwiftStock(Redo)\\SwiftStock(Redo).csproj": {}
+    "C:\\Users\\athen\\Documents\\SwiftStock\\SwiftStock(Redo)\\SwiftStock(Redo).csproj": {}
   },
   "projects": {
-    "C:\\Users\\athen\\source\\repos\\zabby210\\SwiftStock\\SwiftStock(Redo)\\SwiftStock(Redo).csproj": {
+    "C:\\Users\\athen\\Documents\\SwiftStock\\SwiftStock(Redo)\\SwiftStock(Redo).csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\athen\\source\\repos\\zabby210\\SwiftStock\\SwiftStock(Redo)\\SwiftStock(Redo).csproj",
+        "projectUniqueName": "C:\\Users\\athen\\Documents\\SwiftStock\\SwiftStock(Redo)\\SwiftStock(Redo).csproj",
         "projectName": "SwiftStock(Redo)",
-        "projectPath": "C:\\Users\\athen\\source\\repos\\zabby210\\SwiftStock\\SwiftStock(Redo)\\SwiftStock(Redo).csproj",
+        "projectPath": "C:\\Users\\athen\\Documents\\SwiftStock\\SwiftStock(Redo)\\SwiftStock(Redo).csproj",
         "packagesPath": "C:\\Users\\athen\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\athen\\source\\repos\\zabby210\\SwiftStock\\SwiftStock(Redo)\\obj\\",
+        "outputPath": "C:\\Users\\athen\\Documents\\SwiftStock\\SwiftStock(Redo)\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

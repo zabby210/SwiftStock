@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "CMp1e4jNhp8=",
+  "dgSpecHash": "4+PutTx/jvY=",
   "success": true,
-  "projectFilePath": "C:\\Users\\athen\\source\\repos\\zabby210\\SwiftStock\\SwiftStock(Redo)\\SwiftStock(Redo).csproj",
+  "projectFilePath": "C:\\Users\\athen\\Documents\\SwiftStock\\SwiftStock(Redo)\\SwiftStock(Redo).csproj",
   "expectedPackageFiles": [
     "C:\\Users\\athen\\.nuget\\packages\\bcrypt.net-next\\4.0.3\\bcrypt.net-next.4.0.3.nupkg.sha512",
     "C:\\Users\\athen\\.nuget\\packages\\bouncycastle.cryptography\\2.3.1\\bouncycastle.cryptography.2.3.1.nupkg.sha512",

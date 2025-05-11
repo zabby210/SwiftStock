@@ -29,7 +29,7 @@ namespace SwiftStock.Pages
 
         public async Task<IActionResult> OnPostProcessTransactionAsync([FromBody] TransactionData data)
         {
-            try 
+            try
             {
                 // First create the main transaction
                 var transaction = new Transaction
