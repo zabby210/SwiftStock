@@ -9,68 +9,80 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
     <link rel="stylesheet" href="~/css/style.css" />
     <style>
+        :root {
+            --primary-red: #E31837;
+            --primary-blue: #003C7E;
+            --primary-yellow: #FFD700;
+            --bg-dark: #0f1117;
+            --bg-darker: #090a0f;
+            --bg-light: #161922;
+        }
+
         body {
             font-family: 'Plus Jakarta Sans', sans-serif;
-            background-color: #f9f9f9;
-        }
-        .header {
-            background-color: #E31837;
+            background-color: var(--bg-dark);
             color: white;
-            padding: 1rem;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .header {
+            background-color: var(--bg-darker);
+            color: white;
+            padding: 0.75rem 1rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            border-bottom: 1px solid var(--primary-red);
         }
-        .nav {
-            background-color: white;
-            padding: 1rem;
-            border-bottom: 1px solid #ddd;
-        }
+
         .content {
-            padding: 1rem;
+            flex: 1;
+            padding: 0;
+            min-height: calc(100vh - 7rem);
         }
+
         .footer {
-            background-color: #E31837;
+            background-color: var(--bg-darker);
             color: white;
+            padding: 0.75rem 1rem;
             text-align: center;
-            padding: 1rem;
-            position: fixed;
-            bottom: 0;
-            width: 100%;
+            border-top: 1px solid var(--primary-red);
+            font-size: 0.875rem;
+        }
+
+        .footer-content {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
         }
     </style>
 </head>
 <body>
     <header class="header">
         <div>
-            <h1>Cashier Dashboard</h1>
+            <h1 class="text-lg font-semibold m-0">Cashier Dashboard</h1>
         </div>
     </header>
-
-    <nav class="nav">
-        <button onclick="showSection('pos')">POS</button>
-        <button onclick="showSection('inventory')">Inventory</button>
-        <button onclick="showSection('history')">Transaction History</button>
-    </nav>
 
     <div class="content">
         @RenderBody()
     </div>
 
     <footer class="footer">
-        &copy; 2023 SwiftStock
+        <div class="footer-content">
+            <span>&copy; @DateTime.Now.Year SwiftStock. All rights reserved.</span>
+        </div>
     </footer>
 
     <script>
-        function showSection(section) {
-            // Logic to show/hide sections based on the button clicked
-            document.querySelectorAll('.section').forEach(s => s.classList.add('hidden'));
-            document.getElementById(section).classList.remove('hidden');
-        }
-
         function logout() {
-            // Logic for logout
-            window.location.href = '/Account/Logout'; // Adjust the URL as necessary
+            window.location.href = '/Login';
         }
     </script>
 </body>

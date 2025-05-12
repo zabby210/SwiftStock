@@ -2,457 +2,471 @@
 @model SwiftStock.Pages.CashierPageModel
 @{
     ViewData["Title"] = "Cashier POS";
-    Layout = "_CashierLayout"; // Use the new layout
+    Layout = "_CashierLayout";
 }
 
-<div class="space-y-6">
-    <div class="flex items-center justify-between">
-        <h1 class="text-3xl font-bold text-white">Cashier Interface</h1>
-
-    </div>
-</div>
-<div class="flex flex-col min-h-screen bg-gray-100">
+<div class="flex h-[calc(100vh-8rem)] bg-[#0f1117] overflow-hidden">
     @Html.AntiForgeryToken()
     <!-- Sidebar Navigation -->
-    <div class="flex flex-row flex-grow">
-        <nav class="bg-white w-64 shadow-lg rounded-lg p-4 flex-shrink-0">
-            <h2 class="text-lg font-semibold mb-4">Cashier Dashboard</h2>
-            <ul class="space-y-2">
-                <li>
-                    <button onclick="showSection('pos')" class="flex items-center w-full p-2 text-left rounded-lg hover:bg-gray-200">
-                        <i class="fas fa-cash-register mr-2"></i> POS
-                    </button>
-                </li>
-                <li>
-                    <button onclick="window.location.href='/Login';" class="flex items-center w-full p-2 text-left rounded-lg hover:bg-gray-200">
-                        <i class="fas fa-sign-out-alt mr-2"></i> Logout
-                    </button>
-                </li>
-            </ul>
-        </nav>
+    <nav class="bg-[#161922] w-64 shadow-lg rounded-lg p-4 flex-shrink-0">
+        <h2 class="text-lg font-semibold mb-4">Cashier Dashboard</h2>
+        <ul class="space-y-2">
+            <li>
+                <button onclick="showSection('pos')" class="flex items-center w-full p-2 text-left rounded-lg hover:bg-gray-200">
+                    <i class="fas fa-cash-register mr-2"></i> POS
+                </button>
+            </li>
+            <li>
+                <button onclick="window.location.href='/Login';" class="flex items-center w-full p-2 text-left rounded-lg hover:bg-gray-200">
+                    <i class="fas fa-sign-out-alt mr-2"></i> Logout
+                </button>
+            </li>
+        </ul>
+    </nav>
 
-        <div class="flex-1 flex flex-col overflow-y-auto">
-            <div class="p-6">
-                <div id="pos" class="section">
-                    <h2 class="text-xl font-semibold mb-4">Point of Sale</h2>
-                    <div class="pos-grid">
-                        <div class="bg-white rounded-lg shadow-md">
-                            <div class="p-4 border-b border-gray-200">
-                                <div class="flex gap-4">
-                                    <div class="flex-1">
-                                        <div class="relative">
-                                            <i class="fas fa-search absolute left-3 top-3 text-gray-400"></i>
-                                            <input type="text"
-                                                   id="product-search"
-                                                   placeholder="Search products..."
-                                                   class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#E31837] focus:border-transparent text-sm text-gray-900"
-                                                   onkeyup="filterProducts()">
-                                        </div>
+    <!-- Main Content Area -->
+    <div class="flex-1 p-4">
+        <div class="h-full bg-[#161922] rounded-lg shadow-lg p-4 flex flex-col">
+            <!-- Search Bar Section -->
+            <div class="relative">
+                <div class="relative">
+                    <i class="fas fa-search absolute left-3 top-3 text-gray-400"></i>
+                    <input type="text"
+                           id="product-search"
+                           placeholder="Search products..."
+                           class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#E31837] focus:border-transparent bg-[#0f1117] text-white"
+                           onkeyup="filterProducts()">
+                    <!-- Search Results - Dropdown -->
+                    <div class="absolute w-full z-10 mt-1 bg-[#161922] rounded-lg shadow-lg max-h-48 overflow-y-auto hidden" id="products-container">
+                        @foreach (var item in Model.InventoryItems)
+                        {
+                            <div class="product-item hidden p-2 hover:bg-[#0f1117] border-b border-gray-700 cursor-pointer"
+                                 data-name="@item.Product_Name.ToLower()">
+                                <div class="flex items-center justify-between">
+                                    <div class="flex items-center gap-4">
+                                        <span class="text-white font-medium text-sm">@item.Product_Name</span>
+                                        <span class="text-white font-medium text-sm">₱@item.Price</span>
                                     </div>
+                                    <button onclick="addToCart(@item.Id, '@item.Product_Name', @item.Price)"
+                                            class="p-2 bg-[#E31837] text-white rounded-full hover:bg-[#E31837]/90">
+                                        <i class="fas fa-plus"></i>
+                                    </button>
                                 </div>
                             </div>
-
-                            <!-- Render Product Items -->
-                            <div class="product-grid" id="products-container">
-                                @foreach (var item in Model.InventoryItems)
-                                {
-                                    <div class="product-item hidden flex items-center justify-between bg-white rounded-lg shadow-md p-4 mb-2"
-                                         data-name="@item.Product_Name.ToLower()">
-                                        <div class="flex items-center gap-4">
-                                            <span class="text-gray-900 font-medium text-sm">@item.Product_Name</span>
-                                            <span class="text-gray-900 font-medium text-sm">₱@item.Price</span>
-                                        </div>
-                                        <button onclick="addToCart(@item.Id, '@item.Product_Name', @item.Price)"
-                                                class="p-2 bg-[#E31837] text-white rounded-full hover:bg-[#E31837]/90 flex items-center justify-center"
-                                                style="width: 36px; height: 36px;">
-                                            <i class="fas fa-shopping-cart"></i>
-                                        </button>
-                                    </div>
-                                }
-
-                                <div class="no-products hidden text-sm text-gray-500">No products found.</div>
-                            </div>
-
-                            <div class="cart-section">
-                                <h2 class="text-lg font-semibold mb-4 text-gray-900">Current Cart</h2>
-                                <div class="cart-container overflow-y-auto max-h-64 border border-gray-200 rounded-lg">
-                                    <table class="w-full text-left border-collapse">
-                                        <thead>
-                                            <tr>
-                                                <th class="border-b py-2 text-sm">Product</th>
-                                                <th class="border-b py-2 text-center text-sm">Item</th>
-                                                <th class="border-b py-2 text-right text-sm">Price</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody id="cart-items">
-                                            <!-- Cart items will be dynamically added here -->
-                                        </tbody>
-                                    </table>
-                                </div>
-                                <div class="cart-total mt-4">
-                                    <div class="flex justify-between mb-2">
-                                        <span class="text-gray-900 text-sm">Subtotal:</span>
-                                        <span class="text-gray-900 text-sm" id="subtotal">₱0.00</span>
-                                    </div>
-                                    <div class="flex justify-between mb-2">
-                                        <span class="text-gray-900 text-sm">Tax (12%):</span>
-                                        <span class="text-gray-900 text-sm" id="tax">₱0.00</span>
-                                    </div>
-                                    <div class="flex justify-between text-lg font-bold mb-4">
-                                        <span class="text-gray-900">Total:</span>
-                                        <span class="text-gray-900" id="total">₱0.00</span>
-                                    </div>
-                                    <div class="flex justify-between items-center mb-2">
-                                        <label for="cash-payment" class="text-gray-900 text-sm">Cash Payment:</label>
-                                        <input type="number" 
-                                               id="cash-payment" 
-                                               class="w-32 h-8 p-1 border border-gray-300 rounded-lg text-sm text-gray-900" 
-                                               placeholder="₱0.00" 
-                                               oninput="updateChange()"
-                                               min="0"
-                                               step="0.01">
-                                    </div>
-                                    <div class="flex justify-between text-lg font-bold mb-4">
-                                        <span class="text-gray-900">Change:</span>
-                                        <span class="text-gray-900" id="change">₱0.00</span>
-                                    </div>
-                                    <div class="flex justify-between mt-4 gap-4">
-                                        <button onclick="clearCart()" class="w-full px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 text-sm">Clear Cart</button>
-                                        <button onclick="proceedPayment()" class="w-full px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 text-sm">Proceed Payment</button>
-
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        }
+                        <div class="no-products hidden text-sm text-gray-400 p-4 text-center">No products found.</div>
                     </div>
                 </div>
+            </div>
 
-
-
-                <!-- Receipt Modal -->
-                <div id="receipt-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden">
-                    <div class="bg-white w-96 rounded-lg shadow-lg p-6">
-                        <div class="text-center">
-                            <img src="~/css/Images/SwiftLogo.png" alt="Logo" class="mx-auto w-28 h-28 mb-0">
-                            <p class="text-sm font-medium">Alfamart</p>
-                            <p class="text-sm text-gray-500" id="receipt-date"></p>
-                        </div>
-                        <hr class="my-4">
-                        <div id="receipt-items" class="text-sm text-gray-800">
-                            <!-- Receipt items will be dynamically added here -->
-                        </div>
-                        <hr class="my-4">
-                        <div class="text-sm">
-                            <div class="flex justify-between">
-                                <span>Subtotal:</span>
-                                <span id="receipt-subtotal">₱0.00</span>
-                            </div>
-                            <div class="flex justify-between">
-                                <span>Tax (12%):</span>
-                                <span id="receipt-tax">₱0.00</span>
-                            </div>
-                            <div class="flex justify-between font-bold">
-                                <span>Total:</span>
-                                <span id="receipt-total">₱0.00</span>
-                            </div>
-                            <div class="flex justify-between">
-                                <span>Payment:</span>
-                                <span id="receipt-payment">₱0.00</span>
-                            </div>
-                            <div class="flex justify-between">
-                                <span>Change:</span>
-                                <span id="receipt-change">₱0.00</span>
-                            </div>
-                        </div>
-                        <button onclick="closeReceiptModal()" class="mt-4 w-full bg-red-500 text-white py-2 rounded-lg hover:bg-red-600">Close</button>
-                    </div>
+            <!-- Cart Section -->
+            <div class="flex-1 mt-4 overflow-hidden flex flex-col h-full">
+                <h2 class="text-lg font-semibold mb-2 text-white">Current Cart</h2>
+                <div class="flex-1 border border-gray-700 rounded-lg overflow-y-auto bg-[#0f1117]">
+                    <table class="w-full">
+                        <thead class="sticky top-0 bg-[#161922]">
+                            <tr>
+                                <th class="text-left p-2 text-white">Product</th>
+                                <th class="text-center p-2 text-white">Qty</th>
+                                <th class="text-right p-2 text-white">Price</th>
+                            </tr>
+                        </thead>
+                        <tbody id="cart-items" class="text-white">
+                            <!-- Cart items will be dynamically added here -->
+                        </tbody>
+                    </table>
                 </div>
+            </div>
 
-                <style>
-                    /* Glassmorphism effect */
-                    body {
-                        background: rgba(255, 255, 255, 0.1);
-                        backdrop-filter: blur(10px);
-                    }
+            <!-- Total Section -->
+            <div class="mt-4">
+                <div class="grid grid-cols-2 gap-2 text-sm text-white">
+                    <span>Subtotal:</span>
+                    <span class="text-right" id="subtotal">₱0.00</span>
+                    <span>Tax (12%):</span>
+                    <span class="text-right" id="tax">₱0.00</span>
+                    <span class="font-bold">Total:</span>
+                    <span class="text-right font-bold" id="total">₱0.00</span>
+                    <label for="cash-payment">Cash Payment:</label>
+                    <div class="text-right">
+                        <input type="number" 
+                               id="cash-payment" 
+                               class="w-32 p-1 border border-gray-300 rounded-lg text-right" 
+                               placeholder="₱0.00" 
+                               oninput="updateChange()"
+                               min="0"
+                               step="0.01">
+                    </div>
+                    <span class="font-bold">Change:</span>
+                    <span class="text-right font-bold" id="change">₱0.00</span>
+                </div>
+                <div class="flex justify-between gap-4 mt-4">
+                    <button onclick="clearCart()" class="w-full px-4 py-2 bg-[#E31837] text-white rounded-lg hover:bg-[#E31837]/90">Clear Cart</button>
+                    <button onclick="proceedPayment()" class="w-full px-4 py-2 bg-[#003C7E] text-white rounded-lg hover:bg-[#003C7E]/90">Proceed Payment</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
-                    .bg-white {
-                        background: rgba(255, 255, 255, 0.8);
-                        backdrop-filter: blur(10px);
-                        border-radius: 10px;
-                        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-                    }
+<!-- Receipt Modal -->
+<div id="receipt-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden">
+    <div class="bg-[#161922] w-96 rounded-lg shadow-lg p-6 text-white">
+        <div class="text-center">
+            <img src="~/css/Images/SwiftLogo.png" alt="Logo" class="mx-auto w-28 h-28 mb-0">
+            <p class="text-sm font-medium text-white">Alfamart</p>
+            <p class="text-sm text-gray-400" id="receipt-date"></p>
+        </div>
+        <hr class="my-4 border-gray-700">
+        <div id="receipt-items" class="text-sm text-white">
+            <!-- Receipt items will be dynamically added here -->
+        </div>
+        <hr class="my-4 border-gray-700">
+        <div class="text-sm text-white">
+            <div class="flex justify-between">
+                <span>Subtotal:</span>
+                <span id="receipt-subtotal">₱0.00</span>
+            </div>
+            <div class="flex justify-between">
+                <span>Tax (12%):</span>
+                <span id="receipt-tax">₱0.00</span>
+            </div>
+            <div class="flex justify-between font-bold">
+                <span>Total:</span>
+                <span id="receipt-total">₱0.00</span>
+            </div>
+            <div class="flex justify-between">
+                <span>Payment:</span>
+                <span id="receipt-payment">₱0.00</span>
+            </div>
+            <div class="flex justify-between">
+                <span>Change:</span>
+                <span id="receipt-change">₱0.00</span>
+            </div>
+        </div>
+        <button onclick="closeReceiptModal()" class="mt-4 w-full bg-[#E31837] text-white py-2 rounded-lg hover:bg-[#E31837]/90">Close</button>
+    </div>
+</div>
 
-                    .cart-container {
-                        max-height: 256px;
-                        overflow-y: auto;
-                    }
+<!-- Notification Modal -->
+<div id="notification-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden">
+    <div class="bg-[#161922] p-4 rounded-lg shadow-lg max-w-sm w-full mx-4">
+        <div class="text-center">
+            <i class="fas fa-exclamation-circle text-[#E31837] text-4xl mb-3"></i>
+            <p class="text-white text-lg font-semibold" id="notification-message"></p>
+        </div>
+        <button onclick="closeNotification()" class="mt-4 w-full bg-[#E31837] text-white py-2 rounded-lg hover:bg-[#E31837]/90">OK</button>
+    </div>
+</div>
 
-                    .inventory-table {
-                        width: 100%;
-                        border-collapse: collapse;
-                    }
+<style>
+    /* Glassmorphism effect */
+    body {
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(10px);
+    }
 
-                        .inventory-table th, .inventory-table td {
-                            padding: 8px;
-                            text-align: left;
-                            border-bottom: 1px solid #e2e8f0;
-                        }
+    .bg-white {
+        background: rgba(255, 255, 255, 0.8);
+        backdrop-filter: blur(10px);
+        border-radius: 10px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    }
 
-                        .inventory-table th {
-                            background-color: rgba(255, 255, 255, 0.9);
-                        }
+    .cart-container {
+        max-height: 256px;
+        overflow-y: auto;
+    }
 
-                        .inventory-table tr:hover {
-                            background-color: rgba(229, 231, 235, 0.5);
-                        }
+    .inventory-table {
+        width: 100%;
+        border-collapse: collapse;
+    }
 
-                    .no-products {
-                        padding: 12px;
-                        text-align: center;
-                        color: gray;
-                    }
+        .inventory-table th, .inventory-table td {
+            padding: 8px;
+            text-align: left;
+            border-bottom: 1px solid #e2e8f0;
+        }
 
-                    table {
-                        table-layout: fixed;
-                        width: 100%;
-                    }
+        .inventory-table th {
+            background-color: rgba(255, 255, 255, 0.9);
+        }
 
-                        table th:nth-child(2), table td:nth-child(2) {
-                            width: 120px;
-                            text-align: center;
-                        }
+        .inventory-table tr:hover {
+            background-color: rgba(229, 231, 235, 0.5);
+        }
 
-                    #receipt-modal {
-                        z-index: 50;
-                    }
-                </style>
+    .no-products {
+        padding: 12px;
+        text-align: center;
+        color: gray;
+    }
 
+    table {
+        table-layout: fixed;
+        width: 100%;
+    }
 
-                <script>
-                   let cart = [];
+        table th:nth-child(2), table td:nth-child(2) {
+            width: 120px;
+            text-align: center;
+        }
 
-                    function filterProducts() {
-                        const searchInput = document.getElementById("product-search").value.toLowerCase();
-                        const productItems = document.querySelectorAll(".product-item");
-                        const noProductsMessage = document.querySelector(".no-products");
+    #receipt-modal {
+        z-index: 50;
+    }
 
-                        let hasMatch = false;
+    #notification-modal {
+        z-index: 60;
+    }
+</style>
 
-                        productItems.forEach(item => {
-                            const productName = item.getAttribute("data-name");
+<script>
+   let cart = [];
 
-                            // If the search bar is empty, hide all products and the "No products found" message
-                            if (!searchInput) {
-                                item.style.display = "none";
-                            } else if (productName.includes(searchInput)) {
-                                item.style.display = "flex";
-                                hasMatch = true;
-                            } else {
-                                item.style.display = "none";
-                            }
-                        });
+    function filterProducts() {
+        const searchInput = document.getElementById("product-search").value.toLowerCase();
+        const productItems = document.querySelectorAll(".product-item");
+        const noProductsMessage = document.querySelector(".no-products");
+        const productsContainer = document.getElementById("products-container");
 
-                        // Hide the "No products found" message if the search bar is empty
-                        if (!searchInput) {
-                            noProductsMessage.classList.add("hidden");
-                        } else {
-                            noProductsMessage.classList.toggle("hidden", hasMatch);
-                        }
-                    }
+        let hasMatch = false;
 
-                    function addToCart(productId, productName, price) {
-                        const existingItem = cart.find(item => item.Id === productId);
-                        if (existingItem) {
-                            existingItem.Quantity += 1;
-                        } else {
-                            cart.push({
-                                Id: productId,
-                                Name: productName,
-                                Price: price,
-                                Quantity: 1
-                            });
-                        }
-                        updateCartUI();
-                        
-                        // Clear search input and results
-                        const searchInput = document.getElementById("product-search");
-                        searchInput.value = "";
-                        filterProducts(); // This will hide all products since search input is empty
-                    }
+        productItems.forEach(item => {
+            const productName = item.getAttribute("data-name");
+            
+            if (!searchInput.trim()) {
+                item.classList.add("hidden");
+                productsContainer.classList.add("hidden");
+            } else {
+                productsContainer.classList.remove("hidden");
+                if (productName.includes(searchInput)) {
+                    item.classList.remove("hidden");
+                    hasMatch = true;
+                } else {
+                    item.classList.add("hidden");
+                }
+            }
+        });
 
-                    function updateChange() {
-                        const cashPaymentInput = document.getElementById('cash-payment');
-                        const totalElement = document.getElementById('total');
-                        const changeElement = document.getElementById('change');
-                        
-                        const cashPayment = parseFloat(cashPaymentInput.value) || 0;
-                        const total = parseFloat(totalElement.textContent.replace('₱', '')) || 0;
-                        
-                        const change = cashPayment - total;
-                        changeElement.textContent = `₱${change.toFixed(2)}`;
-                    }
+        noProductsMessage.classList.toggle("hidden", hasMatch || !searchInput.trim());
+    }
 
-                    function proceedPayment() {
-                        const cashPaymentInput = document.getElementById('cash-payment');
-                        const totalElement = document.getElementById('total');
-                        
-                        const cashPayment = parseFloat(cashPaymentInput.value) || 0;
-                        const total = parseFloat(totalElement.textContent.replace('₱', '')) || 0;
-                        
-                        if (cashPayment < total) {
-                            alert('Insufficient payment amount!');
-                            return;
-                        }
+    function addToCart(productId, productName, price) {
+        const existingItem = cart.find(item => item.Id === productId);
+        if (existingItem) {
+            existingItem.Quantity += 1;
+        } else {
+            cart.push({
+                Id: productId,
+                Name: productName,
+                Price: price,
+                Quantity: 1
+            });
+        }
+        updateCartUI();
+        
+        // Clear search input and results
+        const searchInput = document.getElementById("product-search");
+        searchInput.value = "";
+        filterProducts(); // This will hide all products since search input is empty
+    }
 
-                        // Get the anti-forgery token with error handling
-                        const tokenElement = document.querySelector('input[name="__RequestVerificationToken"]');
-                        if (!tokenElement) {
-                            console.error('Anti-forgery token not found');
-                            alert('Error: Security token missing. Please refresh the page.');
-                            return;
-                        }
-                        const token = tokenElement.value;
+    function updateChange() {
+        const cashPaymentInput = document.getElementById('cash-payment');
+        const totalElement = document.getElementById('total');
+        const changeElement = document.getElementById('change');
+        
+        const cashPayment = parseFloat(cashPaymentInput.value) || 0;
+        const total = parseFloat(totalElement.textContent.replace('₱', '')) || 0;
+        
+        if (cashPayment > 0) {
+            const change = cashPayment - total;
+            changeElement.textContent = `₱${change.toFixed(2)}`;
+        } else {
+            changeElement.textContent = '₱0.00';
+        }
+    }
 
-                        // Prepare the transaction data
-                        const transactionData = {
-                            cart: cart.map(item => ({
-                                productId: item.Id,
-                                quantity: item.Quantity,
-                                price: item.Price
-                            })),
-                            cashPayment: cashPayment,
-                            total: total
-                        };
+    function showNotification(message) {
+        const notificationModal = document.getElementById('notification-modal');
+        const messageElement = document.getElementById('notification-message');
+        messageElement.textContent = message;
+        notificationModal.classList.remove('hidden');
+        
+        // Auto-hide after 3 seconds
+        setTimeout(() => {
+            closeNotification();
+        }, 3000);
+    }
 
-                        // Send the transaction to the server
-                        fetch('?handler=ProcessTransaction', {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json',
-                                'RequestVerificationToken': token
-                            },
-                            body: JSON.stringify(transactionData)
-                        })
-                        .then(response => {
-                            if (!response.ok) {
-                                throw new Error(`HTTP error! status: ${response.status}`);
-                            }
-                            return response.json();
-                        })
-                        .then(data => {
-                            console.log('Server response:', data);
-                            if (data.success) {
-                                // Update receipt details
-                                document.getElementById('receipt-date').textContent = new Date().toLocaleString();
-                                document.getElementById('receipt-subtotal').textContent = document.getElementById('subtotal').textContent;
-                                document.getElementById('receipt-tax').textContent = document.getElementById('tax').textContent;
-                                document.getElementById('receipt-total').textContent = document.getElementById('total').textContent;
-                                document.getElementById('receipt-payment').textContent = `₱${cashPayment.toFixed(2)}`;
-                                document.getElementById('receipt-change').textContent = `₱${(cashPayment - total).toFixed(2)}`;
+    function closeNotification() {
+        const notificationModal = document.getElementById('notification-modal');
+        notificationModal.classList.add('hidden');
+    }
 
-                                // Update receipt items
-                                const receiptItemsContainer = document.getElementById('receipt-items');
-                                receiptItemsContainer.innerHTML = '';
-                                cart.forEach(item => {
-                                    const itemElement = document.createElement('div');
-                                    itemElement.className = 'flex justify-between mb-2';
-                                    itemElement.innerHTML = `
-                                        <span>${item.Name} x${item.Quantity}</span>
-                                        <span>₱${(item.Price * item.Quantity).toFixed(2)}</span>
-                                    `;
-                                    receiptItemsContainer.appendChild(itemElement);
-                                });
+    function proceedPayment() {
+        const cashPaymentInput = document.getElementById('cash-payment');
+        const totalElement = document.getElementById('total');
+        
+        const cashPayment = parseFloat(cashPaymentInput.value) || 0;
+        const total = parseFloat(totalElement.textContent.replace('₱', '')) || 0;
+        
+        if (cashPayment < total) {
+            showNotification('Insufficient payment amount!');
+            return;
+        }
 
-                                // Show receipt modal
-                                const receiptModal = document.getElementById('receipt-modal');
-                                receiptModal.classList.remove('hidden');
-                            } else {
-                                alert(data.message || 'Transaction failed');
-                            }
-                        })
-                        .catch(error => {
-                            console.error('Error:', error);
-                            alert('Failed to process transaction. Please try again.');
-                        });
-                    }
+        // Get the anti-forgery token with error handling
+        const tokenElement = document.querySelector('input[name="__RequestVerificationToken"]');
+        if (!tokenElement) {
+            console.error('Anti-forgery token not found');
+            alert('Error: Security token missing. Please refresh the page.');
+            return;
+        }
+        const token = tokenElement.value;
 
-                    function closeReceiptModal() {
-                        const receiptModal = document.getElementById('receipt-modal');
-                        if (receiptModal) {
-                            receiptModal.classList.add('hidden');
-                            // Clear cart and reset UI
-                            cart = [];
-                            updateCartUI();
-                            // Clear payment input
-                            const cashPaymentInput = document.getElementById('cash-payment');
-                            if (cashPaymentInput) {
-                                cashPaymentInput.value = '';
-                            }
-                            // Reset change display
-                            const changeElement = document.getElementById('change');
-                            if (changeElement) {
-                                changeElement.textContent = '₱0.00';
-                            }
-                        }
-                    }
+        // Prepare the transaction data
+        const transactionData = {
+            cart: cart.map(item => ({
+                productId: item.Id,
+                quantity: item.Quantity,
+                price: item.Price
+            })),
+            cashPayment: cashPayment,
+            total: total
+        };
 
-                    function updateCartUI() {
-                        const cartItemsContainer = document.getElementById('cart-items');
-                        cartItemsContainer.innerHTML = '';
-                        
-                        let subtotal = 0;
-                        
-                        cart.forEach(item => {
-                            const row = document.createElement('tr');
-                            row.innerHTML = `
-                                <td class="py-2 text-sm">${item.Name}</td>
-                                <td class="py-2 text-center text-sm">
-                                    <div class="flex items-center justify-center gap-2">
-                                        <button onclick="decreaseQuantity(${item.Id})" class="px-2 py-1 bg-red-500 text-white rounded-lg hover:bg-red-600">-</button>
-                                        ${item.Quantity}
-                                        <button onclick="increaseQuantity(${item.Id})" class="px-2 py-1 bg-green-500 text-white rounded-lg hover:bg-green-600">+</button>
-                                    </div>
-                                </td>
-                                <td class="py-2 text-right text-sm">₱${(item.Price * item.Quantity).toFixed(2)}</td>
-                            `;
-                            cartItemsContainer.appendChild(row);
-                            
-                            subtotal += item.Price * item.Quantity;
-                        });
-                        
-                        const tax = subtotal * 0.12;
-                        const total = subtotal + tax;
-                        
-                        document.getElementById('subtotal').textContent = `₱${subtotal.toFixed(2)}`;
-                        document.getElementById('tax').textContent = `₱${tax.toFixed(2)}`;
-                        document.getElementById('total').textContent = `₱${total.toFixed(2)}`;
-                        
-                        // Update change if there's a cash payment entered
-                        updateChange();
-                    }
+        // Send the transaction to the server
+        fetch('?handler=ProcessTransaction', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'RequestVerificationToken': token
+            },
+            body: JSON.stringify(transactionData)
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return response.json();
+        })
+        .then(data => {
+            console.log('Server response:', data);
+            if (data.success) {
+                // Update receipt details
+                document.getElementById('receipt-date').textContent = new Date().toLocaleString();
+                document.getElementById('receipt-subtotal').textContent = document.getElementById('subtotal').textContent;
+                document.getElementById('receipt-tax').textContent = document.getElementById('tax').textContent;
+                document.getElementById('receipt-total').textContent = document.getElementById('total').textContent;
+                document.getElementById('receipt-payment').textContent = `₱${cashPayment.toFixed(2)}`;
+                document.getElementById('receipt-change').textContent = `₱${(cashPayment - total).toFixed(2)}`;
 
-                    function increaseQuantity(productId) {
-                        const item = cart.find(item => item.Id === productId);
-                        if (item) {
-                            item.Quantity += 1;
-                            updateCartUI();
-                        }
-                    }
+                // Update receipt items
+                const receiptItemsContainer = document.getElementById('receipt-items');
+                receiptItemsContainer.innerHTML = '';
+                cart.forEach(item => {
+                    const itemElement = document.createElement('div');
+                    itemElement.className = 'flex justify-between mb-2';
+                    itemElement.innerHTML = `
+                        <span>${item.Name} x${item.Quantity}</span>
+                        <span>₱${(item.Price * item.Quantity).toFixed(2)}</span>
+                    `;
+                    receiptItemsContainer.appendChild(itemElement);
+                });
 
-                    function decreaseQuantity(productId) {
-                        const item = cart.find(item => item.Id === productId);
-                        if (item) {
-                            if (item.Quantity > 1) {
-                                item.Quantity -= 1;
-                            } else {
-                                // Remove item if quantity becomes 0
-                                cart = cart.filter(i => i.Id !== productId);
-                            }
-                            updateCartUI();
-                        }
-                    }
-                    function clearCart() {
-                        cart = [];
-                        updateCartUI();
-                    }
-                </script>
+                // Show receipt modal
+                const receiptModal = document.getElementById('receipt-modal');
+                receiptModal.classList.remove('hidden');
+            } else {
+                alert(data.message || 'Transaction failed');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Failed to process transaction. Please try again.');
+        });
+    }
+
+    function closeReceiptModal() {
+        const receiptModal = document.getElementById('receipt-modal');
+        if (receiptModal) {
+            receiptModal.classList.add('hidden');
+            // Clear cart and reset UI
+            cart = [];
+            updateCartUI();
+            // Clear payment input
+            const cashPaymentInput = document.getElementById('cash-payment');
+            if (cashPaymentInput) {
+                cashPaymentInput.value = '';
+            }
+            // Reset change display
+            const changeElement = document.getElementById('change');
+            if (changeElement) {
+                changeElement.textContent = '₱0.00';
+            }
+        }
+    }
+
+    function updateCartUI() {
+        const cartItemsContainer = document.getElementById('cart-items');
+        cartItemsContainer.innerHTML = '';
+        
+        let subtotal = 0;
+        
+        cart.forEach(item => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td class="py-2 text-sm">${item.Name}</td>
+                <td class="py-2 text-center text-sm">
+                    <div class="flex items-center justify-center gap-2">
+                        <button onclick="decreaseQuantity(${item.Id})" class="px-2 py-1 bg-red-500 text-white rounded-lg hover:bg-red-600">-</button>
+                        ${item.Quantity}
+                        <button onclick="increaseQuantity(${item.Id})" class="px-2 py-1 bg-green-500 text-white rounded-lg hover:bg-green-600">+</button>
+                    </div>
+                </td>
+                <td class="py-2 text-right text-sm">₱${(item.Price * item.Quantity).toFixed(2)}</td>
+            `;
+            cartItemsContainer.appendChild(row);
+            
+            subtotal += item.Price * item.Quantity;
+        });
+        
+        const tax = subtotal * 0.12;
+        const total = subtotal + tax;
+        
+        document.getElementById('subtotal').textContent = `₱${subtotal.toFixed(2)}`;
+        document.getElementById('tax').textContent = `₱${tax.toFixed(2)}`;
+        document.getElementById('total').textContent = `₱${total.toFixed(2)}`;
+        
+        // Update change if there's a cash payment entered
+        updateChange();
+    }
+
+    function increaseQuantity(productId) {
+        const item = cart.find(item => item.Id === productId);
+        if (item) {
+            item.Quantity += 1;
+            updateCartUI();
+        }
+    }
+
+    function decreaseQuantity(productId) {
+        const item = cart.find(item => item.Id === productId);
+        if (item) {
+            if (item.Quantity > 1) {
+                item.Quantity -= 1;
+            } else {
+                // Remove item if quantity becomes 0
+                cart = cart.filter(i => i.Id !== productId);
+            }
+            updateCartUI();
+        }
+    }
+    function clearCart() {
+        cart = [];
+        updateCartUI();
+    }
+</script>

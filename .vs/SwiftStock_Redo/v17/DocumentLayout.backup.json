@@ -3,16 +3,16 @@
   "WorkspaceRootPath": "C:\\Users\\athen\\Documents\\SwiftStock\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{70976ED9-585F-40D5-A10C-B440C1AB5E10}|SwiftStock(Redo)\\SwiftStock(Redo).csproj|c:\\users\\athen\\documents\\swiftstock\\swiftstock(redo)\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{70976ED9-585F-40D5-A10C-B440C1AB5E10}|SwiftStock(Redo)\\SwiftStock(Redo).csproj|solutionrelative:swiftstock(redo)\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{70976ED9-585F-40D5-A10C-B440C1AB5E10}|SwiftStock(Redo)\\SwiftStock(Redo).csproj|c:\\users\\athen\\documents\\swiftstock\\swiftstock(redo)\\pages\\admin.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
       "RelativeMoniker": "D:0:0:{70976ED9-585F-40D5-A10C-B440C1AB5E10}|SwiftStock(Redo)\\SwiftStock(Redo).csproj|solutionrelative:swiftstock(redo)\\pages\\admin.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{70976ED9-585F-40D5-A10C-B440C1AB5E10}|SwiftStock(Redo)\\SwiftStock(Redo).csproj|c:\\users\\athen\\documents\\swiftstock\\swiftstock(redo)\\pages\\cashier.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
       "RelativeMoniker": "D:0:0:{70976ED9-585F-40D5-A10C-B440C1AB5E10}|SwiftStock(Redo)\\SwiftStock(Redo).csproj|solutionrelative:swiftstock(redo)\\pages\\cashier.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{70976ED9-585F-40D5-A10C-B440C1AB5E10}|SwiftStock(Redo)\\SwiftStock(Redo).csproj|c:\\users\\athen\\documents\\swiftstock\\swiftstock(redo)\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{70976ED9-585F-40D5-A10C-B440C1AB5E10}|SwiftStock(Redo)\\SwiftStock(Redo).csproj|solutionrelative:swiftstock(redo)\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{70976ED9-585F-40D5-A10C-B440C1AB5E10}|SwiftStock(Redo)\\SwiftStock(Redo).csproj|c:\\users\\athen\\documents\\swiftstock\\swiftstock(redo)\\pages\\shared\\_adminlayout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
@@ -66,7 +66,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 7,
+          "SelectedChildIndex": 6,
           "Children": [
             {
               "$type": "Bookmark",
@@ -94,19 +94,20 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 0,
               "Title": "Program.cs",
               "DocumentMoniker": "C:\\Users\\athen\\Documents\\SwiftStock\\SwiftStock(Redo)\\Program.cs",
               "RelativeDocumentMoniker": "SwiftStock(Redo)\\Program.cs",
               "ToolTip": "C:\\Users\\athen\\Documents\\SwiftStock\\SwiftStock(Redo)\\Program.cs",
               "RelativeToolTip": "SwiftStock(Redo)\\Program.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA4AAAAVAAAAAAAAAA==",
+              "ViewState": "AgIAAD4AAAAAAAAAAAApwFAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-11T04:51:20.523Z"
+              "WhenOpened": "2025-05-11T04:51:20.523Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 1,
               "Title": "Admin.cshtml",
               "DocumentMoniker": "C:\\Users\\athen\\Documents\\SwiftStock\\SwiftStock(Redo)\\Pages\\Admin.cshtml",
               "RelativeDocumentMoniker": "SwiftStock(Redo)\\Pages\\Admin.cshtml",
@@ -251,7 +252,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 2,
               "Title": "Cashier.cshtml",
               "DocumentMoniker": "C:\\Users\\athen\\Documents\\SwiftStock\\SwiftStock(Redo)\\Pages\\Cashier.cshtml",
               "RelativeDocumentMoniker": "SwiftStock(Redo)\\Pages\\Cashier.cshtml",

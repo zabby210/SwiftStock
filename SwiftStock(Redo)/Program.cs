@@ -12,7 +12,7 @@ builder.Services.AddControllers();
 builder.Services.AddDbContext<ApplicationDbContext>((serviceProvider, options) =>
 {
     var logger = serviceProvider.GetRequiredService<ILogger<ApplicationDbContext>>();
-    options.UseMySQL(builder.Configuration.GetConnectionString("DefaultConnection"), 
+    options.UseMySQL(builder.Configuration.GetConnectionString("DefaultConnection"),
         mySqlOptions => mySqlOptions.EnableRetryOnFailure(
             maxRetryCount: 3,
             maxRetryDelay: TimeSpan.FromSeconds(5),
