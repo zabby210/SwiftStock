@@ -6,99 +6,150 @@
 }
 
 <div class="space-y-6">
-    <!-- Header -->
-    <div class="flex items-center justify-between">
-        <div>
-            <h1 class="text-3xl font-bold text-white">Inventory Management</h1>
-            <p class="text-slate-400 mt-1">Manage your products and stock levels</p>
-        </div>
-        <div class="flex space-x-4">
-            <button onclick="openAddModal()" 
-                    class="px-4 py-2 bg-[#E31837] text-white rounded-lg hover:bg-[#E31837]/90 transition-colors duration-300 flex items-center">
-                <i class="material-icons mr-2">add</i>
-                Add Product
-            </button>
-            <button onclick="exportInventory()" 
-                    class="px-4 py-2 bg-[#003C7E] text-white rounded-lg hover:bg-[#003C7E]/90 transition-colors duration-300 flex items-center">
-                <i class="material-icons mr-2">download</i>
-                Export
-            </button>
-        </div>
-    </div>
-
-    <!-- Search and Filter -->
-    <div class="glass-card p-4 rounded-xl">
-        <div class="flex flex-wrap gap-4">
-            <div class="flex-1">
-                <div class="relative">
-                    <i class="material-icons absolute left-4 top-3 text-slate-400">search</i>
-                    <input type="text" 
-                           id="search-input"
-                           placeholder="Search products..."
-                           class="w-full pl-12 pr-4 py-3 bg-[#0f1117] border border-slate-800 rounded-lg focus:border-[#E31837] focus:ring-1 focus:ring-[#E31837] text-white">
-                </div>
+    <div class="h-full overflow-hidden">
+        <!-- Header -->
+        <div class="flex items-center justify-between mb-6">
+            <div>
+                <h1 class="text-3xl font-bold text-white">Inventory Management</h1>
+                <p class="text-slate-400 mt-1">Manage your products and stock levels</p>
             </div>
-            <div class="flex gap-4">
-                <select id="sort-by" class="px-4 py-3 bg-[#0f1117] border border-slate-800 rounded-lg text-white focus:border-[#E31837] focus:ring-1 focus:ring-[#E31837]">
-                    <option value="name">Sort by Name</option>
-                    <option value="stock">Sort by Stock</option>
-                    <option value="price">Sort by Price</option>
-                </select>
-                <button onclick="refreshTable()" 
-                        class="px-4 py-2 bg-slate-800 text-white rounded-lg hover:bg-slate-700 transition-colors duration-300 flex items-center">
-                    <i class="material-icons">refresh</i>
+            <div class="flex space-x-4">
+                <button onclick="openAddModal()" 
+                        class="px-4 py-2 bg-[#E31837] text-white rounded-lg hover:bg-[#E31837]/90 transition-colors duration-300 flex items-center">
+                    <i class="material-icons mr-2">add</i>
+                    Add Product
+                </button>
+                <button onclick="exportInventory()" 
+                        class="px-4 py-2 bg-[#003C7E] text-white rounded-lg hover:bg-[#003C7E]/90 transition-colors duration-300 flex items-center">
+                    <i class="material-icons mr-2">download</i>
+                    Export
                 </button>
             </div>
         </div>
-    </div>
-
-    <!-- Inventory Table -->
-    <div class="glass-card rounded-xl overflow-hidden">
-        <div class="overflow-x-auto">
-            <table class="w-full">
-            <thead>
-                    <tr class="text-left bg-[#0f1117]">
-                        <th class="px-6 py-4 text-sm font-semibold text-slate-400">ID</th>
-                        <th class="px-6 py-4 text-sm font-semibold text-slate-400">Product Name</th>
-                        <th class="px-6 py-4 text-sm font-semibold text-slate-400">Price</th>
-                        <th class="px-6 py-4 text-sm font-semibold text-slate-400">Stock</th>
-                        <th class="px-6 py-4 text-sm font-semibold text-slate-400">Actions</th>
-                </tr>
-            </thead>
-                <tbody class="divide-y divide-slate-800">
-                @foreach (var item in Model.InventoryItem)
-                {
-                        <tr class="hover:bg-[#0f1117]/50">
-                            <td class="px-6 py-4 text-white">#@item.Id</td>
-                            <td class="px-6 py-4 text-white">@item.Product_Name</td>
-                            <td class="px-6 py-4 text-white">₱@item.Price.ToString("N2")</td>
-                            <td class="px-6 py-4">
-                                <span class="px-3 py-1 rounded-full text-xs font-medium 
-                                    @(item.Stock > 50 ? "bg-green-500/10 text-green-500" : 
-                                      item.Stock > 0 ? "bg-yellow-500/10 text-yellow-500" : 
-                                      "bg-red-500/10 text-red-500")">
-                                    @item.Stock items
-                                </span>
-                            </td>
-                            <td class="px-6 py-4">
-                                <div class="flex space-x-3">
-                                    <button type="button"
-                                            onclick='openEditModal({"id": @item.Id, "product_Name": "@item.Product_Name", "price": @item.Price, "stock": @item.Stock})'
-                                            class="text-blue-500 hover:text-blue-400">
-                                        <i class="material-icons">edit</i>
-                                    </button>
-                                    <button onclick="deleteProduct(@item.Id)" class="text-red-500 hover:text-red-400">
-                                        <i class="material-icons">delete</i>
-                                    </button>
-                                </div>
-                        </td>
+    
+        <!-- Search and Filter -->
+        <div class="glass-card p-4 rounded-xl mb-6">
+            <div class="flex flex-wrap gap-4">
+                <div class="flex-1">
+                    <div class="relative">
+                        <i class="material-icons absolute left-4 top-3 text-slate-400">search</i>
+                        <input type="text" 
+                               id="search-input"
+                               placeholder="Search products..."
+                               class="w-full pl-12 pr-4 py-3 bg-[#0f1117] border border-slate-800 rounded-lg focus:border-[#E31837] focus:ring-1 focus:ring-[#E31837] text-white">
+                    </div>
+                </div>
+                <div class="flex gap-4">
+                    <select id="sort-by" class="px-4 py-3 bg-[#0f1117] border border-slate-800 rounded-lg text-white focus:border-[#E31837] focus:ring-1 focus:ring-[#E31837]">
+                        <option value="name">Sort by Name</option>
+                        <option value="stock">Sort by Stock</option>
+                        <option value="price">Sort by Price</option>
+                    </select>
+                    <button onclick="refreshTable()" 
+                            class="px-4 py-2 bg-slate-800 text-white rounded-lg hover:bg-slate-700 transition-colors duration-300 flex items-center">
+                        <i class="material-icons">refresh</i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    
+        <!-- Inventory Table -->
+        <div class="glass-card rounded-xl overflow-hidden" style="height: calc(100vh - 280px);">
+            <div class="h-full overflow-y-auto scrollbar-thin scrollbar-thumb-[#161922] scrollbar-track-[#0f1117] hover:scrollbar-thumb-[#E31837]">
+                <table class="w-full">
+                <thead>
+                        <tr class="text-left bg-[#0f1117]">
+                            <th class="px-6 py-4 text-sm font-semibold text-slate-400">ID</th>
+                            <th class="px-6 py-4 text-sm font-semibold text-slate-400">Product Name</th>
+                            <th class="px-6 py-4 text-sm font-semibold text-slate-400">Price</th>
+                            <th class="px-6 py-4 text-sm font-semibold text-slate-400">Stock</th>
+                            <th class="px-6 py-4 text-sm font-semibold text-slate-400">Actions</th>
                     </tr>
-                }
-            </tbody>
-        </table>
+                </thead>
+                    <tbody class="divide-y divide-slate-800">
+                    @foreach (var item in Model.InventoryItem)
+                    {
+                            <tr class="hover:bg-[#0f1117]/50">
+                                <td class="px-6 py-4 text-white">#@item.Id</td>
+                                <td class="px-6 py-4 text-white">@item.Product_Name</td>
+                                <td class="px-6 py-4 text-white">₱@item.Price.ToString("N2")</td>
+                                <td class="px-6 py-4">
+                                    <span class="px-3 py-1 rounded-full text-xs font-medium 
+                                        @(item.Stock > 50 ? "bg-green-500/10 text-green-500" : 
+                                          item.Stock > 0 ? "bg-yellow-500/10 text-yellow-500" : 
+                                          "bg-red-500/10 text-red-500")">
+                                        @item.Stock items
+                                    </span>
+                                </td>
+                                <td class="px-6 py-4">
+                                    <div class="flex space-x-3">
+                                        <button type="button"
+                                                onclick='openEditModal({"id": @item.Id, "product_Name": "@item.Product_Name", "price": @item.Price, "stock": @item.Stock})'
+                                                class="text-blue-500 hover:text-blue-400">
+                                            <i class="material-icons">edit</i>
+                                        </button>
+                                        <button onclick="deleteProduct(@item.Id)" class="text-red-500 hover:text-red-400">
+                                            <i class="material-icons">delete</i>
+                                        </button>
+                                    </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            </div>
         </div>
     </div>
 </div>
+
+<script>
+    // Function to handle sorting
+    document.getElementById('sort-by').addEventListener('change', function() {
+        const sortBy = this.value;
+        const tbody = document.querySelector('tbody');
+        const rows = Array.from(tbody.querySelectorAll('tr'));
+
+        rows.sort((a, b) => {
+            let aValue, bValue;
+            
+            switch(sortBy) {
+                case 'name':
+                    aValue = a.children[1].textContent;
+                    bValue = b.children[1].textContent;
+                    return aValue.localeCompare(bValue);
+                
+                case 'stock':
+                    aValue = parseInt(a.children[3].textContent);
+                    bValue = parseInt(b.children[3].textContent);
+                    return aValue - bValue;
+                
+                case 'price':
+                    aValue = parseFloat(a.children[2].textContent.replace('₱', '').replace(',', ''));
+                    bValue = parseFloat(b.children[2].textContent.replace('₱', '').replace(',', ''));
+                    return aValue - bValue;
+                
+                default:
+                    aValue = parseInt(a.children[0].textContent.replace('#', ''));
+                    bValue = parseInt(b.children[0].textContent.replace('#', ''));
+                    return aValue - bValue;
+            }
+        });
+
+        // Clear and re-append sorted rows
+        rows.forEach(row => tbody.appendChild(row));
+    });
+
+    // Function to handle search
+    document.getElementById('search-input').addEventListener('input', function() {
+        const searchTerm = this.value.toLowerCase();
+        const rows = document.querySelectorAll('tbody tr');
+
+        rows.forEach(row => {
+            const productName = row.children[1].textContent.toLowerCase();
+            row.style.display = productName.includes(searchTerm) ? '' : 'none';
+        });
+    });
+</script>
 
 <!-- Add/Edit Product Modal -->
 <div id="product-modal" class="fixed inset-0 bg-black/50 hidden items-center justify-center">

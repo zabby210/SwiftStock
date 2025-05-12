@@ -19,6 +19,8 @@ namespace SwiftStock.Data
         public DbSet<Transaction> transaction { get; set; }
         public DbSet<TransactionItem> transaction_items { get; set; }
         public DbSet<MUser> _musers { get; set; }
+        public DbSet<LogInventory> logs_inventory { get; set; }
+        public DbSet<LogUser> logs_users { get; set; }
 
          
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -78,6 +80,26 @@ namespace SwiftStock.Data
                     entity.HasOne(e => e.Product)
                           .WithMany()
                           .HasForeignKey(e => e.Product_ID);
+                });
+
+                // Configure LogInventory entity
+                modelBuilder.Entity<LogInventory>(entity =>
+                {
+                    entity.ToTable("logs_inventory");
+                    entity.HasKey(e => e.id);
+                    entity.Property(e => e.action_type).HasMaxLength(255);
+                    entity.Property(e => e.log_time)
+                          .HasDefaultValueSql("CURRENT_TIMESTAMP");
+                });
+
+                // Configure LogUser entity
+                modelBuilder.Entity<LogUser>(entity =>
+                {
+                    entity.ToTable("logs_users");
+                    entity.HasKey(e => e.id);
+                    entity.Property(e => e.action_type).HasMaxLength(50);
+                    entity.Property(e => e.log_time)
+                          .HasDefaultValueSql("CURRENT_TIMESTAMP");
                 });
             }
             catch (Exception ex)

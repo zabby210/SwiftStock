@@ -1,4 +1,81 @@
 ﻿@page
 @model SwiftStock.Pages.A_HistoryModel
 @{
+    ViewData["Title"] = "History Logs";
+    Layout = "_AdminLayout";
+}
+
+<div class="h-full overflow-hidden">
+    <div class="glass-card h-full flex flex-col overflow-hidden">
+        <!-- Header Section -->
+        <div class="p-4 border-b border-slate-800 bg-[#161922] flex-shrink-0">
+            <div class="flex items-center justify-between">
+                <h2 class="text-lg font-semibold text-white">System Logs</h2>
+                <select id="logType" class="bg-[#0f1117] border border-slate-800 rounded-lg px-3 py-1.5 text-sm text-white" onchange="filterLogs()">
+                    <option value="all">All Logs</option>
+                    <option value="inventory">Inventory Logs</option>
+                    <option value="users">User Logs</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Logs Table -->
+        <div class="flex-1 overflow-y-auto scrollbar-thin scrollbar-thumb-[#161922] scrollbar-track-[#0f1117] hover:scrollbar-thumb-[#E31837]">
+            <table class="w-full">
+                <thead class="sticky top-0 bg-[#161922] z-10">
+                    <tr class="text-left">
+                        <th class="px-4 py-2 text-sm font-semibold text-slate-400">Log Type</th>
+                        <th class="px-4 py-2 text-sm font-semibold text-slate-400">Action</th>
+                        <th class="px-4 py-2 text-sm font-semibold text-slate-400">Details</th>
+                        <th class="px-4 py-2 text-sm font-semibold text-slate-400">Time</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-800" id="logsTableBody">
+                    @foreach (var log in Model.CombinedLogs)
+                    {
+                        <tr class="hover:bg-[#0f1117]/50 transition-colors duration-150 @(log.LogType == "Inventory" ? "inventory-log" : "user-log")">
+                            <td class="px-4 py-2 text-sm text-slate-300">
+                                <span class="px-2 py-0.5 rounded-full text-xs @(log.LogType == "Inventory" ? "bg-[#E31837]/10 text-[#E31837]" : "bg-[#003C7E]/10 text-[#003C7E]")">
+                                    @log.LogType
+                                </span>
+                            </td>
+                            <td class="px-4 py-2 text-sm text-slate-300">@log.action_type</td>
+                            <td class="px-4 py-2 text-sm text-slate-300">
+                                @if (log.LogType == "Inventory")
+                                {
+                                    <span>Product ID: @log.product_id</span>
+                                }
+                                else
+                                {
+                                    <span>User ID: @log.user_id</span>
+                                }
+                            </td>
+                            <td class="px-4 py-2 text-sm text-slate-400">@log.log_time.ToString("MM/dd/yyyy HH:mm:ss")</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        function filterLogs() {
+            const selectedType = document.getElementById('logType').value;
+            const rows = document.querySelectorAll('tr.inventory-log, tr.user-log');
+            
+            rows.forEach(row => {
+                if (selectedType === 'all') {
+                    row.style.display = '';
+                } else if (selectedType === 'inventory' && row.classList.contains('inventory-log')) {
+                    row.style.display = '';
+                } else if (selectedType === 'users' && row.classList.contains('user-log')) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+        }
+    </script>
 }
