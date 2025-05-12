@@ -6,7 +6,7 @@
     Layout = "_AdminLayout";
 }
 
-<div class="space-y-4">
+<div class="h-[calc(100vh-4rem)] overflow-hidden space-y-4 p-4">
     <!-- Welcome Section -->
     <div class="flex items-center justify-between">
         <div>
@@ -129,17 +129,19 @@
     </div>
 
     <!-- Recent Transactions Table -->
-    <div class="glass-card rounded-lg overflow-hidden">
+    <div class="glass-card rounded-lg overflow-hidden h-[calc(100vh-42rem)] transition-all duration-300 ease-in-out" id="transactions-normal">
         <div class="p-2 border-b border-slate-800">
             <div class="flex items-center justify-between">
                 <h3 class="text-sm font-semibold text-white">Recent Transactions</h3>
-                <a href="/admin/transactions" class="text-[#E31837] hover:text-[#E31837]/80 text-xs">View All</a>
+                <button onclick="toggleFullscreen()" class="text-[#E31837] hover:text-[#E31837]/80 text-xs">
+                    <i class="fas fa-expand mr-1"></i> View Full Screen
+                </button>
             </div>
         </div>
-        <div class="overflow-x-auto">
+        <div class="overflow-y-auto h-full scrollbar-thin scrollbar-thumb-[#161922] scrollbar-track-[#0f1117] hover:scrollbar-thumb-[#E31837]">
             <table class="w-full">
-                <thead>
-                    <tr class="text-left bg-[#0f1117]">
+                <thead class="sticky top-0 bg-[#161922] z-10">
+                    <tr class="text-left">
                         <th class="px-3 py-1.5 text-xs font-semibold text-slate-400">Personnel ID</th>
                         <th class="px-3 py-1.5 text-xs font-semibold text-slate-400">Items</th>
                         <th class="px-3 py-1.5 text-xs font-semibold text-slate-400">Total</th>
@@ -149,15 +151,52 @@
                 <tbody class="divide-y divide-slate-800">
                     @foreach (var transaction in Model.RecentTransactions)
                     {
-                        <tr class="hover:bg-[#0f1117]/50">
-                            <td class="px-3 py-1.5 text-xs">@transaction.Personnel_ID</td>
-                            <td class="px-3 py-1.5 text-xs">@transaction.TransactionItems.Count items</td>
-                            <td class="px-3 py-1.5 text-xs">₱@transaction.Total.ToString("N2")</td>
+                        <tr class="hover:bg-[#0f1117]/50 transition-colors duration-150">
+                            <td class="px-3 py-1.5 text-xs text-slate-300">@transaction.Personnel_ID</td>
+                            <td class="px-3 py-1.5 text-xs text-slate-300">@transaction.TransactionItems.Count items</td>
+                            <td class="px-3 py-1.5 text-xs text-slate-300">₱@transaction.Total.ToString("N2")</td>
                             <td class="px-3 py-1.5 text-xs text-slate-400">@transaction.Transaction_Date.ToString("MM/dd/yyyy HH:mm")</td>
                         </tr>
                     }
                 </tbody>
             </table>
+        </div>
+    </div>
+
+    <!-- Fullscreen Transactions Table -->
+    <div class="fixed inset-0 bg-[#0f1117] z-50 hidden opacity-0 transition-all duration-300 ease-in-out transform translate-y-4" id="transactions-fullscreen">
+        <div class="h-full flex flex-col">
+            <div class="p-4 border-b border-slate-800 bg-[#161922]">
+                <div class="flex items-center justify-between">
+                    <h3 class="text-lg font-semibold text-white">Recent Transactions</h3>
+                    <button onclick="toggleFullscreen()" class="text-[#E31837] hover:text-[#E31837]/80 flex items-center">
+                        <i class="fas fa-compress mr-2"></i> Back to Dashboard
+                    </button>
+                </div>
+            </div>
+            <div class="flex-1 overflow-y-auto scrollbar-thin scrollbar-thumb-[#161922] scrollbar-track-[#0f1117] hover:scrollbar-thumb-[#E31837]">
+                <table class="w-full">
+                    <thead class="sticky top-0 bg-[#161922] z-10">
+                        <tr class="text-left">
+                            <th class="px-4 py-2 text-sm font-semibold text-slate-400">Personnel ID</th>
+                            <th class="px-4 py-2 text-sm font-semibold text-slate-400">Items</th>
+                            <th class="px-4 py-2 text-sm font-semibold text-slate-400">Total</th>
+                            <th class="px-4 py-2 text-sm font-semibold text-slate-400">Date</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-800">
+                        @foreach (var transaction in Model.RecentTransactions)
+                        {
+                            <tr class="hover:bg-[#0f1117]/50 transition-colors duration-150">
+                                <td class="px-4 py-2 text-sm text-slate-300">@transaction.Personnel_ID</td>
+                                <td class="px-4 py-2 text-sm text-slate-300">@transaction.TransactionItems.Count items</td>
+                                <td class="px-4 py-2 text-sm text-slate-300">₱@transaction.Total.ToString("N2")</td>
+                                <td class="px-4 py-2 text-sm text-slate-400">@transaction.Transaction_Date.ToString("MM/dd/yyyy HH:mm")</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 </div>
@@ -298,6 +337,30 @@
                 revenueChart.data.datasets[0].data = data.values;
                 revenueChart.update();
             });
+    }
+</script>
+}
+
+<script>
+    function toggleFullscreen() {
+        const normalView = document.getElementById('transactions-normal');
+        const fullscreenView = document.getElementById('transactions-fullscreen');
+        
+        if (normalView.classList.contains('hidden')) {
+            // Switch back to normal view
+            fullscreenView.classList.add('opacity-0', 'translate-y-4');
+            setTimeout(() => {
+                normalView.classList.remove('hidden');
+                fullscreenView.classList.add('hidden');
+            }, 300);
+        } else {
+            // Switch to fullscreen view
+            normalView.classList.add('hidden');
+            fullscreenView.classList.remove('hidden');
+            // Force a reflow to ensure the transition works
+            fullscreenView.offsetHeight;
+            fullscreenView.classList.remove('opacity-0', 'translate-y-4');
+        }
     }
 </script>
 }

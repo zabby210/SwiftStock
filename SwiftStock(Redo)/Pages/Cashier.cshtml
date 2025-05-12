@@ -44,13 +44,32 @@
                                  data-name="@item.Product_Name.ToLower()">
                                 <div class="flex items-center justify-between">
                                     <div class="flex items-center gap-4">
-                                        <span class="text-white font-medium text-sm">@item.Product_Name</span>
-                                        <span class="text-white font-medium text-sm">₱@item.Price</span>
+                                        <div>
+                                            <span class="text-white font-medium text-sm">@item.Product_Name</span>
+                                            <div class="flex items-center gap-2">
+                                                <span class="text-white font-medium text-sm">₱@item.Price</span>
+                                                <span class="text-xs @(item.Stock > 0 ? "text-green-500" : "text-red-500")">
+                                                    Stock: @item.Stock
+                                                </span>
+                                            </div>
+                                        </div>
                                     </div>
-                                    <button onclick="addToCart(@item.Id, '@item.Product_Name', @item.Price)"
-                                            class="p-2 bg-[#E31837] text-white rounded-full hover:bg-[#E31837]/90">
-                                        <i class="fas fa-plus"></i>
-                                    </button>
+                                    @if (item.Stock > 0)
+                                    {
+                                        <button onclick="addToCart(@item.Id, '@item.Product_Name', @item.Price)"
+                                                class="flex items-center gap-2 px-3 py-1.5 bg-[#E31837] text-white rounded-lg hover:bg-[#E31837]/90 transition-colors">
+                                            <i class="fas fa-cart-plus"></i>
+                                            <span class="text-sm">Add to Cart</span>
+                                        </button>
+                                    }
+                                    else
+                                    {
+                                        <button onclick="showNotification('This item is out of stock')"
+                                                class="flex items-center gap-2 px-3 py-1.5 bg-gray-500 text-white rounded-lg cursor-not-allowed opacity-50">
+                                            <i class="fas fa-ban"></i>
+                                            <span class="text-sm">Out of Stock</span>
+                                        </button>
+                                    }
                                 </div>
                             </div>
                         }
