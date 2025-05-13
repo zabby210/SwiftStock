@@ -44,6 +44,8 @@ namespace SwiftStock.Pages
             }
         }
 
+        public string SelectedPeriod { get; set; } = "daily"; // Add this property
+
         private void LoadDashboardData()
         {
             try
@@ -56,79 +58,92 @@ namespace SwiftStock.Pages
                     .ThenInclude(ti => ti.Product)
                     .ToList();
 
-                // Get recent transactions with their items
-                RecentTransactions = _context.transaction
-                    .Include(t => t.TransactionItems)
-                    .ThenInclude(ti => ti.Product)
-                    .OrderByDescending(t => t.Transaction_Date)
-                    .Take(10)
-                    .ToList();
+                // Filter transactions based on selected period
+                var filteredTransactions = SelectedPeriod switch
+                {
+                    "daily" => transactions.Where(t => t.Transaction_Date.Date == today),
+                    "weekly" => transactions.Where(t => t.Transaction_Date >= today.AddDays(-7)),
+                    "monthly" => transactions.Where(t => t.Transaction_Date >= today.AddMonths(-1)),
+                    "annually" => transactions.Where(t => t.Transaction_Date >= today.AddYears(-1)),
+                    _ => transactions.Where(t => t.Transaction_Date.Date == today)
+                };
 
-                // Calculate total sales for today
-                TotalSales = transactions
-                    .Where(t => t.Transaction_Date.Date == today)
-                    .Sum(t => t.Total);
+                // Calculate metrics based on filtered transactions
+                TotalSales = filteredTransactions.Sum(t => t.Total);
+                TotalTransactions = filteredTransactions.Count();
+                AverageTransaction = filteredTransactions.Any() ? filteredTransactions.Average(t => t.Total) : 0m;
 
-                // Calculate total transactions for today
-                TotalTransactions = transactions
-                    .Count(t => t.Transaction_Date.Date == today);
-
-                // Calculate average transaction value
-                AverageTransaction = transactions.Count > 0
-                    ? transactions.Average(t => t.Total)
-                    : 0m;
-
-                // Get top selling product
-                var topProduct = transactions
+                // Get top selling products for the selected period
+                var productSales = filteredTransactions
                     .SelectMany(t => t.TransactionItems)
                     .GroupBy(ti => ti.Product.Product_Name)
-                    .Select(g => new { Name = g.Key, Quantity = g.Sum(ti => ti.Quantity) })
-                    .OrderByDescending(x => x.Quantity)
-                    .FirstOrDefault();
+                    .Select(g => new
+                    {
+                        Product = g.Key,
+                        TotalQuantity = g.Sum(ti => ti.Quantity),
+                        TotalRevenue = g.Sum(ti => ti.Subtotal)
+                    })
+                    .OrderByDescending(x => x.TotalRevenue)
+                    .Take(5)
+                    .ToList();
 
-                if (topProduct != null)
+                // Update pie chart data
+                ProductSalesData.Labels = productSales.Select(x => x.Product).ToList();
+                ProductSalesData.Values = productSales.Select(x => x.TotalRevenue).ToList();
+
+                // Set top selling product
+                if (productSales.Any())
                 {
-                    TopSellingProduct = topProduct.Name;
-                    TopSellingQuantity = topProduct.Quantity;
+                    var topProduct = productSales.First();
+                    TopSellingProduct = topProduct.Product;
+                    TopSellingQuantity = topProduct.TotalQuantity;
                 }
+
+                // Update revenue data for line chart
+                var dateRange = SelectedPeriod switch
+                {
+                    "daily" => Enumerable.Range(0, 24).Select(h => today.AddHours(h)),
+                    "weekly" => Enumerable.Range(0, 7).Select(d => today.AddDays(-d)).Reverse(),
+                    "monthly" => Enumerable.Range(0, 30).Select(d => today.AddDays(-d)).Reverse(),
+                    "annually" => Enumerable.Range(0, 12).Select(m => today.AddMonths(-m)).Reverse(),
+                    _ => Enumerable.Range(0, 24).Select(h => today.AddHours(h))
+                };
+
+                var groupedRevenue = filteredTransactions
+                    .GroupBy<Transaction, object>(t => SelectedPeriod switch
+                    {
+                        "daily" => t.Transaction_Date.Hour,
+                        "weekly" => t.Transaction_Date.Date,
+                        "monthly" => t.Transaction_Date.Date,
+                        "annually" => new DateTime(t.Transaction_Date.Year, t.Transaction_Date.Month, 1),
+                        _ => t.Transaction_Date.Hour
+                    })
+                    .ToDictionary(g => g.Key, g => g.Sum(t => t.Total));
+
+                RevenueData.Labels = SelectedPeriod switch
+                {
+                    "daily" => dateRange.Select(d => d.ToString("HH:mm")).ToList(),
+                    "weekly" => dateRange.Select(d => d.ToString("ddd")).ToList(),
+                    "monthly" => dateRange.Select(d => d.ToString("MMM dd")).ToList(),
+                    "annually" => dateRange.Select(d => d.ToString("MMM yyyy")).ToList(),
+                    _ => dateRange.Select(d => d.ToString("HH:mm")).ToList()
+                };
+
+                RevenueData.Values = dateRange.Select(d => 
+                    groupedRevenue.TryGetValue(SelectedPeriod switch
+                    {
+                        "daily" => d.Hour,
+                        "weekly" => d.Date,
+                        "monthly" => d.Date,
+                        "annually" => new DateTime(d.Year, d.Month, 1),
+                        _ => d.Hour
+                    }, out var value) ? value : 0m).ToList();
 
                 // Get recent transactions
                 RecentTransactions = transactions
                     .OrderByDescending(t => t.Transaction_Date)
                     .Take(10)
                     .ToList();
-
-                // Prepare product sales data for pie chart
-                // Update product sales calculation to use TransactionItems
-                var productSales = transactions
-                    .SelectMany(t => t.TransactionItems)
-                    .GroupBy(ti => ti.Product.Product_Name)
-                    .Select(g => new
-                    {
-                        Product = g.Key,
-                        TotalQuantity = g.Sum(ti => ti.Quantity)
-                    })
-                    .OrderByDescending(x => x.TotalQuantity)
-                    .Take(5)
-                    .ToList();
-
-                ProductSalesData.Labels = productSales.Select(x => x.Product).ToList();
-                ProductSalesData.Values = productSales.Select(x => (decimal)x.TotalQuantity).ToList();
-
-                // Prepare revenue data for bar chart
-                var last7Days = Enumerable.Range(0, 7)
-                    .Select(i => today.AddDays(-i))
-                    .Reverse()
-                    .ToList();
-
-                var dailyRevenue = transactions
-                    .Where(t => t.Transaction_Date.Date >= last7Days.First())
-                    .GroupBy(t => t.Transaction_Date.Date)
-                    .ToDictionary(g => g.Key, g => g.Sum(t => t.Total));
-
-                RevenueData.Labels = last7Days.Select(d => d.ToString("ddd")).ToList();
-                RevenueData.Values = last7Days.Select(d =>
-                    dailyRevenue.TryGetValue(d.Date, out var value) ? value : 0m).ToList();
             }
             catch (Exception ex)
             {
