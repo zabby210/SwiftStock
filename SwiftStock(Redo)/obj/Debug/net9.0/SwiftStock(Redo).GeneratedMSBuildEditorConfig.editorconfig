@@ -17,93 +17,93 @@ build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = SwiftStock
 build_property.RootNamespace = SwiftStock
-build_property.ProjectDir = C:\Users\athen\Documents\latest\SwiftStock(Redo)\
+build_property.ProjectDir = c:\Users\athen\Documents\latest\SwiftStock(Redo)\
 build_property.EnableComHosting = 
 build_property.EnableGeneratedComInterfaceComImportInterop = 
 build_property.RazorLangVersion = 9.0
 build_property.SupportLocalizedComponentNames = 
 build_property.GenerateRazorMetadataSourceChecksumAttributes = 
-build_property.MSBuildProjectDirectory = C:\Users\athen\Documents\latest\SwiftStock(Redo)
+build_property.MSBuildProjectDirectory = c:\Users\athen\Documents\latest\SwiftStock(Redo)
 build_property._RazorSourceGeneratorDebug = 
 build_property.EffectiveAnalysisLevelStyle = 9.0
 build_property.EnableCodeStyleSeverity = 
 
-[C:/Users/athen/Documents/latest/SwiftStock(Redo)/Pages/AccountSetting.cshtml]
+[c:/Users/athen/Documents/latest/SwiftStock(Redo)/Pages/AccountSetting.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQWNjb3VudFNldHRpbmcuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/athen/Documents/latest/SwiftStock(Redo)/Pages/Admin.cshtml]
+[c:/Users/athen/Documents/latest/SwiftStock(Redo)/Pages/Admin.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQWRtaW4uY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/athen/Documents/latest/SwiftStock(Redo)/Pages/A_Customer.cshtml]
+[c:/Users/athen/Documents/latest/SwiftStock(Redo)/Pages/A_Customer.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQV9DdXN0b21lci5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/athen/Documents/latest/SwiftStock(Redo)/Pages/A_History.cshtml]
+[c:/Users/athen/Documents/latest/SwiftStock(Redo)/Pages/A_History.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQV9IaXN0b3J5LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/athen/Documents/latest/SwiftStock(Redo)/Pages/A_RegisterStaff.cshtml]
+[c:/Users/athen/Documents/latest/SwiftStock(Redo)/Pages/A_RegisterStaff.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQV9SZWdpc3RlclN0YWZmLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/athen/Documents/latest/SwiftStock(Redo)/Pages/A_Staff.cshtml]
+[c:/Users/athen/Documents/latest/SwiftStock(Redo)/Pages/A_Staff.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQV9TdGFmZi5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/athen/Documents/latest/SwiftStock(Redo)/Pages/Cashier.cshtml]
+[c:/Users/athen/Documents/latest/SwiftStock(Redo)/Pages/Cashier.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ2FzaGllci5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/athen/Documents/latest/SwiftStock(Redo)/Pages/C_Transaction.cshtml]
+[c:/Users/athen/Documents/latest/SwiftStock(Redo)/Pages/C_Transaction.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ19UcmFuc2FjdGlvbi5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/athen/Documents/latest/SwiftStock(Redo)/Pages/Home.cshtml]
+[c:/Users/athen/Documents/latest/SwiftStock(Redo)/Pages/Home.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcSG9tZS5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/athen/Documents/latest/SwiftStock(Redo)/Pages/Index.cshtml]
+[c:/Users/athen/Documents/latest/SwiftStock(Redo)/Pages/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcSW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/athen/Documents/latest/SwiftStock(Redo)/Pages/Inventory.cshtml]
+[c:/Users/athen/Documents/latest/SwiftStock(Redo)/Pages/Inventory.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcSW52ZW50b3J5LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/athen/Documents/latest/SwiftStock(Redo)/Pages/Login.cshtml]
+[c:/Users/athen/Documents/latest/SwiftStock(Redo)/Pages/Login.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcTG9naW4uY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/athen/Documents/latest/SwiftStock(Redo)/Pages/Register.cshtml]
+[c:/Users/athen/Documents/latest/SwiftStock(Redo)/Pages/Register.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUmVnaXN0ZXIuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/athen/Documents/latest/SwiftStock(Redo)/Pages/Shared/_AdminLayout.cshtml]
+[c:/Users/athen/Documents/latest/SwiftStock(Redo)/Pages/Shared/_AdminLayout.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU2hhcmVkXF9BZG1pbkxheW91dC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/athen/Documents/latest/SwiftStock(Redo)/Pages/Shared/_CashierLayout.cshtml]
+[c:/Users/athen/Documents/latest/SwiftStock(Redo)/Pages/Shared/_CashierLayout.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU2hhcmVkXF9DYXNoaWVyTGF5b3V0LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/athen/Documents/latest/SwiftStock(Redo)/Pages/Shared/_HomepageLayout.cshtml]
+[c:/Users/athen/Documents/latest/SwiftStock(Redo)/Pages/Shared/_HomepageLayout.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU2hhcmVkXF9Ib21lcGFnZUxheW91dC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/athen/Documents/latest/SwiftStock(Redo)/Pages/Shared/_ValidationScriptsPartial.cshtml]
+[c:/Users/athen/Documents/latest/SwiftStock(Redo)/Pages/Shared/_ValidationScriptsPartial.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU2hhcmVkXF9WYWxpZGF0aW9uU2NyaXB0c1BhcnRpYWwuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/athen/Documents/latest/SwiftStock(Redo)/Pages/_ViewImports.cshtml]
+[c:/Users/athen/Documents/latest/SwiftStock(Redo)/Pages/_ViewImports.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcX1ZpZXdJbXBvcnRzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/athen/Documents/latest/SwiftStock(Redo)/Pages/_ViewStart.cshtml]
+[c:/Users/athen/Documents/latest/SwiftStock(Redo)/Pages/_ViewStart.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcX1ZpZXdTdGFydC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/athen/Documents/latest/SwiftStock(Redo)/Pages/Shared/_Layout.cshtml]
+[c:/Users/athen/Documents/latest/SwiftStock(Redo)/Pages/Shared/_Layout.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU2hhcmVkXF9MYXlvdXQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = b-r11kw4llcs

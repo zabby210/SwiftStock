@@ -175,6 +175,17 @@
                 <img src="~/css/Images/SwiftLogo.png" alt="Logo">
             </div>
 
+            <!-- Search Bar -->
+            <div class="flex-1 mx-4">
+                <div class="relative">
+                    <input id="product-search"
+                           type="text"
+                           placeholder="Search for products..."
+                           class="px-4 py-2 w-full bg-[#0f1117] text-slate-200 border border-slate-800 rounded-lg"
+                           onkeyup="filterProducts()" />
+                </div>
+            </div>
+
             <button class="text-slate-400">
                 <i class="material-icons">notifications</i>
             </button>

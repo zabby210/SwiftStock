@@ -5,46 +5,42 @@
     Layout = "_HomepageLayout";
 }
 
-<div class="space-y-6">
-    <!-- Page Header -->
-    <div class="flex items-center justify-between">
-        <h1 class="text-3xl font-bold text-white">Available Products</h1>
+<div class="flex flex-col h-screen overflow-hidden">
+    <!-- Fixed Header Section -->
+    <div class="flex-none space-y-6 p-6 bg-[#1a1c23]">
+        <!-- Page Header -->
+        <div class="flex items-center justify-between">
+            <h1 class="text-3xl font-bold text-white">Available Products</h1>
 
-        @if (User.Identity.IsAuthenticated)
-        {
-            <span class="text-lg text-slate-400">Welcome, @User.Identity.Name</span>
-        }
+            @if (User.Identity.IsAuthenticated)
+            {
+                <span class="text-lg text-slate-400">Welcome, @User.Identity.Name</span>
+            }
+        </div>
     </div>
 
-    <!-- Search Bar -->
-    <div class="relative">
-        <input id="product-search"
-               type="text"
-               placeholder="Search for products..."
-               class="px-4 py-2 w-full bg-[#0f1117] text-slate-200 border border-slate-800 rounded-lg"
-               onkeyup="filterProducts()" />
-    </div>
+    <!-- Scrollable Product List Section -->
+    <div class="flex-1 overflow-y-auto p-6">
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            @foreach (var product in Model.InventoryItem)
+            {
+                <div class="product-item bg-[#0f1117] p-5 rounded-xl border border-slate-800 shadow-md hover:shadow-lg transition duration-300"
+                     data-name="@product.Product_Name.ToLower()">
+                    <h2 class="text-xl font-semibold text-[#E31837]">@product.Product_Name</h2>
+                    <p class="text-lg text-slate-300 mt-2">₱@product.Price.ToString("N2")</p>
+                    <p class="text-sm text-slate-400 mt-1">Stock Available: @product.Stock</p>
+                    <a href="/Product/@product.Id"
+                       class="mt-4 inline-block bg-[#E31837] text-white px-4 py-2 rounded-lg hover:bg-[#E31837]/90 transition-colors duration-300">
+                        View Details
+                    </a>
+                </div>
+            }
+        </div>
 
-    <!-- Product List -->
-    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-        @foreach (var product in Model.InventoryItem)
-        {
-            <div class="product-item bg-[#0f1117] p-5 rounded-xl border border-slate-800 shadow-md hover:shadow-lg transition duration-300"
-                 data-name="@product.Product_Name.ToLower()">
-                <h2 class="text-xl font-semibold text-[#E31837]">@product.Product_Name</h2>
-                <p class="text-lg text-slate-300 mt-2">₱@product.Price.ToString("N2")</p>
-                <p class="text-sm text-slate-400 mt-1">Stock Available: @product.Stock</p>
-                <a href="/Product/@product.Id"
-                   class="mt-4 inline-block bg-[#E31837] text-white px-4 py-2 rounded-lg hover:bg-[#E31837]/90 transition-colors duration-300">
-                    View Details
-                </a>
-            </div>
-        }
-    </div>
-
-    <!-- No products found message -->
-    <div class="no-products text-center text-slate-400 mt-6" style="display: none;">
-        No products found
+        <!-- No products found message -->
+        <div class="no-products text-center text-slate-400 mt-6" style="display: none;">
+            No products found
+        </div>
     </div>
 </div>
 

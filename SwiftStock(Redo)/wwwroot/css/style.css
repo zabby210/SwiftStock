@@ -717,6 +717,9 @@
   .h-full {
     height: 100%;
   }
+  .h-screen {
+    height: 100vh;
+  }
   .max-h-48 {
     max-height: calc(var(--spacing) * 48);
   }
@@ -782,6 +785,9 @@
   }
   .flex-1 {
     flex: 1;
+  }
+  .flex-none {
+    flex: none;
   }
   .flex-shrink {
     flex-shrink: 1;
@@ -1046,6 +1052,9 @@
   }
   .bg-\[\#0f1117\] {
     background-color: #0f1117;
+  }
+  .bg-\[\#1a1c23\] {
+    background-color: #1a1c23;
   }
   .bg-\[\#2c2f36\] {
     background-color: #2c2f36;

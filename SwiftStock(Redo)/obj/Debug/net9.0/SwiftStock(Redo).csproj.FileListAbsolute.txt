@@ -642,4 +642,4 @@ C:\Users\athen\Documents\latest\SwiftStock(Redo)\obj\Debug\net9.0\refint\SwiftSt
 C:\Users\athen\Documents\latest\SwiftStock(Redo)\obj\Debug\net9.0\SwiftStock(Redo).pdb
 C:\Users\athen\Documents\latest\SwiftStock(Redo)\obj\Debug\net9.0\SwiftStock(Redo).genruntimeconfig.cache
 C:\Users\athen\Documents\latest\SwiftStock(Redo)\obj\Debug\net9.0\ref\SwiftStock(Redo).dll
-C:\Users\athen\Documents\latest\SwiftStock(Redo)\obj\Debug\net9.0\compressed\1h3daox5to-ysrx08rk5b.gz
+C:\Users\athen\Documents\latest\SwiftStock(Redo)\obj\Debug\net9.0\compressed\1h3daox5to-qnyagngqjx.gz
