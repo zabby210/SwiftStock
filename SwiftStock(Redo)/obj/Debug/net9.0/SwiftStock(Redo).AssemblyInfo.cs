@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("SwiftStock(Redo)")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+e3b46e335efc1f8aa92f861ab01f5dbec23d8552")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+b981150ff49465af2f32aa8c643bcaa66b8b1c3b")]
 [assembly: System.Reflection.AssemblyProductAttribute("SwiftStock(Redo)")]
 [assembly: System.Reflection.AssemblyTitleAttribute("SwiftStock(Redo)")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
